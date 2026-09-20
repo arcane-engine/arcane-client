@@ -9,9 +9,11 @@ namespace Core
     public:
         Application(int width, int height);
 
-        int32_t Run();
+        int Run();
 
     private:
+        void Update();
+
         Platform::Window _window;
     };
 }

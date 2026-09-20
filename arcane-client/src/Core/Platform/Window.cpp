@@ -72,6 +72,7 @@ namespace Core::Platform
     LRESULT Window::HandleMessage(const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
     {
         HandleSystemMessage(msg);
+        HandleKeyboardMessage(msg, wParam, lParam);
 
         if (msg == WM_CLOSE)
         {
@@ -86,6 +87,26 @@ namespace Core::Platform
         if (msg == WM_CLOSE)
         {
             PostQuitMessage(0);
+        }
+    }
+
+    void Window::HandleKeyboardMessage(const UINT msg, const WPARAM wParam, const LPARAM lParam)
+    {
+        if (msg == WM_KILLFOCUS)
+        {
+            _keyboard.ClearState();
+        }
+        else if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN)
+        {
+            if (IsAutoRepeat(lParam))
+            {
+                return;
+            }
+            _keyboard.OnKeyDown(static_cast<std::uint8_t>(wParam));
+        }
+        else if (msg == WM_KEYUP || msg == WM_SYSKEYUP)
+        {
+            _keyboard.OnKeyUp(static_cast<std::uint8_t>(wParam));
         }
     }
 
@@ -104,6 +125,21 @@ namespace Core::Platform
             DispatchMessage(&msg);
         }
 
-        return {};
+        return std::nullopt;
+    }
+
+    Input::Keyboard& Window::GetKeyboard() noexcept
+    {
+        return _keyboard;
+    }
+
+    void Window::SetTitle(const std::wstring& title) const noexcept
+    {
+        SetWindowTextW(_hWnd, title.c_str());
+    }
+
+    bool Window::IsAutoRepeat(const LPARAM lParam) noexcept
+    {
+        return (lParam & 0x40000000) != 0;
     }
 }

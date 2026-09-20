@@ -6,14 +6,28 @@ namespace Core
         _window(width, height)
     {}
 
-    int32_t Application::Run()
+    int Application::Run()
     {
         while (true)
         {
             if (const auto exitCode = _window.ProcessMessages())
             {
-                return static_cast<int32_t>(*exitCode);
+                return static_cast<int>(*exitCode);
             }
+
+            Update();
+        }
+    }
+
+    void Application::Update()
+    {
+        if (_window.GetKeyboard().IsKeyDown('A'))
+        {
+            _window.SetTitle(L"Key is down!");
+        }
+        if (_window.GetKeyboard().IsKeyPressed('S'))
+        {
+            _window.SetTitle(L"Key is pressed!");
         }
     }
 }

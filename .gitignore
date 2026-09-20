@@ -1,0 +1,38 @@
+# Visual Studio
+.vs/
+x64/
+x86/
+Debug/
+Release/
+ARM/
+ARM64/
+
+# Build Artifacts
+*.obj
+*.o
+*.lib
+*.a
+*.exp
+*.dll
+*.exe
+*.pdb
+*.idb
+*.ilk
+*.pch
+*.res
+*.sdf
+*.opensdf
+*.db
+
+# Compiled Shader Objects
+*.cso
+
+# User Configuration Files
+*.vcxproj.user
+*.vcxproj.filters.user
+*.suo
+*.user
+
+# Tooling Caches
+.clang-format-ignore
+compile_commands.json

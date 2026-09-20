@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="arcane-client/arcane-client.vcxproj" Id="2b7617be-cd03-4f3c-a587-585ca84e20c9" />
+</Solution>

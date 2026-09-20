@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Core/Input/Keyboard.h"
+#include "Core/Input/Mouse.h"
 #include "Core/Platform/WindowClass.h"
 
 
@@ -23,10 +24,14 @@ namespace Core::Platform
         [[nodiscard]] static std::optional<WPARAM> ProcessMessages();
 
         [[nodiscard]] Input::Keyboard& GetKeyboard() noexcept;
+        [[nodiscard]] Input::Mouse& GetMouse() noexcept;
 
         void SetTitle(const std::wstring& title) const noexcept;
 
     private:
+        static void RegisterRawMouseInputDevice();
+        static void CaptureMouseCursor(int width, int height);
+
         static LRESULT CALLBACK HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
         static LRESULT CALLBACK HandleMessageProxy(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -34,6 +39,10 @@ namespace Core::Platform
 
         static void HandleSystemMessage(UINT msg) noexcept;
         void HandleKeyboardMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+        void HandleRawInputMessage(LPARAM lParam);
+        void HandleMouseMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+
+        static RECT GetWindowRect(int width, int height);
 
         [[nodiscard]] static bool IsAutoRepeat(LPARAM lParam) noexcept;
 
@@ -41,5 +50,7 @@ namespace Core::Platform
         WindowClass _windowClass;
         HWND _hWnd;
         Input::Keyboard _keyboard;
+        Input::Mouse _mouse;
+        std::vector<std::uint8_t> _rawInputBuffer;
     };
 }

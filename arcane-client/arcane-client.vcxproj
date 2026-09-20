@@ -150,6 +150,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Input\Mouse.cpp" />
+    <ClCompile Include="src\Core\Input\MouseRawEvent.cpp" />
+    <ClCompile Include="src\Core\Input\MouseEvent.cpp" />
     <ClCompile Include="src\Core\Input\KeyboardEvent.cpp" />
     <ClCompile Include="src\Core\Input\Keyboard.cpp" />
     <ClCompile Include="src\Core\Exception.cpp" />
@@ -160,6 +163,9 @@
     <ClCompile Include="src\Core\Platform\WindowException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Input\Mouse.h" />
+    <ClInclude Include="src\Core\Input\MouseRawEvent.h" />
+    <ClInclude Include="src\Core\Input\MouseEvent.h" />
     <ClInclude Include="src\Core\Input\KeyboardEvent.h" />
     <ClInclude Include="src\Core\Input\Keyboard.h" />
     <ClInclude Include="src\Core\Exception.h" />

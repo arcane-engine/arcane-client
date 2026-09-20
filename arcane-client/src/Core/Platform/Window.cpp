@@ -4,15 +4,11 @@
 
 namespace Core::Platform
 {
-    Window::Window(const int width, const int height) : _windowClass(HandleMessageSetup)
+    Window::Window(const int width, const int height) :
+        _windowClass(HandleMessageSetup),
+        _mouse(width, height)
     {
-        auto wr = RECT {
-            .left = 0,
-            .top = 0,
-            .right = width,
-            .bottom = height
-        };
-        AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+        const auto wr = GetWindowRect(width, height);
 
         _hWnd = CreateWindow(
             _windowClass.GetName(),
@@ -33,12 +29,37 @@ namespace Core::Platform
             throw WindowException("Create window failed.", GetLastError());
         }
 
+        RegisterRawMouseInputDevice();
+
         ShowWindow(_hWnd, SW_SHOWDEFAULT);
+
+        CaptureMouseCursor(width, height);
     }
 
     Window::~Window()
     {
         DestroyWindow(_hWnd);
+    }
+
+    void Window::RegisterRawMouseInputDevice()
+    {
+        RAWINPUTDEVICE device;
+        device.usUsagePage = 0x01;
+        device.usUsage = 0x02;
+        device.dwFlags = 0;
+        device.hwndTarget = nullptr;
+
+        if (RegisterRawInputDevices(&device, 1, sizeof(device)) == false)
+        {
+            throw Exception("Unable to register raw mouse input.");
+        }
+    }
+
+    void Window::CaptureMouseCursor(const int width, const int height)
+    {
+        const RECT rect = { .left = 0, .top = 0, .right = width, .bottom = height };
+        ClipCursor(&rect);
+        ShowCursor(false);
     }
 
     LRESULT CALLBACK Window::HandleMessageSetup(const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
@@ -73,6 +94,8 @@ namespace Core::Platform
     {
         HandleSystemMessage(msg);
         HandleKeyboardMessage(msg, wParam, lParam);
+        HandleRawInputMessage(lParam);
+        HandleMouseMessage(msg, wParam, lParam);
 
         if (msg == WM_CLOSE)
         {
@@ -110,6 +133,58 @@ namespace Core::Platform
         }
     }
 
+    void Window::HandleRawInputMessage(const LPARAM lParam)
+    {
+        UINT size = 0;
+        if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
+        {
+            return;
+        }
+
+        _rawInputBuffer.resize(size);
+        if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, _rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+        {
+            return;
+        }
+
+        const auto& [header, data] = reinterpret_cast<const RAWINPUT&>(*_rawInputBuffer.data());
+        const auto x = data.mouse.lLastX;
+        const auto y = data.mouse.lLastY;
+        if (header.dwType == RIM_TYPEMOUSE && (x != 0 || y != 0))
+        {
+            _mouse.OnMoveRaw(x, y);
+        }
+    }
+
+    void Window::HandleMouseMessage(const UINT msg, const WPARAM wParam, LPARAM lParam)
+    {
+        const auto [x, y] = MAKEPOINTS(lParam);
+
+        switch (msg)
+        {
+        case WM_MOUSEMOVE:
+            _mouse.OnMove(x, y);
+            break;
+        case WM_MOUSEWHEEL:
+            _mouse.OnWheelDelta(x, y, GET_WHEEL_DELTA_WPARAM(wParam));
+            break;
+        case WM_LBUTTONDOWN:
+            _mouse.OnLeftPressed(x, y);
+            break;
+        case WM_LBUTTONUP:
+            _mouse.OnLeftReleased(x, y);
+            break;
+        case WM_RBUTTONDOWN:
+            _mouse.OnRightPressed(x, y);
+            break;
+        case WM_RBUTTONUP:
+            _mouse.OnRightReleased(x, y);
+            break;
+        default:
+            break;
+        }
+    }
+
     std::optional<WPARAM> Window::ProcessMessages()
     {
         MSG msg;
@@ -131,6 +206,18 @@ namespace Core::Platform
     Input::Keyboard& Window::GetKeyboard() noexcept
     {
         return _keyboard;
+    }
+
+    Input::Mouse& Window::GetMouse() noexcept
+    {
+        return _mouse;
+    }
+
+    RECT Window::GetWindowRect(const int width, const int height)
+    {
+        RECT rect = { .left = 0, .top = 0, .right = width, .bottom = height };
+        AdjustWindowRect(&rect, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+        return rect;
     }
 
     void Window::SetTitle(const std::wstring& title) const noexcept

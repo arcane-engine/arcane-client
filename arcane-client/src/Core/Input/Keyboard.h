@@ -6,7 +6,10 @@
 
 #include "Core/Input/KeyboardEvent.h"
 
-namespace Core::Platform { class Window; }
+namespace Core::Platform
+{
+    class Window;
+}
 
 namespace Core::Input
 {

@@ -26,13 +26,13 @@ namespace Core::Platform
 
     std::string WindowException::TranslateErrorCode(const uint32_t errorCode) noexcept
     {
-        char* pMessageBuffer = nullptr;
+        char* messageBuffer = nullptr;
         const auto length = FormatMessageA(
             FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
             nullptr,
             errorCode,
             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            reinterpret_cast<LPSTR>(&pMessageBuffer),
+            reinterpret_cast<LPSTR>(&messageBuffer),
             0,
             nullptr
         );
@@ -42,8 +42,8 @@ namespace Core::Platform
             return "Undefined error code";
         }
 
-        std::string result = pMessageBuffer;
-        LocalFree(pMessageBuffer);
+        std::string result = messageBuffer;
+        LocalFree(messageBuffer);
 
         while (!result.empty() && (result.back() == '\r' || result.back() == '\n'))
         {

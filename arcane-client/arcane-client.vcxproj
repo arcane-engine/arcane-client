@@ -150,6 +150,11 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Buffer\RenderBuffer.cpp" />
+    <ClCompile Include="src\Graphics\GraphicsException.cpp" />
+    <ClCompile Include="src\Graphics\Buffer\RenderTarget.cpp" />
+    <ClCompile Include="src\Graphics\DXGIDebugQueue.cpp" />
+    <ClCompile Include="src\Graphics\Device.cpp" />
     <ClCompile Include="src\Core\Input\Mouse.cpp" />
     <ClCompile Include="src\Core\Input\MouseRawEvent.cpp" />
     <ClCompile Include="src\Core\Input\MouseEvent.cpp" />
@@ -163,6 +168,11 @@
     <ClCompile Include="src\Core\Platform\WindowException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\Buffer\RenderBuffer.h" />
+    <ClInclude Include="src\Graphics\GraphicsException.h" />
+    <ClInclude Include="src\Graphics\Buffer\RenderTarget.h" />
+    <ClInclude Include="src\Graphics\DXGIDebugQueue.h" />
+    <ClInclude Include="src\Graphics\Device.h" />
     <ClInclude Include="src\Core\Input\Mouse.h" />
     <ClInclude Include="src\Core\Input\MouseRawEvent.h" />
     <ClInclude Include="src\Core\Input\MouseEvent.h" />

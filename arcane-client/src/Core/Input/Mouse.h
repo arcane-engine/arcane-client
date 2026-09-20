@@ -24,8 +24,7 @@ namespace Core::Input
         [[nodiscard]] int GetY() const noexcept;
         [[nodiscard]] float GetNormalizedX() const noexcept;
         [[nodiscard]] float GetNormalizedY() const noexcept;
-        [[nodiscard]] float GetSmoothDeltaX(float x) noexcept;
-        [[nodiscard]] float GetSmoothDeltaY(float y) noexcept;
+        [[nodiscard]] float GetSmoothDelta(float value) noexcept;
         [[nodiscard]] bool IsInWindow() const noexcept;
         [[nodiscard]] bool IsLeftPressed() const noexcept;
         [[nodiscard]] bool IsRightPressed() const noexcept;

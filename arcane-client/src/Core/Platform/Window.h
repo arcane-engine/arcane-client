@@ -1,12 +1,13 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <string>
 
 #include "Core/Input/Keyboard.h"
 #include "Core/Input/Mouse.h"
 #include "Core/Platform/WindowClass.h"
-
+#include "Graphics/Device.h"
 
 namespace Core::Platform
 {
@@ -25,6 +26,7 @@ namespace Core::Platform
 
         [[nodiscard]] Input::Keyboard& GetKeyboard() noexcept;
         [[nodiscard]] Input::Mouse& GetMouse() noexcept;
+        [[nodiscard]] Graphics::Device& GetDevice() const;
 
         void SetTitle(const std::wstring& title) const noexcept;
 
@@ -52,5 +54,6 @@ namespace Core::Platform
         Input::Keyboard _keyboard;
         Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
+        std::unique_ptr<Graphics::Device> _device;
     };
 }

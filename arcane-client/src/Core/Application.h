@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Platform/Window.h"
+#include "Graphics/Device.h"
 
 namespace Core
 {
@@ -15,5 +16,6 @@ namespace Core
         void Update();
 
         Platform::Window _window;
+        Graphics::Device& _device;
     };
 }

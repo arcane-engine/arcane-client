@@ -74,18 +74,11 @@ namespace Core::Input
         return _eventBuffer.empty();
     }
 
-    float Mouse::GetSmoothDeltaX(const float x) noexcept
+    float Mouse::GetSmoothDelta(const float value) noexcept
     {
-        _smoothDeltaX = _smoothDeltaX * (1.0f - _smoothAlpha) + x * _smoothAlpha;
+        _smoothDeltaX = _smoothDeltaX * (1.0f - _smoothAlpha) + value * _smoothAlpha;
 
         return _smoothDeltaX / 600.0f;
-    }
-
-    float Mouse::GetSmoothDeltaY(const float y) noexcept
-    {
-        _smoothDeltaY = _smoothDeltaY * (1.0f - _smoothAlpha) + y * _smoothAlpha;
-
-        return _smoothDeltaY / 600.0f;
     }
 
     void Mouse::Flush() noexcept

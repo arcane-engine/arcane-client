@@ -78,6 +78,9 @@
     <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTargetNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\RenderTarget\DepthStencil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -138,6 +141,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTargetNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderTarget\DepthStencil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

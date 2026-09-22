@@ -5,7 +5,7 @@
 
 namespace
 {
-    constexpr float ClearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+    constexpr float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 namespace Graphics
@@ -21,7 +21,7 @@ namespace Graphics
             _height = static_cast<int>(desc.Height);
         }
 
-        _device.SetMarker();
+        _device.SetDebugMarker();
         const auto hResult = _device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
         if (FAILED(hResult))
         {
@@ -32,6 +32,9 @@ namespace Graphics
     RenderTarget::RenderTarget(Device& device, const int width, const int height)
         : RenderBuffer(device, width, height)
     {
+        //
+        // Create render target texture.
+        //
         Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
 
         D3D11_TEXTURE2D_DESC textureDesc = {};
@@ -45,26 +48,32 @@ namespace Graphics
         textureDesc.Usage = D3D11_USAGE_DEFAULT;
         textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-        _device.SetMarker();
+        _device.SetDebugMarker();
         auto hResult = _device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &texture);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create render target texture.", hResult, _device);
         }
 
+        //
+        // Create render target view.
+        //
         D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
         renderTargetViewDesc.Format = textureDesc.Format;
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D = D3D11_TEX2D_RTV{};
 
-        _device.SetMarker();
+        _device.SetDebugMarker();
         hResult = _device.GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, &_renderTargetView);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create render target view.", hResult, _device);
         }
 
-        _device.SetMarker();
+        //
+        // Create shader resource view.
+        //
+        _device.SetDebugMarker();
         hResult = _device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &_shaderResourceView);
         if (FAILED(hResult))
         {
@@ -72,14 +81,14 @@ namespace Graphics
         }
     }
 
-    const Microsoft::WRL::ComPtr<ID3D11RenderTargetView>& RenderTarget::GetRenderTargetView() const noexcept
+    ID3D11RenderTargetView* RenderTarget::GetRenderTargetView() const noexcept
     {
-        return _renderTargetView;
+        return _renderTargetView.Get();
     }
 
-    const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& RenderTarget::GetShaderResourceView() const noexcept
+    ID3D11ShaderResourceView* RenderTarget::GetShaderResourceView() const noexcept
     {
-        return _shaderResourceView;
+        return _shaderResourceView.Get();
     }
 
     void RenderTarget::Clear()

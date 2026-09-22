@@ -9,7 +9,7 @@ namespace Graphics
 {
     void PresentNode::Execute(Device& device)
     {
-        device.SetMarker();
+        device.SetDebugMarker();
         const auto hResult = device.GetSwapChain()->Present(1, 0);
         if (FAILED(hResult))
         {

@@ -2,6 +2,7 @@
 
 #include "Graphics/GraphicsException.h"
 #include "Graphics/RenderTarget/RenderTarget.h"
+#include "Graphics/RenderTarget/DepthStencil.h"
 
 namespace Graphics
 {
@@ -28,14 +29,19 @@ namespace Graphics
         return _swapChain.Get();
     }
 
-    std::shared_ptr<RenderTarget> Device::GetRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetSceneRenderTarget() const noexcept
     {
-        return _renderTarget;
+        return _sceneRenderTarget;
     }
 
-    std::shared_ptr<RenderTarget> Device::GetCompositeRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetOutputRenderTarget() const noexcept
     {
-        return _compositeRenderTarget;
+        return _outputRenderTarget;
+    }
+
+    std::shared_ptr<DepthStencil> Device::GetDepthStencil() const noexcept
+    {
+        return _depthStencil;
     }
 
     void Device::CreateDevice()
@@ -46,7 +52,7 @@ namespace Graphics
         constexpr auto deviceFlags = D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-        SetMarker();
+        SetDebugMarker();
         D3D_FEATURE_LEVEL featureLevel;
         const auto hResult = D3D11CreateDevice(
             nullptr,
@@ -67,7 +73,7 @@ namespace Graphics
 
     void Device::CreateSwapChain(const HWND hWnd)
     {
-        SetMarker();
+        SetDebugMarker();
         Microsoft::WRL::ComPtr<IDXGIDevice> dxgiDevice;
         auto hResult = _device.As(&dxgiDevice);
         if (FAILED(hResult))
@@ -75,7 +81,7 @@ namespace Graphics
             throw GraphicsException("Failed to query DXGI device.", hResult, *this);
         }
 
-        SetMarker();
+        SetDebugMarker();
         Microsoft::WRL::ComPtr<IDXGIAdapter> dxgiAdapter;
         hResult = dxgiDevice->GetAdapter(&dxgiAdapter);
         if (FAILED(hResult))
@@ -83,7 +89,7 @@ namespace Graphics
             throw GraphicsException("Failed to get DXGI adapter.", hResult, *this);
         }
 
-        SetMarker();
+        SetDebugMarker();
         Microsoft::WRL::ComPtr<IDXGIFactory2> dxgiFactory;
         hResult = dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
         if (FAILED(hResult))
@@ -105,14 +111,14 @@ namespace Graphics
         desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
         desc.Flags = 0;
 
-        SetMarker();
+        SetDebugMarker();
         hResult = dxgiFactory->CreateSwapChainForHwnd(_device.Get(), hWnd, &desc, nullptr, nullptr, &_swapChain);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create swap chain.", hResult, *this);
         }
 
-        SetMarker();
+        SetDebugMarker();
         hResult = dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
         if (FAILED(hResult))
         {
@@ -122,17 +128,21 @@ namespace Graphics
 
     void Device::CreateRenderTargets(int width, int height)
     {
-        _renderTarget = std::make_shared<RenderTarget>(*this, width, height);
+        _sceneRenderTarget = std::make_shared<RenderTarget>(*this, width, height);
+        _depthStencil = std::make_shared<DepthStencil>(*this, width, height);
 
-        SetMarker();
-        Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-        const auto hResult = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer);
+        //
+        // Create back buffer texture.
+        //
+        SetDebugMarker();
+        Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
+        const auto hResult = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &texture);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to get back buffer.", hResult, *this);
+            throw GraphicsException("Failed to create back buffer texture.", hResult, *this);
         }
 
-        _compositeRenderTarget = std::make_shared<RenderTarget>(*this, backBuffer.Get());
+        _outputRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());
     }
 
     void Device::SetViewport(const int width, const int height) const
@@ -153,7 +163,7 @@ namespace Graphics
         return _debugQueue;
     }
 
-    void Device::SetMarker()
+    void Device::SetDebugMarker()
     {
         _debugQueue.SetMarker();
     }

@@ -8,16 +8,18 @@
 
 namespace Graphics
 {
-
     void RenderPipeline::Build(const Device& device)
     {
-        const auto compositeRenderTarget = device.GetCompositeRenderTarget();
-        const auto renderTarget = device.GetRenderTarget();
+        const auto sceneRenderTarget = device.GetSceneRenderTarget();
+        const auto outputRenderTarget = device.GetOutputRenderTarget();
+        const auto depthStencil = device.GetDepthStencil();
 
-        Add(std::make_unique<ClearBufferNode>(renderTarget));
-        Add(std::make_unique<ClearBufferNode>(compositeRenderTarget));
-        Add(std::make_unique<BindRenderTargetNode>(renderTarget));
-        Add(std::make_unique<BindRenderTargetNode>(compositeRenderTarget));
+        Add(std::make_unique<ClearBufferNode>(sceneRenderTarget));
+        Add(std::make_unique<ClearBufferNode>(outputRenderTarget));
+
+        Add(std::make_unique<BindRenderTargetNode>(sceneRenderTarget, depthStencil));
+        Add(std::make_unique<BindRenderTargetNode>(outputRenderTarget));
+
         Add(std::make_unique<PresentNode>());
     }
 

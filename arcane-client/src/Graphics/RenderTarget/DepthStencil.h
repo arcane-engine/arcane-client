@@ -7,19 +7,19 @@
 
 namespace Graphics
 {
-    class RenderTarget : public RenderBuffer
+    class DepthStencil : public RenderBuffer
     {
     public:
-        RenderTarget(Device& device, ID3D11Texture2D* texture);
-        RenderTarget(Device& device, int width, int height);
+        DepthStencil(Device& device, int width, int height);
 
-        [[nodiscard]] ID3D11RenderTargetView* GetRenderTargetView() const noexcept;
+        [[nodiscard]] ID3D11DepthStencilView* GetDepthStencilView() const noexcept;
         [[nodiscard]] ID3D11ShaderResourceView* GetShaderResourceView() const noexcept;
 
         void Clear() override;
 
     private:
-        Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTargetView;
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthStencilState;
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;
     };
 }

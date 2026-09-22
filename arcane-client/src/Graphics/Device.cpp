@@ -1,7 +1,7 @@
 #include "Graphics/Device.h"
 
 #include "Graphics/GraphicsException.h"
-#include "Graphics/Buffer/RenderTarget.h"
+#include "Graphics/RenderTarget/RenderTarget.h"
 
 namespace Graphics
 {
@@ -28,12 +28,12 @@ namespace Graphics
         return _swapChain.Get();
     }
 
-    std::shared_ptr<Buffer::RenderTarget> Device::GetRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetRenderTarget() const noexcept
     {
         return _renderTarget;
     }
 
-    std::shared_ptr<Buffer::RenderTarget> Device::GetCompositeRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetCompositeRenderTarget() const noexcept
     {
         return _compositeRenderTarget;
     }
@@ -122,7 +122,7 @@ namespace Graphics
 
     void Device::CreateRenderTargets(int width, int height)
     {
-        _renderTarget = std::make_shared<Buffer::RenderTarget>(*this, width, height);
+        _renderTarget = std::make_shared<RenderTarget>(*this, width, height);
 
         SetMarker();
         Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
@@ -132,7 +132,7 @@ namespace Graphics
             throw GraphicsException("Failed to get back buffer.", hResult, *this);
         }
 
-        _compositeRenderTarget = std::make_shared<Buffer::RenderTarget>(*this, backBuffer.Get());
+        _compositeRenderTarget = std::make_shared<RenderTarget>(*this, backBuffer.Get());
     }
 
     void Device::SetViewport(const int width, const int height) const
@@ -148,13 +148,13 @@ namespace Graphics
         _deviceContext->RSSetViewports(1, &viewport);
     }
 
-    DXGIDebugQueue& Device::GetInformationManager() noexcept
+    DXGIDebugQueue& Device::GetDebugQueue() noexcept
     {
-        return _informationManager;
+        return _debugQueue;
     }
 
     void Device::SetMarker()
     {
-        _informationManager.SetMarker();
+        _debugQueue.SetMarker();
     }
 }

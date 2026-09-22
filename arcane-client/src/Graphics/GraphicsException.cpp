@@ -13,7 +13,7 @@ namespace Graphics
     GraphicsException::GraphicsException(const std::string& message, const HRESULT hResult, Device& device, const std::source_location& location) noexcept
         : WindowException(message, 0, location), _hResult(hResult)
     {
-        for (const auto& informationMessage : device.GetInformationManager().ReadMessages())
+        for (const auto& informationMessage : device.GetDebugQueue().ReadMessages())
         {
             _information += informationMessage + "\n\n";
         }

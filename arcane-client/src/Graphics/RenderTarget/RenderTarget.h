@@ -3,9 +3,9 @@
 #include <d3d11.h>
 #include <wrl.h>
 
-#include "Graphics/Buffer/RenderBuffer.h"
+#include "Graphics/RenderTarget/RenderBuffer.h"
 
-namespace Graphics::Buffer
+namespace Graphics
 {
     class RenderTarget : public RenderBuffer
     {

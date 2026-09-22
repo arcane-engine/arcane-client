@@ -150,9 +150,14 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\Buffer\RenderBuffer.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTargetNode.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\PresentNode.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\ClearBufferNode.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\RenderNode.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline.cpp" />
+    <ClCompile Include="src\Graphics\RenderTarget\RenderBuffer.cpp" />
     <ClCompile Include="src\Graphics\GraphicsException.cpp" />
-    <ClCompile Include="src\Graphics\Buffer\RenderTarget.cpp" />
+    <ClCompile Include="src\Graphics\RenderTarget\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\DXGIDebugQueue.cpp" />
     <ClCompile Include="src\Graphics\Device.cpp" />
     <ClCompile Include="src\Core\Input\Mouse.cpp" />
@@ -168,9 +173,14 @@
     <ClCompile Include="src\Core\Platform\WindowException.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\Buffer\RenderBuffer.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTargetNode.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\PresentNode.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\ClearBufferNode.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\RenderNode.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline.h" />
+    <ClInclude Include="src\Graphics\RenderTarget\RenderBuffer.h" />
     <ClInclude Include="src\Graphics\GraphicsException.h" />
-    <ClInclude Include="src\Graphics\Buffer\RenderTarget.h" />
+    <ClInclude Include="src\Graphics\RenderTarget\RenderTarget.h" />
     <ClInclude Include="src\Graphics\DXGIDebugQueue.h" />
     <ClInclude Include="src\Graphics\Device.h" />
     <ClInclude Include="src\Core\Input\Mouse.h" />

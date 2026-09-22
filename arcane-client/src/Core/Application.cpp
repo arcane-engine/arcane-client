@@ -1,15 +1,13 @@
 #include "Core/Application.h"
 
-#include <format>
-
-#include "Graphics/Buffer/RenderTarget.h"
-
 namespace Core
 {
     Application::Application(const int width, const int height) :
         _window(width, height),
         _device(_window.GetDevice())
-    {}
+    {
+        _renderPipeline.Build(_device);
+    }
 
     int Application::Run()
     {
@@ -26,12 +24,6 @@ namespace Core
 
     void Application::Update()
     {
-        auto& rtv = _device.GetCompositeRenderTarget()->GetRenderTargetView();
-
-        _device.GetDeviceContext()->OMSetRenderTargets(1, rtv.GetAddressOf(), nullptr);
-
-        _device.GetCompositeRenderTarget()->Clear();
-
-        _device.GetSwapChain()->Present(1, 0);
+        _renderPipeline.Execute(_device);
     }
 }

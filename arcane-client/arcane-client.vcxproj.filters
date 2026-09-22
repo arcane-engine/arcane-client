@@ -54,13 +54,28 @@
     <ClCompile Include="src\Graphics\DXGIDebugQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Buffer\RenderTarget.cpp">
+    <ClCompile Include="src\Graphics\RenderTarget\RenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\GraphicsException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Buffer\RenderBuffer.cpp">
+    <ClCompile Include="src\Graphics\RenderTarget\RenderBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\RenderNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\ClearBufferNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\PresentNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTargetNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,13 +116,28 @@
     <ClInclude Include="src\Graphics\DXGIDebugQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Buffer\RenderTarget.h">
+    <ClInclude Include="src\Graphics\RenderTarget\RenderTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\GraphicsException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\Buffer\RenderBuffer.h">
+    <ClInclude Include="src\Graphics\RenderTarget\RenderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\RenderNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\ClearBufferNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\PresentNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTargetNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

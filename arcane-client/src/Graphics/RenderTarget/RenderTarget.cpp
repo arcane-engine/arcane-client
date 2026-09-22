@@ -1,14 +1,14 @@
-#include "Graphics/Buffer/RenderTarget.h"
+#include "Graphics/RenderTarget/RenderTarget.h"
 
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 
 namespace
 {
-    constexpr float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    constexpr float ClearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
-namespace Graphics::Buffer
+namespace Graphics
 {
     RenderTarget::RenderTarget(Device& device, ID3D11Texture2D* texture)
         : RenderBuffer(device, 0, 0)

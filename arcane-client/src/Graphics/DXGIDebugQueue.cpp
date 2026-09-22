@@ -13,13 +13,13 @@
 namespace Graphics
 {
 #ifdef NDEBUG
-    DXGIInformationManager::DXGIInformationManager()
+    DXGIDebugQueue::DXGIDebugQueue()
     {}
 
-    void DXGIInformationManager::Mark() noexcept
+    void DXGIDebugQueue::Mark() noexcept
     {}
 
-    std::vector<std::string> DXGIInformationManager::GetMessages() const
+    std::vector<std::string> DXGIDebugQueue::GetMessages() const
     {
         return {};
     }

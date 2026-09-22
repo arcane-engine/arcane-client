@@ -1,6 +1,6 @@
-#include "Graphics/Buffer/RenderBuffer.h"
+#include "Graphics/RenderTarget/RenderBuffer.h"
 
-namespace Graphics::Buffer
+namespace Graphics
 {
     RenderBuffer::RenderBuffer(Device& device, const int width, const int height) noexcept
         : _device(device), _width(width), _height(height)
@@ -16,4 +16,3 @@ namespace Graphics::Buffer
         return _height;
     }
 }
-    

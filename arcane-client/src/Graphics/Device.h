@@ -10,13 +10,9 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-namespace Graphics::Buffer
-{
-    class RenderTarget;
-}
-
 namespace Graphics
 {
+    class RenderTarget;
     class GraphicsException;
 
     class Device
@@ -39,8 +35,8 @@ namespace Graphics
         [[nodiscard]] ID3D11Device* GetDevice() const noexcept;
         [[nodiscard]] ID3D11DeviceContext* GetDeviceContext() const noexcept;
         [[nodiscard]] IDXGISwapChain1* GetSwapChain() const noexcept;
-        [[nodiscard]] std::shared_ptr<Buffer::RenderTarget> GetRenderTarget() const noexcept;
-        [[nodiscard]] std::shared_ptr<Buffer::RenderTarget> GetCompositeRenderTarget() const noexcept;
+        [[nodiscard]] std::shared_ptr<RenderTarget> GetRenderTarget() const noexcept;
+        [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
 
     private:
         void CreateDevice();
@@ -48,14 +44,14 @@ namespace Graphics
         void CreateRenderTargets(int width, int height);
         void SetViewport(int width, int height) const;
 
-        DXGIDebugQueue& GetInformationManager() noexcept;
+        DXGIDebugQueue& GetDebugQueue() noexcept;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11Device> _device;
         Microsoft::WRL::ComPtr<IDXGISwapChain1> _swapChain;
         Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
-        std::shared_ptr<Buffer::RenderTarget> _renderTarget;
-        std::shared_ptr<Buffer::RenderTarget> _compositeRenderTarget;
-        DXGIDebugQueue _informationManager;
+        std::shared_ptr<RenderTarget> _renderTarget;
+        std::shared_ptr<RenderTarget> _compositeRenderTarget;
+        DXGIDebugQueue _debugQueue;
     };
 }

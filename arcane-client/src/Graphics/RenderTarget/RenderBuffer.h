@@ -1,9 +1,9 @@
 #pragma once
 
-namespace Graphics { class Device; }
-
-namespace Graphics::Buffer
+namespace Graphics
 {
+    class Device;
+
     class RenderBuffer
     {
     public:

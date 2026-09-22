@@ -2,6 +2,7 @@
 
 #include "Core/Platform/Window.h"
 #include "Graphics/Device.h"
+#include "Graphics/RenderPipeline.h"
 
 namespace Core
 {
@@ -17,5 +18,6 @@ namespace Core
 
         Platform::Window _window;
         Graphics::Device& _device;
+        Graphics::RenderPipeline _renderPipeline;
     };
 }

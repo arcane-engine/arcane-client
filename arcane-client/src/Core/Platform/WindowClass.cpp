@@ -8,7 +8,6 @@ namespace Core::Platform
         : _name(L"arcane-client"), _hInstance(GetModuleHandle(nullptr))
     {
         WNDCLASSEX wc = {};
-
         wc.cbSize = sizeof(wc);
         wc.style = CS_OWNDC;
         wc.lpfnWndProc = handleMessageSetup;

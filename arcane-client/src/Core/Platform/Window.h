@@ -49,11 +49,14 @@ namespace Core::Platform
         [[nodiscard]] static bool IsAutoRepeat(LPARAM lParam) noexcept;
 
     private:
+        static constexpr DWORD _windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+
         WindowClass _windowClass;
         HWND _hWnd;
         Input::Keyboard _keyboard;
         Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
         std::unique_ptr<Graphics::Device> _device;
+        
     };
 }

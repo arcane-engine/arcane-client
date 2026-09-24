@@ -1,5 +1,7 @@
 #include "Core/Platform/Window.h"
 
+#include <bit>
+
 #include "Core/Platform/WindowException.h"
 
 namespace Core::Platform
@@ -13,7 +15,7 @@ namespace Core::Platform
         _hWnd = CreateWindow(
             _windowClass.GetName(),
             L"Client",
-            WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+            _windowStyle,
             200,
             200,
             wr.right - wr.left,
@@ -68,7 +70,7 @@ namespace Core::Platform
     {
         if (msg == WM_NCCREATE)
         {
-            const auto* create = reinterpret_cast<CREATESTRUCT*>(lParam);
+            const auto* create = std::bit_cast<CREATESTRUCT*>(lParam);
             auto* window = static_cast<Window*>(create->lpCreateParams);
 
             SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
@@ -82,7 +84,7 @@ namespace Core::Platform
 
     LRESULT CALLBACK Window::HandleMessageProxy(const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
     {
-        auto* window = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+        auto* window = std::bit_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
         if (window != nullptr)
         {
@@ -138,13 +140,14 @@ namespace Core::Platform
     void Window::HandleRawInputMessage(const LPARAM lParam)
     {
         UINT size = 0;
-        if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
+        const auto hRawInput = std::bit_cast<HRAWINPUT>(lParam);
+        if (GetRawInputData(hRawInput, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == static_cast<UINT>(-1))
         {
             return;
         }
 
         _rawInputBuffer.resize(size);
-        if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, _rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+        if (GetRawInputData(hRawInput, RID_INPUT, _rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
         {
             return;
         }
@@ -227,7 +230,7 @@ namespace Core::Platform
     RECT Window::GetWindowRect(const int width, const int height)
     {
         RECT rect = { .left = 0, .top = 0, .right = width, .bottom = height };
-        AdjustWindowRect(&rect, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+        AdjustWindowRect(&rect, _windowStyle, FALSE);
         return rect;
     }
 

@@ -136,7 +136,7 @@ namespace Graphics
         //
         SetDebugMarker();
         Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
-        const auto hResult = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &texture);
+        const auto hResult = _swapChain->GetBuffer(0, IID_PPV_ARGS(&texture));
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create back buffer texture.", hResult, *this);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
-#include <wrl.h>
+#include <wrl/client.h>
 
 #include "Graphics/RenderTarget/RenderBuffer.h"
 

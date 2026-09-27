@@ -57,6 +57,5 @@ namespace Core::Platform
         Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
         std::unique_ptr<Graphics::Device> _device;
-        
     };
 }

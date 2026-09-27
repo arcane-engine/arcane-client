@@ -150,6 +150,16 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderResource\IndexBuffer.cpp" />
+    <ClCompile Include="src\Core\Storage\File.cpp" />
+    <ClCompile Include="src\Resources\ShaderLibrary.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\GeometryPassNode.cpp" />
+    <ClCompile Include="src\Graphics\RenderQueue\RenderCommand.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\InputLayout.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\RenderResource.cpp" />
+    <ClCompile Include="src\Graphics\RenderObject.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\PixelShader.cpp" />
+    <ClCompile Include="src\Graphics\RenderQueue.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget\DepthStencil.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTargetNode.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\PresentNode.cpp" />
@@ -172,8 +182,22 @@
     <ClCompile Include="src\Core\Platform\Window.cpp" />
     <ClCompile Include="src\Core\Platform\WindowClass.cpp" />
     <ClCompile Include="src\Core\Platform\WindowException.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\VertexShader.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\Topology.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderResource\IndexBuffer.h" />
+    <ClInclude Include="src\Core\Storage\File.h" />
+    <ClInclude Include="src\Graphics\Vertex.h" />
+    <ClInclude Include="src\Resources\ShaderLibrary.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\GeometryPassNode.h" />
+    <ClInclude Include="src\Graphics\RenderQueue\RenderCommand.h" />
+    <ClInclude Include="src\Graphics\RenderResource\InputLayout.h" />
+    <ClInclude Include="src\Graphics\RenderResource\RenderResource.h" />
+    <ClInclude Include="src\Graphics\RenderObject.h" />
+    <ClInclude Include="src\Graphics\RenderResource\PixelShader.h" />
+    <ClInclude Include="src\Graphics\RenderQueue.h" />
     <ClInclude Include="src\Graphics\RenderTarget\DepthStencil.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTargetNode.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\PresentNode.h" />
@@ -195,6 +219,23 @@
     <ClInclude Include="src\Core\Platform\Window.h" />
     <ClInclude Include="src\Core\Platform\WindowClass.h" />
     <ClInclude Include="src\Core\Platform\WindowException.h" />
+    <ClInclude Include="src\Graphics\RenderResource\VertexShader.h" />
+    <ClInclude Include="src\Graphics\RenderResource\Topology.h" />
+    <ClInclude Include="src\Graphics\RenderResource\VertexBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\ColorVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

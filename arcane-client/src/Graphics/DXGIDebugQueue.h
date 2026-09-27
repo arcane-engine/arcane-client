@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <dxgidebug.h>
-#include <wrl.h>
+#include <wrl/client.h>
 
 #pragma comment(lib, "dxguid.lib")
 

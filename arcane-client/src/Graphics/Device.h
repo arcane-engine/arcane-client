@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <dxgi1_2.h>
 #include <memory>
-#include <wrl.h>
+#include <wrl/client.h>
 
 #include "Graphics/DXGIDebugQueue.h"
 
@@ -31,7 +31,7 @@ namespace Graphics
         Device& operator=(const Device&) = delete;
         Device& operator=(Device&& device) = delete;
 
-        void SetDebugMarker();
+        void SetMarker();
 
         [[nodiscard]] ID3D11Device* GetDevice() const noexcept;
         [[nodiscard]] ID3D11DeviceContext* GetDeviceContext() const noexcept;

@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit ClearBufferNode(const std::shared_ptr<RenderBuffer>& buffer);
 
-        void Execute(Device& device) override;
+        void Execute(Device& device, RenderQueue& renderQueue) override;
 
     private:
         std::shared_ptr<RenderBuffer> _buffer;

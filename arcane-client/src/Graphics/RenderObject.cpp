@@ -1,0 +1,35 @@
+#include "Graphics/RenderObject.h"
+
+#include "Graphics/Device.h"
+#include "Graphics/RenderResource/RenderResource.h"
+
+namespace Graphics
+{
+    void RenderObject::Add(const std::shared_ptr<RenderResource>& resource)
+    {
+        _resources.push_back(resource);
+    }
+
+    void RenderObject::Bind(const Device& device) const noexcept
+    {
+        for (const auto& resource : _resources)
+        {
+            resource->Bind(device);
+        }
+    }
+
+    void RenderObject::Draw(const Device& device) const noexcept
+    {
+        device.GetDeviceContext()->DrawIndexed(_indexCount, 0, 0);
+    }
+
+    void RenderObject::SetIndexCount(const UINT indexCount) noexcept
+    {
+        _indexCount = indexCount;
+    }
+
+    UINT RenderObject::GetIndexCount() const noexcept
+    {
+        return _indexCount;
+    }
+}

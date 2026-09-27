@@ -52,7 +52,7 @@ namespace Graphics
         constexpr auto deviceFlags = D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-        SetDebugMarker();
+        SetMarker();
         D3D_FEATURE_LEVEL featureLevel;
         const auto hResult = D3D11CreateDevice(
             nullptr,
@@ -73,7 +73,7 @@ namespace Graphics
 
     void Device::CreateSwapChain(const HWND hWnd)
     {
-        SetDebugMarker();
+        SetMarker();
         Microsoft::WRL::ComPtr<IDXGIDevice> dxgiDevice;
         auto hResult = _device.As(&dxgiDevice);
         if (FAILED(hResult))
@@ -81,7 +81,7 @@ namespace Graphics
             throw GraphicsException("Failed to query DXGI device.", hResult, *this);
         }
 
-        SetDebugMarker();
+        SetMarker();
         Microsoft::WRL::ComPtr<IDXGIAdapter> dxgiAdapter;
         hResult = dxgiDevice->GetAdapter(&dxgiAdapter);
         if (FAILED(hResult))
@@ -89,7 +89,7 @@ namespace Graphics
             throw GraphicsException("Failed to get DXGI adapter.", hResult, *this);
         }
 
-        SetDebugMarker();
+        SetMarker();
         Microsoft::WRL::ComPtr<IDXGIFactory2> dxgiFactory;
         hResult = dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
         if (FAILED(hResult))
@@ -111,14 +111,14 @@ namespace Graphics
         desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
         desc.Flags = 0;
 
-        SetDebugMarker();
+        SetMarker();
         hResult = dxgiFactory->CreateSwapChainForHwnd(_device.Get(), hWnd, &desc, nullptr, nullptr, &_swapChain);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create swap chain.", hResult, *this);
         }
 
-        SetDebugMarker();
+        SetMarker();
         hResult = dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
         if (FAILED(hResult))
         {
@@ -134,7 +134,7 @@ namespace Graphics
         //
         // Create back buffer texture.
         //
-        SetDebugMarker();
+        SetMarker();
         Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
         const auto hResult = _swapChain->GetBuffer(0, IID_PPV_ARGS(&texture));
         if (FAILED(hResult))
@@ -163,7 +163,7 @@ namespace Graphics
         return _debugQueue;
     }
 
-    void Device::SetDebugMarker()
+    void Device::SetMarker()
     {
         _debugQueue.SetMarker();
     }

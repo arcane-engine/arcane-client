@@ -16,7 +16,7 @@ namespace Graphics
         depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
         depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         auto hResult = _device.GetDevice()->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
         if (FAILED(hResult))
         {
@@ -41,7 +41,7 @@ namespace Graphics
         textureDesc.Usage = D3D11_USAGE_DEFAULT;
         textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         hResult = _device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &depthStencilTexture);
         if (FAILED(hResult))
         {
@@ -56,7 +56,7 @@ namespace Graphics
         depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         hResult = _device.GetDevice()->CreateDepthStencilView(depthStencilTexture.Get(), &depthStencilViewDesc, &_depthStencilView);
         if (FAILED(hResult))
         {
@@ -72,7 +72,7 @@ namespace Graphics
         shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
         shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         hResult = _device.GetDevice()->CreateShaderResourceView(depthStencilTexture.Get(), &shaderResourceViewDesc, &_shaderResourceView);
         if (FAILED(hResult))
         {

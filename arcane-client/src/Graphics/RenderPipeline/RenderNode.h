@@ -2,6 +2,7 @@
 
 namespace Graphics
 {
+    class RenderQueue;
     class Device;
 }
 
@@ -19,6 +20,6 @@ namespace Graphics
         RenderNode(RenderNode&&) noexcept = default;
         RenderNode& operator=(RenderNode&&) noexcept = default;
 
-        virtual void Execute(Device& device) = 0;
+        virtual void Execute(Device& device, RenderQueue& renderQueue) = 0;
     };
 }

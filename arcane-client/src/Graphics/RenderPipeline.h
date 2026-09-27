@@ -8,6 +8,7 @@
 namespace Graphics
 {
     class Device;
+    class RenderQueue;
 
     class RenderPipeline
     {
@@ -16,7 +17,7 @@ namespace Graphics
 
         void Build(const Device& device);
         void Add(std::unique_ptr<RenderNode> pass);
-        void Execute(Device& device) const;
+        void Execute(Device& device, RenderQueue& renderQueue) const;
 
     private:
         std::vector<std::unique_ptr<RenderNode>> _pipeline;

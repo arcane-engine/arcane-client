@@ -8,7 +8,7 @@ namespace Graphics
         : _buffer(buffer)
     {}
 
-    void ClearBufferNode::Execute(Device& device)
+    void ClearBufferNode::Execute(Device& device, RenderQueue& renderQueue)
     {
         _buffer->Clear();
     }

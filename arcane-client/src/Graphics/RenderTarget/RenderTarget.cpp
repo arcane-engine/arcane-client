@@ -21,7 +21,7 @@ namespace Graphics
             _height = static_cast<int>(desc.Height);
         }
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         const auto hResult = _device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
         if (FAILED(hResult))
         {
@@ -48,7 +48,7 @@ namespace Graphics
         textureDesc.Usage = D3D11_USAGE_DEFAULT;
         textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         auto hResult = _device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &texture);
         if (FAILED(hResult))
         {
@@ -63,7 +63,7 @@ namespace Graphics
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D = D3D11_TEX2D_RTV{};
 
-        _device.SetDebugMarker();
+        _device.SetMarker();
         hResult = _device.GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, &_renderTargetView);
         if (FAILED(hResult))
         {
@@ -73,7 +73,7 @@ namespace Graphics
         //
         // Create shader resource view.
         //
-        _device.SetDebugMarker();
+        _device.SetMarker();
         hResult = _device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &_shaderResourceView);
         if (FAILED(hResult))
         {

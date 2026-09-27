@@ -1,10 +1,12 @@
 #include "RenderPipeline.h"
 
+#include "RenderQueue.h"
 #include "Graphics/Device.h"
 #include "Graphics/RenderPipeline/BindRenderTargetNode.h"
 #include "Graphics/RenderPipeline/ClearBufferNode.h"
 #include "Graphics/RenderPipeline/PresentNode.h"
 #include "Graphics/RenderPipeline/RenderNode.h"
+#include "RenderPipeline/GeometryPassNode.h"
 
 namespace Graphics
 {
@@ -19,7 +21,7 @@ namespace Graphics
 
         Add(std::make_unique<BindRenderTargetNode>(sceneRenderTarget, depthStencil));
         Add(std::make_unique<BindRenderTargetNode>(outputRenderTarget));
-
+        Add(std::make_unique<GeometryPassNode>());
         Add(std::make_unique<PresentNode>());
     }
 
@@ -28,11 +30,11 @@ namespace Graphics
         _pipeline.push_back(std::move(pass));
     }
 
-    void RenderPipeline::Execute(Device& device) const
+    void RenderPipeline::Execute(Device& device, RenderQueue& renderQueue) const
     {
         for (const auto& pass : _pipeline)
         {
-            pass->Execute(device);
+            pass->Execute(device, renderQueue);
         }
     }
 }

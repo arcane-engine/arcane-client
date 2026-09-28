@@ -5,6 +5,7 @@
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderPipeline.h"
 #include "Graphics/RenderQueue.h"
+#include "Graphics/Camera/Camera.h"
 #include "Resources/ShaderLibrary.h"
 
 namespace Core
@@ -23,6 +24,7 @@ namespace Core
         Graphics::Device& _device;
         Graphics::RenderPipeline _renderPipeline;
         Graphics::RenderQueue _renderQueue;
+        Graphics::Camera _camera;
         Resources::ShaderLibrary _shaderLibrary;
         Graphics::RenderObject _object;
     };

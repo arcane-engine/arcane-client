@@ -2,19 +2,23 @@
 
 #include "Graphics/RenderObject.h"
 #include "Graphics/Vertex.h"
+#include "Graphics/RenderResource/ConstantBuffer.h"
 #include "Graphics/RenderResource/InputLayout.h"
 #include "Graphics/RenderResource/PixelShader.h"
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
 #include "Graphics/RenderResource/IndexBuffer.h"
 #include "Graphics/RenderResource/VertexBuffer.h"
+#include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
+#include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 
 namespace Core
 {
     Application::Application(const int width, const int height) :
         _window(width, height),
         _device(_window.GetDevice()),
-        _shaderLibrary(_device)
+        _shaderLibrary(_device),
+        _camera(width, height)
     {
         _renderPipeline.Build(_device, _shaderLibrary);
 
@@ -25,14 +29,24 @@ namespace Core
         };
 
         std::vector<Graphics::Vertex> vertexBuffer = {
-            {  0.0f,  1.0f,  0.0f, 0.0f, 0.0f },
-            {  1.0f, -1.0f,  0.0f, 0.0f, 0.0f },
-            { -1.0f, -1.0f,  0.0f, 0.0f, 0.0f }
+            {  0.0f,  1.0f,  5.0f,  0.0f,  0.0f },
+            {  1.0f, -1.0f,  5.0f,  0.0f,  0.0f },
+            { -1.0f, -1.0f,  5.0f,  0.0f,  0.0f }
         };
 
         std::vector<unsigned int> indexBuffer = {
             0, 1, 2
         };
+
+        _camera.Update();
+        auto cameraTransformBuffer = Graphics::CameraTransformBuffer(
+            DirectX::XMMatrixTranspose(_camera.GetViewMatrix()),
+            DirectX::XMMatrixTranspose(_camera.GetProjectionMatrix())
+        );
+        auto objectTransformBuffer = Graphics::ObjectTransformBuffer(
+            DirectX::XMMatrixTranspose(DirectX::XMMatrixIdentity()),
+            DirectX::XMMatrixTranspose(DirectX::XMMatrixIdentity() * _camera.GetViewMatrix() * _camera.GetProjectionMatrix())
+        );
 
         _object.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
         _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Color")));
@@ -40,6 +54,8 @@ namespace Core
         _object.Add(std::make_unique<Graphics::VertexBuffer>(_device, vertexBuffer));
         _object.Add(std::make_unique<Graphics::IndexBuffer>(_device, indexBuffer));
         _object.Add(std::make_unique<Graphics::Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, cameraTransformBuffer, 0));
+        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::ObjectTransformBuffer>>(_device, objectTransformBuffer, 1));
         _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Color")));
     }
 

@@ -150,7 +150,13 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
+    <ClCompile Include="src\Graphics\Camera\CameraRotation.cpp" />
+    <ClCompile Include="src\Math\Math.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\ConstantBuffer.inl" />
+    <ClCompile Include="src\Graphics\RenderResource\Data\CameraTransformBuffer.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\ClearRenderTarget.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\Data\ObjectTransformBuffer.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Sampler.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\CompositeRenderPass.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\IndexBuffer.cpp" />
@@ -188,9 +194,16 @@
     <ClCompile Include="src\Graphics\RenderResource\Topology.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
     <ClCompile Include="src\Graphics\RenderResource\Texture.cpp" />
+    <ClCompile Include="src\Math\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\Camera\Camera.h" />
+    <ClInclude Include="src\Graphics\Camera\CameraRotation.h" />
+    <ClInclude Include="src\Math\Math.h" />
+    <ClInclude Include="src\Graphics\RenderResource\ConstantBuffer.h" />
+    <ClInclude Include="src\Graphics\RenderResource\Data\CameraTransformBuffer.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\ClearDepthStencil.h" />
+    <ClInclude Include="src\Graphics\RenderResource\Data\ObjectTransformBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Sampler.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\CompositeRenderPass.h" />
     <ClInclude Include="src\Graphics\RenderResource\IndexBuffer.h" />
@@ -228,6 +241,7 @@
     <ClInclude Include="src\Graphics\RenderResource\Topology.h" />
     <ClInclude Include="src\Graphics\RenderResource\VertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Texture.h" />
+    <ClInclude Include="src\Math\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">

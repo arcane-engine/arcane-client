@@ -3,11 +3,11 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
-#include "Graphics/RenderTarget/RenderBuffer.h"
-
 namespace Graphics
 {
-    class RenderTarget : public RenderBuffer
+    class Device;
+
+    class RenderTarget
     {
     public:
         RenderTarget(Device& device, ID3D11Texture2D* texture);
@@ -16,9 +16,11 @@ namespace Graphics
         [[nodiscard]] ID3D11RenderTargetView* GetRenderTargetView() const noexcept;
         [[nodiscard]] ID3D11ShaderResourceView* GetShaderResourceView() const noexcept;
 
-        void Clear() override;
+        void Clear(const Device& device) const;
 
     private:
+        int _width;
+        int _height;
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTargetView;
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;
     };

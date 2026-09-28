@@ -30,7 +30,7 @@ namespace Graphics
     inline void VertexBuffer::Bind(const Device& device) const noexcept
     {
         constexpr UINT offset = 0;
-
-        device.GetDeviceContext()->IASetVertexBuffers(0, 1, _buffer.GetAddressOf(), &_stride, &offset);
+        ID3D11Buffer* buffer = _buffer.Get();
+        device.GetDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &_stride, &offset);
     }
 }

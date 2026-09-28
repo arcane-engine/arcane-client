@@ -16,30 +16,31 @@ namespace Core
         _device(_window.GetDevice()),
         _shaderLibrary(_device)
     {
-        _renderPipeline.Build(_device);
+        _renderPipeline.Build(_device, _shaderLibrary);
 
-        const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
+        std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
         {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
-        const std::vector<Graphics::Vertex> vertexBuffer = {
-            {  0.0f,  0.5f,  0.0f },
-            {  0.5f, -0.5f,  0.0f },
-            { -0.5f, -0.5f,  0.0f }
+        std::vector<Graphics::Vertex> vertexBuffer = {
+            {  0.0f,  1.0f,  0.0f, 0.0f, 0.0f },
+            {  1.0f, -1.0f,  0.0f, 0.0f, 0.0f },
+            { -1.0f, -1.0f,  0.0f, 0.0f, 0.0f }
         };
 
-        const std::vector<unsigned int> indexBuffer = {
+        std::vector<unsigned int> indexBuffer = {
             0, 1, 2
         };
 
-        _object.SetIndexCount(static_cast<::UINT>(indexBuffer.size()));
-        _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("")));
-        _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("")));
+        _object.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
+        _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Color")));
+        _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("Color")));
         _object.Add(std::make_unique<Graphics::VertexBuffer>(_device, vertexBuffer));
         _object.Add(std::make_unique<Graphics::IndexBuffer>(_device, indexBuffer));
         _object.Add(std::make_unique<Graphics::Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-        _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("")));
+        _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Color")));
     }
 
     int Application::Run()

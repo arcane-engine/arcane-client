@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Graphics/RenderPipeline/RenderNode.h"
+#include "Graphics/RenderPipeline/RenderPass.h"
 #include "Graphics/RenderTarget/RenderTarget.h"
 
 namespace Graphics
@@ -10,10 +10,10 @@ namespace Graphics
     class DepthStencil;
     class RenderTarget;
 
-    class BindRenderTargetNode final : public RenderNode
+    class BindRenderTarget final : public RenderPass
     {
     public:
-        explicit BindRenderTargetNode(const std::shared_ptr<RenderTarget>& renderTarget, const std::shared_ptr<DepthStencil>& depthStencil = nullptr);
+        explicit BindRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget, const std::shared_ptr<DepthStencil>& depthStencil = nullptr);
 
         void Execute(Device& device, RenderQueue& renderQueue) override;
 

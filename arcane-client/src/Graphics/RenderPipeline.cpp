@@ -2,30 +2,34 @@
 
 #include "RenderQueue.h"
 #include "Graphics/Device.h"
-#include "Graphics/RenderPipeline/BindRenderTargetNode.h"
-#include "Graphics/RenderPipeline/ClearBufferNode.h"
-#include "Graphics/RenderPipeline/PresentNode.h"
-#include "Graphics/RenderPipeline/RenderNode.h"
-#include "RenderPipeline/GeometryPassNode.h"
+#include "Graphics/RenderPipeline/BindRenderTarget.h"
+#include "Graphics/RenderPipeline/ClearRenderTarget.h"
+#include "Graphics/RenderPipeline/Present.h"
+#include "Graphics/RenderPipeline/RenderPass.h"
+#include "RenderPipeline/ClearDepthStencil.h"
+#include "RenderPipeline/CompositeRenderPass.h"
+#include "RenderPipeline/GeometryRenderPass.h"
+#include "Resources/ShaderLibrary.h"
 
 namespace Graphics
 {
-    void RenderPipeline::Build(const Device& device)
+    void RenderPipeline::Build(Device& device, Resources::ShaderLibrary shaderLibrary)
     {
-        const auto sceneRenderTarget = device.GetSceneRenderTarget();
-        const auto outputRenderTarget = device.GetOutputRenderTarget();
+        const auto geometryRenderTarget = device.GetGeometryRenderTarget();
+        const auto compositeRenderTarget = device.GetCompositeRenderTarget();
         const auto depthStencil = device.GetDepthStencil();
 
-        Add(std::make_unique<ClearBufferNode>(sceneRenderTarget));
-        Add(std::make_unique<ClearBufferNode>(outputRenderTarget));
-
-        Add(std::make_unique<BindRenderTargetNode>(sceneRenderTarget, depthStencil));
-        Add(std::make_unique<BindRenderTargetNode>(outputRenderTarget));
-        Add(std::make_unique<GeometryPassNode>());
-        Add(std::make_unique<PresentNode>());
+        Add(std::make_unique<ClearRenderTarget>(geometryRenderTarget));
+        Add(std::make_unique<ClearRenderTarget>(compositeRenderTarget));
+        Add(std::make_unique<ClearDepthStencil>(depthStencil));
+        Add(std::make_unique<BindRenderTarget>(geometryRenderTarget, depthStencil));
+        Add(std::make_unique<GeometryRenderPass>());
+        Add(std::make_unique<BindRenderTarget>(compositeRenderTarget));
+        Add(std::make_unique<CompositeRenderPass>(device, shaderLibrary, geometryRenderTarget));
+        Add(std::make_unique<Present>());
     }
 
-    void RenderPipeline::Add(std::unique_ptr<RenderNode> pass)
+    void RenderPipeline::Add(std::unique_ptr<RenderPass> pass)
     {
         _pipeline.push_back(std::move(pass));
     }

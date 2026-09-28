@@ -1,4 +1,4 @@
-#include "Graphics/RenderPipeline/PresentNode.h"
+#include "Graphics/RenderPipeline/Present.h"
 
 #include <intsafe.h>
 
@@ -7,7 +7,7 @@
 
 namespace Graphics
 {
-    void PresentNode::Execute(Device& device, RenderQueue& renderQueue)
+    void Present::Execute(Device& device, RenderQueue& renderQueue)
     {
         device.SetMarker();
         const auto hResult = device.GetSwapChain()->Present(1, 0);

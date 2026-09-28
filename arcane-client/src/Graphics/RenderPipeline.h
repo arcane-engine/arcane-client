@@ -3,7 +3,12 @@
 #include <memory>
 #include <vector>
 
-#include "RenderPipeline/RenderNode.h"
+#include "RenderPipeline/RenderPass.h"
+
+namespace Resources
+{
+    class ShaderLibrary;
+}
 
 namespace Graphics
 {
@@ -15,11 +20,11 @@ namespace Graphics
     public:
         RenderPipeline() = default;
 
-        void Build(const Device& device);
-        void Add(std::unique_ptr<RenderNode> pass);
+        void Build(Device& device, Resources::ShaderLibrary shaderLibrary);
+        void Add(std::unique_ptr<RenderPass> pass);
         void Execute(Device& device, RenderQueue& renderQueue) const;
 
     private:
-        std::vector<std::unique_ptr<RenderNode>> _pipeline;
+        std::vector<std::unique_ptr<RenderPass>> _pipeline;
     };
 }

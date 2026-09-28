@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Graphics/RenderPipeline/RenderNode.h"
+#include "RenderPass.h"
 
 namespace Graphics
 {
-    class PresentNode final : public RenderNode
+    class GeometryRenderPass : public RenderPass
     {
     public:
         void Execute(Device& device, RenderQueue& renderQueue) override;

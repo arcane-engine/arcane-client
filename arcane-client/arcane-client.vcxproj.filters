@@ -60,22 +60,19 @@
     <ClCompile Include="src\Graphics\GraphicsException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderTarget\RenderBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\RenderPipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderPipeline\RenderNode.cpp">
+    <ClCompile Include="src\Graphics\RenderPipeline\RenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderPipeline\ClearBufferNode.cpp">
+    <ClCompile Include="src\Graphics\RenderPipeline\ClearDepthStencil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderPipeline\PresentNode.cpp">
+    <ClCompile Include="src\Graphics\RenderPipeline\Present.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTargetNode.cpp">
+    <ClCompile Include="src\Graphics\RenderPipeline\BindRenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RenderTarget\DepthStencil.cpp">
@@ -102,7 +99,7 @@
     <ClCompile Include="src\Graphics\RenderQueue\RenderCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\RenderPipeline\GeometryPassNode.cpp">
+    <ClCompile Include="src\Graphics\RenderPipeline\GeometryRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\ShaderLibrary.cpp">
@@ -118,6 +115,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RenderResource\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\CompositeRenderPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderResource\Sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderResource\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderPipeline\ClearRenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,22 +173,19 @@
     <ClInclude Include="src\Graphics\GraphicsException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderTarget\RenderBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\RenderPipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderPipeline\RenderNode.h">
+    <ClInclude Include="src\Graphics\RenderPipeline\RenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderPipeline\ClearBufferNode.h">
+    <ClInclude Include="src\Graphics\RenderPipeline\ClearRenderTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderPipeline\PresentNode.h">
+    <ClInclude Include="src\Graphics\RenderPipeline\Present.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTargetNode.h">
+    <ClInclude Include="src\Graphics\RenderPipeline\BindRenderTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\RenderTarget\DepthStencil.h">
@@ -206,7 +212,7 @@
     <ClInclude Include="src\Graphics\RenderQueue\RenderCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\RenderPipeline\GeometryPassNode.h">
+    <ClInclude Include="src\Graphics\RenderPipeline\GeometryRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Resources\ShaderLibrary.h">
@@ -227,9 +233,26 @@
     <ClInclude Include="src\Graphics\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\CompositeRenderPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderResource\Sampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderResource\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderPipeline\ClearDepthStencil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorVS.hlsl" />
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\OrthographicVS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\OrthographicPS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Resources\Shaders\Includes.hlsli" />
   </ItemGroup>
 </Project>

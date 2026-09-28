@@ -3,15 +3,9 @@
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 
-namespace
-{
-    constexpr float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-}
-
 namespace Graphics
 {
     RenderTarget::RenderTarget(Device& device, ID3D11Texture2D* texture)
-        : RenderBuffer(device, 0, 0)
     {
         if (texture != nullptr)
         {
@@ -21,16 +15,16 @@ namespace Graphics
             _height = static_cast<int>(desc.Height);
         }
 
-        _device.SetMarker();
-        const auto hResult = _device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
+        device.SetMarker();
+        const auto hResult = device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target view for back buffer.", hResult, _device);
+            throw GraphicsException("Failed to create render target view for back buffer.", hResult, device);
         }
     }
 
     RenderTarget::RenderTarget(Device& device, const int width, const int height)
-        : RenderBuffer(device, width, height)
+        : _width(width), _height(height)
     {
         //
         // Create render target texture.
@@ -48,11 +42,11 @@ namespace Graphics
         textureDesc.Usage = D3D11_USAGE_DEFAULT;
         textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-        _device.SetMarker();
-        auto hResult = _device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &texture);
+        device.SetMarker();
+        auto hResult = device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &texture);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target texture.", hResult, _device);
+            throw GraphicsException("Failed to create render target texture.", hResult, device);
         }
 
         //
@@ -63,21 +57,21 @@ namespace Graphics
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D = D3D11_TEX2D_RTV{};
 
-        _device.SetMarker();
-        hResult = _device.GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, &_renderTargetView);
+        device.SetMarker();
+        hResult = device.GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, &_renderTargetView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target view.", hResult, _device);
+            throw GraphicsException("Failed to create render target view.", hResult, device);
         }
 
         //
         // Create shader resource view.
         //
-        _device.SetMarker();
-        hResult = _device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &_shaderResourceView);
+        device.SetMarker();
+        hResult = device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &_shaderResourceView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create shader resource view.", hResult, _device);
+            throw GraphicsException("Failed to create shader resource view.", hResult, device);
         }
     }
 
@@ -91,8 +85,9 @@ namespace Graphics
         return _shaderResourceView.Get();
     }
 
-    void RenderTarget::Clear()
+    void RenderTarget::Clear(const Device& device) const
     {
-        _device.GetDeviceContext()->ClearRenderTargetView(_renderTargetView.Get(), ClearColor);
+        constexpr float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        device.GetDeviceContext()->ClearRenderTargetView(_renderTargetView.Get(), color);
     }
 }

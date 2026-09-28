@@ -8,5 +8,7 @@ namespace Graphics
         float X;
         float Y;
         float Z;
+        float U;
+        float V;
     };
 }

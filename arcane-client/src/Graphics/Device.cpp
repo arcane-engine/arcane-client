@@ -29,14 +29,14 @@ namespace Graphics
         return _swapChain.Get();
     }
 
-    std::shared_ptr<RenderTarget> Device::GetSceneRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetGeometryRenderTarget() const noexcept
     {
-        return _sceneRenderTarget;
+        return _geometryRenderTarget;
     }
 
-    std::shared_ptr<RenderTarget> Device::GetOutputRenderTarget() const noexcept
-    {
-        return _outputRenderTarget;
+    std::shared_ptr<RenderTarget> Device::GetCompositeRenderTarget() const noexcept
+    { 
+        return _compositeRenderTarget;
     }
 
     std::shared_ptr<DepthStencil> Device::GetDepthStencil() const noexcept
@@ -128,7 +128,7 @@ namespace Graphics
 
     void Device::CreateRenderTargets(int width, int height)
     {
-        _sceneRenderTarget = std::make_shared<RenderTarget>(*this, width, height);
+        _geometryRenderTarget = std::make_shared<RenderTarget>(*this, width, height);
         _depthStencil = std::make_shared<DepthStencil>(*this, width, height);
 
         //
@@ -142,7 +142,7 @@ namespace Graphics
             throw GraphicsException("Failed to create back buffer texture.", hResult, *this);
         }
 
-        _outputRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());
+        _compositeRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());
     }
 
     void Device::SetViewport(const int width, const int height) const

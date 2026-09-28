@@ -36,8 +36,8 @@ namespace Graphics
         [[nodiscard]] ID3D11Device* GetDevice() const noexcept;
         [[nodiscard]] ID3D11DeviceContext* GetDeviceContext() const noexcept;
         [[nodiscard]] IDXGISwapChain1* GetSwapChain() const noexcept;
-        [[nodiscard]] std::shared_ptr<RenderTarget> GetSceneRenderTarget() const noexcept;
-        [[nodiscard]] std::shared_ptr<RenderTarget> GetOutputRenderTarget() const noexcept;
+        [[nodiscard]] std::shared_ptr<RenderTarget> GetGeometryRenderTarget() const noexcept;
+        [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<DepthStencil> GetDepthStencil() const noexcept;
 
     private:
@@ -52,8 +52,8 @@ namespace Graphics
         Microsoft::WRL::ComPtr<ID3D11Device> _device;
         Microsoft::WRL::ComPtr<IDXGISwapChain1> _swapChain;
         Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
-        std::shared_ptr<RenderTarget> _sceneRenderTarget;
-        std::shared_ptr<RenderTarget> _outputRenderTarget;
+        std::shared_ptr<RenderTarget> _geometryRenderTarget;
+        std::shared_ptr<RenderTarget> _compositeRenderTarget;
         std::shared_ptr<DepthStencil> _depthStencil;
         DXGIDebugQueue _debugQueue;
     };

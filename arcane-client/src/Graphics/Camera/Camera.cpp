@@ -43,9 +43,9 @@ namespace Graphics
     {
         _direction = DirectX::XMVector3Normalize(
             DirectX::XMVectorSet(
-                cosf(-_pitch.GetValue()) * sinf(_yaw.GetValue()),
-                sinf(-_pitch.GetValue()),
-                cosf(-_pitch.GetValue()) * cosf(_yaw.GetValue()),
+                Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue()),
+                Math::Sin(_pitch.GetValue()),
+                Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue()),
                 0.0f
             )
         );

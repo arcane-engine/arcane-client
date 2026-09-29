@@ -13,7 +13,8 @@ namespace Graphics
     public:
         ConstantBuffer(Device& device, const T& source, UINT slot, bool vertexShader = true, bool pixelShader = false);
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
+        void Update(const Device& device, const T& data) const noexcept;
 
     private:
         bool _vertexShader;

@@ -1,5 +1,6 @@
 #include "Core/Application.h"
 
+#include "Graphics/RenderContext.h"
 #include "Graphics/RenderObject.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/RenderResource/ConstantBuffer.h"
@@ -48,13 +49,14 @@ namespace Core
             DirectX::XMMatrixTranspose(DirectX::XMMatrixIdentity() * _camera.GetViewMatrix() * _camera.GetProjectionMatrix())
         );
 
+        _cameraObject.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, cameraTransformBuffer, 0));
+
         _object.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
         _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Color")));
         _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("Color")));
         _object.Add(std::make_unique<Graphics::VertexBuffer>(_device, vertexBuffer));
         _object.Add(std::make_unique<Graphics::IndexBuffer>(_device, indexBuffer));
         _object.Add(std::make_unique<Graphics::Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, cameraTransformBuffer, 0));
         _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::ObjectTransformBuffer>>(_device, objectTransformBuffer, 1));
         _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Color")));
     }
@@ -76,8 +78,23 @@ namespace Core
     {
         _renderQueue.Clear();
 
-        _renderQueue.Add(_object, DirectX::XMMatrixIdentity());
+        while (const auto event = _window.GetMouse().ReadRawEvent())
+        {
+            const auto x = _window.GetMouse().GetSmoothDelta(event->GetX());
+            const auto y = _window.GetMouse().GetSmoothDelta(event->GetY());
+            _camera.Rotate(y, -x, 0.0f);
+        }
 
-        _renderPipeline.Execute(_device, _renderQueue);
+        _camera.Update();
+
+        auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+
+        _renderQueue.Add(_cameraObject);
+        _renderQueue.Add(_object, DirectX::XMMatrixIdentity());
+        
+        const auto world = DirectX::XMMatrixTranslation(0.0f, 2.0f, 0.0f);
+        _renderQueue.Add(_object, world);
+
+        _renderPipeline.Execute(_device, _renderQueue, context);
     }
 }

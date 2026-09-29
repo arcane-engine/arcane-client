@@ -24,7 +24,7 @@ namespace Graphics
         }
     }
 
-    void IndexBuffer::Bind(const Device& device) const noexcept
+    void IndexBuffer::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         device.GetDeviceContext()->IASetIndexBuffer(_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
     }

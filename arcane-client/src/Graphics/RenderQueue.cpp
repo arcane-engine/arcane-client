@@ -3,6 +3,8 @@
 
 #include <DirectXMath.h>
 
+#include "RenderContext.h"
+
 namespace Graphics
 {
     void RenderQueue::Clear() noexcept
@@ -10,21 +12,27 @@ namespace Graphics
         _commands.clear();
     }
 
-    void RenderQueue::Add(const RenderCommand& command)
+    void RenderQueue::Add(const RenderObject& object)
     {
-        _commands.push_back(command);
+        _commands.push_back(RenderCommand(object));
     }
 
-    void RenderQueue::Add(const RenderObject& object, const DirectX::XMMATRIX& transform)
+    void RenderQueue::Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix)
     {
-        _commands.push_back(RenderCommand(object, transform));
+        _commands.push_back(RenderCommand(object, worldMatrix));
     }
 
-    void RenderQueue::Execute(const Device& device) const noexcept
+    void RenderQueue::Execute(const Device& device, RenderContext& renderContext) const noexcept
     {
-        for (const auto& command : _commands)
+        for (auto& command : _commands)
         {
-            command.GetRenderObject().Bind(device);
+            if (const auto worldMatrix = command.GetWorldMatrix())
+            {
+                renderContext.WorldMatrix = *worldMatrix;
+                renderContext.WorldViewProjectionMatrix = *worldMatrix * renderContext.ViewProjectionMatrix;
+            }
+
+            command.GetRenderObject().Bind(device, renderContext);
             command.GetRenderObject().Draw(device);
         }
     }

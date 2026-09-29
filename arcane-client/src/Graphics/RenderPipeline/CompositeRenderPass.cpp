@@ -48,9 +48,9 @@ namespace Graphics
         _renderObject.Add(std::make_unique<InputLayout>(device, inputLayout, shaderLibrary.GetVertexShaderBlob("Orthographic")));
     }
 
-    void CompositeRenderPass::Execute(Device& device, RenderQueue& renderQueue)
+    void CompositeRenderPass::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
     {
-        _renderObject.Bind(device);
+        _renderObject.Bind(device, renderContext);
         _renderObject.Draw(device);
     }
 }

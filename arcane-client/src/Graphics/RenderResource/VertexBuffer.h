@@ -11,9 +11,10 @@ namespace Graphics
     class VertexBuffer final : public RenderResource
     {
     public:
-        template<class T> VertexBuffer(Device& device, const std::vector<T>& source);
+        template<class T>
+        VertexBuffer(Device& device, const std::vector<T>& source);
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
 
     private:
         UINT _stride;

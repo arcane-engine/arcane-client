@@ -11,7 +11,7 @@ namespace Graphics
     public:
         explicit Topology(D3D11_PRIMITIVE_TOPOLOGY topology) noexcept;
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
 
     private:
         D3D11_PRIMITIVE_TOPOLOGY _topology;

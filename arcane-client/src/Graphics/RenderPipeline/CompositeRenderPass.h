@@ -17,7 +17,7 @@ namespace Graphics
     public:
         explicit CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget);
 
-        void Execute(Device& device, RenderQueue& renderQueue) override;
+        void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
 
     private:
         RenderObject _renderObject;

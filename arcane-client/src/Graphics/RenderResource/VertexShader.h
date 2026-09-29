@@ -14,7 +14,7 @@ namespace Graphics
     public:
         explicit VertexShader(const Microsoft::WRL::ComPtr<ID3D11VertexShader>& shader) noexcept;
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11VertexShader> _shader;

@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit ClearRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget);
 
-        void Execute(Device& device, RenderQueue& renderQueue) override;
+        void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
 
     private:
         std::shared_ptr<RenderTarget> _renderTarget;

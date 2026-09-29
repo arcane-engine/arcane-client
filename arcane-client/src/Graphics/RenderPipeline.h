@@ -12,6 +12,7 @@ namespace Resources
 
 namespace Graphics
 {
+    class RenderContext;
     class Device;
     class RenderQueue;
 
@@ -22,7 +23,7 @@ namespace Graphics
 
         void Build(Device& device, Resources::ShaderLibrary shaderLibrary);
         void Add(std::unique_ptr<RenderPass> pass);
-        void Execute(Device& device, RenderQueue& renderQueue) const;
+        void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) const;
 
     private:
         std::vector<std::unique_ptr<RenderPass>> _pipeline;

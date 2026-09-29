@@ -2,8 +2,13 @@
 
 namespace Graphics
 {
-    RenderCommand::RenderCommand(const RenderObject& renderObject, const DirectX::XMMATRIX& transform)
-        : _renderObject(renderObject), _transform(transform)
+    RenderCommand::RenderCommand(const RenderObject& renderObject)
+        : _renderObject(renderObject)
+    {
+    }
+
+    RenderCommand::RenderCommand(const RenderObject& renderObject, const DirectX::XMMATRIX& worldMatrix)
+        : _renderObject(renderObject), _worldMatrix(worldMatrix)
     {
     }
 
@@ -12,8 +17,8 @@ namespace Graphics
         return _renderObject;
     }
 
-    DirectX::XMMATRIX RenderCommand::GetTransform() const noexcept
+    std::optional<DirectX::XMMATRIX> RenderCommand::GetWorldMatrix() const noexcept
     {
-        return _transform;
+        return _worldMatrix;
     }
 }

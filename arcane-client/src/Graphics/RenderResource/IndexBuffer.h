@@ -14,7 +14,7 @@ namespace Graphics
     public:
         IndexBuffer(Device& device, const std::vector<unsigned int>& source);
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
 
     private:
         UINT _count;

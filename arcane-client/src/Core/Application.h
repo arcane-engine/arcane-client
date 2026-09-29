@@ -26,6 +26,7 @@ namespace Core
         Graphics::RenderQueue _renderQueue;
         Graphics::Camera _camera;
         Resources::ShaderLibrary _shaderLibrary;
+        Graphics::RenderObject _cameraObject;
         Graphics::RenderObject _object;
     };
 }

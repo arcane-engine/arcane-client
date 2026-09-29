@@ -8,7 +8,7 @@ namespace Graphics
         : _shader(shader)
     {}
 
-    void VertexShader::Bind(const Device& device) const noexcept
+    void VertexShader::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         device.GetDeviceContext()->VSSetShader(_shader.Get(), nullptr, 0);
     }

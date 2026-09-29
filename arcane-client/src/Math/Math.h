@@ -9,4 +9,6 @@
 namespace Math
 {
     [[nodiscard]] float Clamp(float value, float min, float max) noexcept;
+    [[nodiscard]] float Sin(float value) noexcept;
+    [[nodiscard]] float Cos(float value) noexcept;
 }

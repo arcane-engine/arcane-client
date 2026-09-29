@@ -8,4 +8,14 @@ namespace Math
     {
         return std::clamp(value, min, max);
     }
+
+    float Sin(const float value) noexcept
+    {
+        return sinf(value);
+    }
+
+    float Cos(const float value) noexcept
+    {
+        return cosf(value);
+    }
 }

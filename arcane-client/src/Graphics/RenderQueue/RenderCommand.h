@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <optional>
 
 namespace Graphics
 {
@@ -9,13 +10,14 @@ namespace Graphics
     class RenderCommand
     {
     public:
-        RenderCommand(const RenderObject& renderObject, const DirectX::XMMATRIX& transform);
+        explicit RenderCommand(const RenderObject& renderObject);
+        RenderCommand(const RenderObject& renderObject, const DirectX::XMMATRIX& worldMatrix);
 
         [[nodiscard]] const RenderObject& GetRenderObject() const noexcept;
-        [[nodiscard]] DirectX::XMMATRIX GetTransform() const noexcept;
+        [[nodiscard]] std::optional<DirectX::XMMATRIX> GetWorldMatrix() const noexcept;
 
     private:
         const RenderObject& _renderObject;
-        DirectX::XMMATRIX _transform;
+        std::optional<DirectX::XMMATRIX> _worldMatrix;
     };
 }

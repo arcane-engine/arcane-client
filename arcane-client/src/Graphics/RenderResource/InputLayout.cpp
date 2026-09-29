@@ -15,7 +15,7 @@ namespace Graphics
         }
     }
 
-    void InputLayout::Bind(const Device& device) const noexcept
+    void InputLayout::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         device.GetDeviceContext()->IASetInputLayout(_layout.Get());
     }

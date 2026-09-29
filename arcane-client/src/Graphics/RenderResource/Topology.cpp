@@ -8,7 +8,7 @@ namespace Graphics
         : _topology(topology)
     {}
 
-    void Topology::Bind(const Device& device) const noexcept
+    void Topology::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         device.GetDeviceContext()->IASetPrimitiveTopology(_topology);
     }

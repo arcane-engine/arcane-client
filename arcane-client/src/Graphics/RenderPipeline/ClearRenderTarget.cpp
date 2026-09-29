@@ -8,7 +8,7 @@ namespace Graphics
         : _renderTarget(renderTarget)
     {}
 
-    void ClearRenderTarget::Execute(Device& device, RenderQueue& renderQueue)
+    void ClearRenderTarget::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
     {
         _renderTarget->Clear(device);
     }

@@ -2,13 +2,15 @@
 
 #include <d3d11.h>
 
+#include "Data/CameraTransformBuffer.h"
+#include "Data/ObjectTransformBuffer.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
+#include "Graphics/RenderContext.h"
 #include "Graphics/RenderResource/ConstantBuffer.h"
 
 namespace Graphics
 {
-
     template <typename T>
     ConstantBuffer<T>::ConstantBuffer(Device& device, const T& source, const UINT slot, const bool vertexShader, const bool pixelShader)
         : _vertexShader(vertexShader), _pixelShader(pixelShader), _slot(slot)
@@ -31,8 +33,23 @@ namespace Graphics
     }
 
     template <typename T>
-    void ConstantBuffer<T>::Bind(const Device& device) const noexcept
+    void ConstantBuffer<T>::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
+        if constexpr (std::is_same_v<T, ObjectTransformBuffer>)
+        {
+            Update(device, ObjectTransformBuffer{
+                DirectX::XMMatrixTranspose(renderContext.WorldMatrix),
+                DirectX::XMMatrixTranspose(renderContext.WorldViewProjectionMatrix)
+            });
+        }
+        if constexpr (std::is_same_v<T, CameraTransformBuffer>)
+        {
+            Update(device, CameraTransformBuffer{
+                DirectX::XMMatrixTranspose(renderContext.ViewMatrix),
+                DirectX::XMMatrixTranspose(renderContext.ProjectionMatrix)
+            });
+        }
+
         if (_vertexShader)
         {
             device.GetDeviceContext()->VSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
@@ -40,6 +57,18 @@ namespace Graphics
         if (_pixelShader)
         {
             device.GetDeviceContext()->PSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
+        }
+    }
+
+    template <typename T>
+    void ConstantBuffer<T>::Update(const Device& device, const T& data) const noexcept
+    {
+        D3D11_MAPPED_SUBRESOURCE resource{};
+        const auto hResult = device.GetDeviceContext()->Map(_buffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &resource);
+        if (SUCCEEDED(hResult))
+        {
+            std::memcpy(resource.pData, &data, sizeof(T));
+            device.GetDeviceContext()->Unmap(_buffer.Get(), 0u);
         }
     }
 }

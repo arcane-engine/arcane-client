@@ -27,7 +27,7 @@ namespace Graphics
         }
     }
 
-    inline void VertexBuffer::Bind(const Device& device) const noexcept
+    inline void VertexBuffer::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         constexpr UINT offset = 0;
         ID3D11Buffer* buffer = _buffer.Get();

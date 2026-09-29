@@ -8,7 +8,7 @@ namespace Graphics
         : _shader(shader)
     {}
 
-    void PixelShader::Bind(const Device& device) const noexcept
+    void PixelShader::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         device.GetDeviceContext()->PSSetShader(_shader.Get(), nullptr, 0);
     }

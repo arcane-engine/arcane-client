@@ -2,6 +2,7 @@
 
 namespace Graphics
 {
+    class RenderContext;
     class RenderQueue;
     class Device;
 
@@ -17,6 +18,6 @@ namespace Graphics
         RenderPass(RenderPass&&) noexcept = default;
         RenderPass& operator=(RenderPass&&) noexcept = default;
 
-        virtual void Execute(Device& device, RenderQueue& renderQueue) = 0;
+        virtual void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) = 0;
     };
 }

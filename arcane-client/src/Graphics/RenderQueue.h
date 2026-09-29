@@ -7,6 +7,7 @@
 
 namespace Graphics
 {
+    class RenderContext;
     class Device;
     class RenderObject;
 
@@ -15,10 +16,10 @@ namespace Graphics
     public:
         void Clear() noexcept;
 
-        void Add(const RenderCommand& command);
-        void Add(const RenderObject& object, const DirectX::XMMATRIX& transform);
+        void Add(const RenderObject& object);
+        void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix);
 
-        void Execute(const Device& device) const noexcept;
+        void Execute(const Device& device, RenderContext& renderContext) const noexcept;
 
     private:
         std::vector<RenderCommand> _commands;

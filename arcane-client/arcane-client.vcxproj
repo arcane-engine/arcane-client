@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderContext.cpp" />
     <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraRotation.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="src\Math\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderContext.h" />
     <ClInclude Include="src\Graphics\Camera\Camera.h" />
     <ClInclude Include="src\Graphics\Camera\CameraRotation.h" />
     <ClInclude Include="src\Math\Math.h" />

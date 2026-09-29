@@ -26,7 +26,7 @@ namespace Graphics
         }
     }
 
-    void Sampler::Bind(const Device& device) const noexcept
+    void Sampler::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         ID3D11SamplerState* sampler = _sampler.Get();
         device.GetDeviceContext()->PSSetSamplers(0, 1, &sampler);

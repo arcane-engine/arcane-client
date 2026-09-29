@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit ClearDepthStencil(const std::shared_ptr<DepthStencil>& depthStencil) noexcept;
 
-        void Execute(Device& device, RenderQueue& renderQueue) override;
+        void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
 
     private:
         std::shared_ptr<DepthStencil> _depthStencil;

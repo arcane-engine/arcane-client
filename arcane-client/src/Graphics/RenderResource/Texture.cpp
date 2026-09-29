@@ -8,7 +8,7 @@ namespace Graphics
         : _slot(slot), _shaderResourceView(shaderResourceView)
     {}
 
-    void Texture::Bind(const Device& device) const noexcept
+    void Texture::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
         ID3D11ShaderResourceView* srv = _shaderResourceView.Get();
         device.GetDeviceContext()->PSSetShaderResources(_slot, 1, &srv);

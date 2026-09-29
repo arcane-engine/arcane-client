@@ -8,7 +8,7 @@ namespace Graphics
         : _depthStencil(depthStencil)
     {}
 
-    void ClearDepthStencil::Execute(Device& device, RenderQueue& renderQueue)
+    void ClearDepthStencil::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
     {
         _depthStencil->Clear(device);
     }

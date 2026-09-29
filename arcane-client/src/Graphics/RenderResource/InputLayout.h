@@ -15,7 +15,7 @@ namespace Graphics
     public:
         InputLayout(Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& input, const Microsoft::WRL::ComPtr<ID3DBlob>& blob);
 
-        void Bind(const Device& device) const noexcept override;
+        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11InputLayout> _layout;

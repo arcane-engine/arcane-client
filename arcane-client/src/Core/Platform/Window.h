@@ -26,7 +26,7 @@ namespace Core::Platform
 
         [[nodiscard]] Input::Keyboard& GetKeyboard() noexcept;
         [[nodiscard]] Input::Mouse& GetMouse() noexcept;
-        [[nodiscard]] Graphics::Device& GetDevice() const;
+        [[nodiscard]] HWND GetWindowHandle() const noexcept;
 
         void SetTitle(const std::wstring& title) const noexcept;
 
@@ -56,6 +56,5 @@ namespace Core::Platform
         Input::Keyboard _keyboard;
         Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
-        std::unique_ptr<Graphics::Device> _device;
     };
 }

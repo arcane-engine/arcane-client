@@ -5,7 +5,7 @@
 #include <memory>
 #include <wrl/client.h>
 
-#include "../../DeviceContextCache.h"
+#include "Graphics/DeviceContextCache.h"
 #include "Graphics/DXGIDebugQueue.h"
 
 #pragma comment(lib, "d3d11.lib")
@@ -32,8 +32,6 @@ namespace Graphics
         Device& operator=(const Device&) = delete;
         Device& operator=(Device&& device) = delete;
 
-        void SetMarker();
-
         [[nodiscard]] ID3D11Device* GetDevice() const noexcept;
         [[nodiscard]] ID3D11DeviceContext* GetDeviceContext() const noexcept;
         [[nodiscard]] IDXGISwapChain1* GetSwapChain() const noexcept;
@@ -41,6 +39,8 @@ namespace Graphics
         [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<DepthStencil> GetDepthStencil() const noexcept;
         [[nodiscard]] DeviceContextCache& GetContextCache() noexcept;
+
+        void SetMarker();
 
     private:
         void CreateDevice();
@@ -57,8 +57,7 @@ namespace Graphics
         std::shared_ptr<RenderTarget> _geometryRenderTarget;
         std::shared_ptr<RenderTarget> _compositeRenderTarget;
         std::shared_ptr<DepthStencil> _depthStencil;
-        DXGIDebugQueue _debugQueue;
-
         DeviceContextCache _contextCache;
+        DXGIDebugQueue _debugQueue;
     };
 }

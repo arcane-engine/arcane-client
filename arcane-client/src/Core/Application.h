@@ -22,7 +22,7 @@ namespace Core
         void Update();
 
         Platform::Window _window;
-        Graphics::Device& _device;
+        Graphics::Device _device;
         Graphics::RenderPipeline _renderPipeline;
         Graphics::RenderQueue _renderQueue;
         Graphics::Camera _camera;

@@ -31,8 +31,6 @@ namespace Core::Platform
             throw WindowException("Create window failed.", GetLastError());
         }
 
-        _device = std::make_unique<Graphics::Device>(_hWnd, width, height);
-
         RegisterRawMouseInputDevice();
 
         ShowWindow(_hWnd, SW_SHOWDEFAULT);
@@ -218,13 +216,9 @@ namespace Core::Platform
         return _mouse;
     }
 
-    Graphics::Device& Window::GetDevice() const
+    HWND Window::GetWindowHandle() const noexcept
     {
-        if (!_device)
-        {
-            throw Exception("Device has not been created.");
-        }
-        return *_device;
+        return _hWnd;
     }
 
     RECT Window::GetWindowRect(const int width, const int height)

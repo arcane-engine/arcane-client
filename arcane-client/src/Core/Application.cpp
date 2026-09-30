@@ -19,10 +19,10 @@ namespace Core
 {
     Application::Application(const int width, const int height) :
         _window(width, height),
-        _device(_window.GetDevice()),
-        _camera(width, height),
+        _device(_window.GetWindowHandle(), width, height),
         _shaderLibrary(_device),
-        _textureLibrary(_device)
+        _textureLibrary(_device),
+        _camera(width, height)
     {
         _renderPipeline.Build(_device, _shaderLibrary);
 

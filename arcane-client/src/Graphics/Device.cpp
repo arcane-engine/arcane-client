@@ -44,6 +44,11 @@ namespace Graphics
         return _depthStencil;
     }
 
+    DeviceContextCache& Device::GetContextCache() noexcept
+    {
+        return _contextCache;
+    }
+
     void Device::CreateDevice()
     {
 #ifdef NDEBUG

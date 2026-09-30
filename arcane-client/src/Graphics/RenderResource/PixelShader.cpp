@@ -4,12 +4,19 @@
 
 namespace Graphics
 {
-    PixelShader::PixelShader(const Microsoft::WRL::ComPtr<ID3D11PixelShader>& shader) noexcept
-        : _shader(shader)
+    PixelShader::PixelShader(const Microsoft::WRL::ComPtr<ID3D11PixelShader>& pixelShader) noexcept
+        : _pixelShader(pixelShader)
     {}
 
-    void PixelShader::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void PixelShader::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
-        device.GetDeviceContext()->PSSetShader(_shader.Get(), nullptr, 0);
+        auto& active = device.GetContextCache().PixelShader;
+        auto* target = _pixelShader.Get();
+
+        if (target != active)
+        {
+            device.GetDeviceContext()->PSSetShader(target, nullptr, 0);
+            active = target;
+        }
     }
 }

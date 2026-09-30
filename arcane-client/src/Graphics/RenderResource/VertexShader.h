@@ -12,11 +12,11 @@ namespace Graphics
     class VertexShader final : public RenderResource
     {
     public:
-        explicit VertexShader(const Microsoft::WRL::ComPtr<ID3D11VertexShader>& shader) noexcept;
+        explicit VertexShader(const Microsoft::WRL::ComPtr<ID3D11VertexShader>& vertexShader) noexcept;
 
-        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
+        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
-        Microsoft::WRL::ComPtr<ID3D11VertexShader> _shader;
+        Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
     };
 }

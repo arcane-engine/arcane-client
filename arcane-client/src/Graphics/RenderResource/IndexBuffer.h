@@ -12,12 +12,12 @@ namespace Graphics
     class IndexBuffer final : public RenderResource
     {
     public:
-        IndexBuffer(Device& device, const std::vector<unsigned int>& source);
+        IndexBuffer(Device& device, const std::vector<unsigned int>& indexBuffer);
 
-        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
+        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
         UINT _count;
-        Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
+        Microsoft::WRL::ComPtr<ID3D11Buffer> _indexBuffer;
     };
 }

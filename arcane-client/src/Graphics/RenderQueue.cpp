@@ -22,7 +22,7 @@ namespace Graphics
         _commands.push_back(RenderCommand(object, worldMatrix));
     }
 
-    void RenderQueue::Execute(const Device& device, RenderContext& renderContext) const noexcept
+    void RenderQueue::Execute(Device& device, RenderContext& renderContext) const noexcept
     {
         for (auto& command : _commands)
         {

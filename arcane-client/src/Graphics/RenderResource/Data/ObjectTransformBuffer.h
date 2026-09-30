@@ -11,6 +11,7 @@ namespace Graphics
         DirectX::XMMATRIX WorldMatrix;
         DirectX::XMMATRIX WorldViewProjectionMatrix;
         
+        ObjectTransformBuffer() = default;
         ObjectTransformBuffer(const DirectX::XMMATRIX& worldMatrix, const DirectX::XMMATRIX& worldViewProjectionMatrix) noexcept;
 
         static ObjectTransformBuffer FromRenderContext(const RenderContext& renderContext) noexcept;

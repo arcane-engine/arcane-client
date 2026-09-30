@@ -12,13 +12,13 @@ namespace Graphics
     {
     public:
         template<class T>
-        VertexBuffer(Device& device, const std::vector<T>& source);
+        VertexBuffer(Device& device, const std::vector<T>& vertexBuffer);
 
-        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
+        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
         UINT _stride;
-        Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
+        Microsoft::WRL::ComPtr<ID3D11Buffer> _vertexBuffer;
     };
 }
 

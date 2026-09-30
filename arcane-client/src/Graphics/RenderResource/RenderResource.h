@@ -10,6 +10,6 @@ namespace Graphics
     public:
         virtual ~RenderResource() = default;
 
-        virtual void Bind(const Device& device, const RenderContext& renderContext) const noexcept = 0;
+        virtual void Bind(Device& device, const RenderContext& renderContext) noexcept = 0;
     };
 }

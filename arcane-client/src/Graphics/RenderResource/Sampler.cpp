@@ -26,9 +26,15 @@ namespace Graphics
         }
     }
 
-    void Sampler::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void Sampler::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
-        ID3D11SamplerState* sampler = _sampler.Get();
-        device.GetDeviceContext()->PSSetSamplers(0, 1, &sampler);
+        auto& active = device.GetContextCache().Samplers[0];
+        auto* target = _sampler.Get();
+
+        if (target != active)
+        {
+            device.GetDeviceContext()->PSSetSamplers(0, 1, &target);
+            active = target;
+        }
     }
 }

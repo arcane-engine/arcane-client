@@ -19,7 +19,7 @@ namespace Graphics
         void Add(const RenderObject& object);
         void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix);
 
-        void Execute(const Device& device, RenderContext& renderContext) const noexcept;
+        void Execute(Device& device, RenderContext& renderContext) const noexcept;
 
     private:
         std::vector<RenderCommand> _commands;

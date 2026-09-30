@@ -5,18 +5,25 @@
 
 namespace Graphics
 {
-    InputLayout::InputLayout(Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& input, const Microsoft::WRL::ComPtr<ID3DBlob>& blob)
+    InputLayout::InputLayout(Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayout, const Microsoft::WRL::ComPtr<ID3DBlob>& blob)
     {
         device.SetMarker();
-        const auto hResult = device.GetDevice()->CreateInputLayout(input.data(), static_cast<UINT>(input.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &_layout);
+        const auto hResult = device.GetDevice()->CreateInputLayout(inputLayout.data(), static_cast<UINT>(inputLayout.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &_inputLayout);
         if (FAILED(hResult))
         {
             throw GraphicsException("Unable to create input layout.", hResult, device);
         }
     }
 
-    void InputLayout::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void InputLayout::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
-        device.GetDeviceContext()->IASetInputLayout(_layout.Get());
+        auto& active = device.GetContextCache().InputLayout;
+        auto* target = _inputLayout.Get();
+
+        if (target != active)
+        {
+            device.GetDeviceContext()->IASetInputLayout(target);
+            active = target;
+        }
     }
 }

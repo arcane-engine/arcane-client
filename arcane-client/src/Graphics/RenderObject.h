@@ -17,7 +17,7 @@ namespace Graphics
 
         void Add(const std::shared_ptr<RenderResource>& resource);
 
-        void Bind(const Device& device, const RenderContext& renderContext) const noexcept;
+        void Bind(Device& device, const RenderContext& renderContext) const noexcept;
 
         void Draw(const Device& device) const noexcept;
 

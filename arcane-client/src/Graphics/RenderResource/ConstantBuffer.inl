@@ -6,34 +6,30 @@
 #include "Data/ObjectTransformBuffer.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
-#include "Graphics/RenderContext.h"
 #include "Graphics/RenderResource/ConstantBuffer.h"
 
 namespace Graphics
 {
     template <typename T>
-    ConstantBuffer<T>::ConstantBuffer(Device& device, const T& source, const UINT slot, const bool vertexShader, const bool pixelShader)
+    ConstantBuffer<T>::ConstantBuffer(Device& device, const UINT slot, const bool vertexShader, const bool pixelShader)
         : _vertexShader(vertexShader), _pixelShader(pixelShader), _slot(slot)
     {
         D3D11_BUFFER_DESC desc = {};
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         desc.Usage = D3D11_USAGE_DYNAMIC;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        desc.ByteWidth = sizeof(source);
-
-        D3D11_SUBRESOURCE_DATA data = {};
-        data.pSysMem = &source;
+        desc.ByteWidth = static_cast<UINT>(sizeof(T));
 
         device.SetMarker();
-        const auto hResult = device.GetDevice()->CreateBuffer(&desc, &data, &_buffer);
+        const auto hResult = device.GetDevice()->CreateBuffer(&desc, nullptr, &_buffer);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Unable to create constant buffer.", hResult, device);
+            throw GraphicsException("Unable to create empty constant buffer.", hResult, device);
         }
     }
 
     template <typename T>
-    void ConstantBuffer<T>::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void ConstantBuffer<T>::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
 
         if constexpr (std::is_same_v<T, CameraTransformBuffer>)
@@ -45,13 +41,25 @@ namespace Graphics
             Update(device, ObjectTransformBuffer::FromRenderContext(renderContext));
         }
 
+        auto* target = _buffer.Get();
+
         if (_vertexShader)
         {
-            device.GetDeviceContext()->VSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
+            auto& active = device.GetContextCache().VertexShaderConstantBuffers[_slot];
+            if (target != active)
+            {
+                device.GetDeviceContext()->VSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
+                active = target;
+            }
         }
         if (_pixelShader)
         {
-            device.GetDeviceContext()->PSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
+            auto& active = device.GetContextCache().PixelShaderConstantBuffers[_slot];
+            if (target != active)
+            {
+                device.GetDeviceContext()->PSSetConstantBuffers(_slot, 1u, _buffer.GetAddressOf());
+                active = target;
+            }
         }
     }
 

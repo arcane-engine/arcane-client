@@ -4,12 +4,16 @@
 
 namespace Graphics
 {
-    VertexShader::VertexShader(const Microsoft::WRL::ComPtr<ID3D11VertexShader>& shader) noexcept
-        : _shader(shader)
+    VertexShader::VertexShader(const Microsoft::WRL::ComPtr<ID3D11VertexShader>& vertexShader) noexcept
+        : _vertexShader(vertexShader)
     {}
 
-    void VertexShader::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void VertexShader::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
-        device.GetDeviceContext()->VSSetShader(_shader.Get(), nullptr, 0);
+        if (device.GetContextCache().VertexShader != _vertexShader.Get())
+        {
+            device.GetDeviceContext()->VSSetShader(_vertexShader.Get(), nullptr, 0);
+            device.GetContextCache().VertexShader = _vertexShader.Get();
+        }
     }
 }

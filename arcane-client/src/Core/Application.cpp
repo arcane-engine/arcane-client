@@ -9,6 +9,8 @@
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
 #include "Graphics/RenderResource/IndexBuffer.h"
+#include "Graphics/RenderResource/Sampler.h"
+#include "Graphics/RenderResource/Texture.h"
 #include "Graphics/RenderResource/VertexBuffer.h"
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
@@ -18,8 +20,9 @@ namespace Core
     Application::Application(const int width, const int height) :
         _window(width, height),
         _device(_window.GetDevice()),
+        _camera(width, height),
         _shaderLibrary(_device),
-        _camera(width, height)
+        _textureLibrary(_device)
     {
         _renderPipeline.Build(_device, _shaderLibrary);
 
@@ -30,35 +33,27 @@ namespace Core
         };
 
         std::vector<Graphics::Vertex> vertexBuffer = {
-            {  0.0f,  1.0f,  5.0f,  0.0f,  0.0f },
-            {  1.0f, -1.0f,  5.0f,  0.0f,  0.0f },
-            { -1.0f, -1.0f,  5.0f,  0.0f,  0.0f }
+            {  0.0f,  1.0f,  5.0f,  0.5f, 1.0f },
+            {  1.0f, -1.0f,  5.0f,  1.0f, 0.0f },
+            { -1.0f, -1.0f,  5.0f,  0.0f, 0.0f }
         };
 
         std::vector<unsigned int> indexBuffer = {
             0, 1, 2
         };
 
-        _camera.Update();
-        auto cameraTransformBuffer = Graphics::CameraTransformBuffer(
-            DirectX::XMMatrixTranspose(_camera.GetViewMatrix()),
-            DirectX::XMMatrixTranspose(_camera.GetProjectionMatrix())
-        );
-        auto objectTransformBuffer = Graphics::ObjectTransformBuffer(
-            DirectX::XMMatrixTranspose(DirectX::XMMatrixIdentity()),
-            DirectX::XMMatrixTranspose(DirectX::XMMatrixIdentity() * _camera.GetViewMatrix() * _camera.GetProjectionMatrix())
-        );
-
-        _cameraObject.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, cameraTransformBuffer, 0));
+        _cameraObject.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, 0));
 
         _object.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
-        _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Color")));
-        _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("Color")));
+        _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Texture")));
+        _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("Texture")));
         _object.Add(std::make_unique<Graphics::VertexBuffer>(_device, vertexBuffer));
         _object.Add(std::make_unique<Graphics::IndexBuffer>(_device, indexBuffer));
         _object.Add(std::make_unique<Graphics::Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::ObjectTransformBuffer>>(_device, objectTransformBuffer, 1));
-        _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Color")));
+        _object.Add(std::make_unique<Graphics::Sampler>(_device, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP));
+        _object.Add(std::make_unique<Graphics::Texture>(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo));
+        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::ObjectTransformBuffer>>(_device, 1));
+        _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Texture")));
     }
 
     int Application::Run()
@@ -90,10 +85,15 @@ namespace Core
         auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 
         _renderQueue.Add(_cameraObject);
-        _renderQueue.Add(_object, DirectX::XMMatrixIdentity());
+
+        for (auto x = -20.0f; x <= 20.0f; x += 2.0f)
+        {
+            for (auto y = -20.0f; y <= 20.0f; y += 2.0f)
+            {
+                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(x, y, 0.0f));
+            }
+        }
         
-        const auto world = DirectX::XMMatrixTranslation(0.0f, 2.0f, 0.0f);
-        _renderQueue.Add(_object, world);
 
         _renderPipeline.Execute(_device, _renderQueue, context);
     }

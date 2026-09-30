@@ -5,6 +5,7 @@
 #include <memory>
 #include <wrl/client.h>
 
+#include "../../DeviceContextCache.h"
 #include "Graphics/DXGIDebugQueue.h"
 
 #pragma comment(lib, "d3d11.lib")
@@ -39,6 +40,7 @@ namespace Graphics
         [[nodiscard]] std::shared_ptr<RenderTarget> GetGeometryRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<DepthStencil> GetDepthStencil() const noexcept;
+        [[nodiscard]] DeviceContextCache& GetContextCache() noexcept;
 
     private:
         void CreateDevice();
@@ -56,5 +58,7 @@ namespace Graphics
         std::shared_ptr<RenderTarget> _compositeRenderTarget;
         std::shared_ptr<DepthStencil> _depthStencil;
         DXGIDebugQueue _debugQueue;
+
+        DeviceContextCache _contextCache;
     };
 }

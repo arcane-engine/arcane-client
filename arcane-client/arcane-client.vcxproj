@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\DeviceContextCache.cpp" />
     <ClCompile Include="src\Graphics\RenderContext.cpp" />
     <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraRotation.cpp" />
@@ -196,8 +197,10 @@
     <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
     <ClCompile Include="src\Graphics\RenderResource\Texture.cpp" />
     <ClCompile Include="src\Math\Vector3.cpp" />
+    <ClCompile Include="src\Resources\TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\DeviceContextCache.h" />
     <ClInclude Include="src\Graphics\RenderContext.h" />
     <ClInclude Include="src\Graphics\Camera\Camera.h" />
     <ClInclude Include="src\Graphics\Camera\CameraRotation.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="src\Graphics\RenderResource\VertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Texture.h" />
     <ClInclude Include="src\Math\Vector3.h" />
+    <ClInclude Include="src\Resources\TextureLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">
@@ -270,10 +274,27 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\TexturePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\TextureVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Resources\Shaders\Registers.hlsli" />
     <None Include="src\Resources\Shaders\TransformBuffers.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="src\Resources\Textures\Texture.png">
+      <DeploymentContent>true</DeploymentContent>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -46,7 +46,7 @@ namespace Resources
 
     void ShaderLibrary::LoadVertexShader(const std::string& name)
     {
-        const auto buffer = Core::File::Read(std::format("C:\\arcane\\arcane-client\\x64\\Debug\\{}VS.cso", name));
+        const auto buffer = Core::File::Read(std::format(R"(C:\arcane\arcane-client\x64\Debug\{}VS.cso)", name));
 
         _device.SetMarker();
         Microsoft::WRL::ComPtr<ID3DBlob> blob;
@@ -71,7 +71,7 @@ namespace Resources
 
     void ShaderLibrary::LoadPixelShader(const std::string& name)
     {
-        const auto buffer = Core::File::Read(std::format("C:\\arcane\\arcane-client\\x64\\Debug\\{}PS.cso", name));
+        const auto buffer = Core::File::Read(std::format(R"(C:\arcane\arcane-client\x64\Debug\{}PS.cso)", name));
 
         Microsoft::WRL::ComPtr<ID3D11PixelShader> shader;
         _device.SetMarker();

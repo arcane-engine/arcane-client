@@ -12,11 +12,12 @@ namespace Graphics
     class PixelShader final : public RenderResource
     {
     public:
-        explicit PixelShader(const Microsoft::WRL::ComPtr<ID3D11PixelShader>& shader) noexcept;
+        explicit PixelShader(const Microsoft::WRL::ComPtr<ID3D11PixelShader>& pixelShader) noexcept;
 
-        void Bind(const Device& device, const RenderContext& renderContext) const noexcept override;
+        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
-        Microsoft::WRL::ComPtr<ID3D11PixelShader> _shader;
+        static ID3D11PixelShader* _activePixelShader;
+        Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
     };
 }

@@ -7,6 +7,7 @@
 #include "Graphics/RenderQueue.h"
 #include "Graphics/Camera/Camera.h"
 #include "Resources/ShaderLibrary.h"
+#include "Resources/TextureLibrary.h"
 
 namespace Core
 {
@@ -26,6 +27,7 @@ namespace Core
         Graphics::RenderQueue _renderQueue;
         Graphics::Camera _camera;
         Resources::ShaderLibrary _shaderLibrary;
+        Resources::TextureLibrary _textureLibrary;
         Graphics::RenderObject _cameraObject;
         Graphics::RenderObject _object;
     };

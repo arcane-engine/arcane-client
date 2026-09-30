@@ -8,9 +8,15 @@ namespace Graphics
         : _slot(slot), _shaderResourceView(shaderResourceView)
     {}
 
-    void Texture::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void Texture::Bind(Device& device, const RenderContext& renderContext) noexcept
     {
-        ID3D11ShaderResourceView* srv = _shaderResourceView.Get();
-        device.GetDeviceContext()->PSSetShaderResources(_slot, 1, &srv);
+        auto& active = device.GetContextCache().Textures[_slot];
+        auto* target = _shaderResourceView.Get();
+
+        if (target != active)
+        {
+            device.GetDeviceContext()->PSSetShaderResources(_slot, 1, &target);
+            active = target;
+        }
     }
 }

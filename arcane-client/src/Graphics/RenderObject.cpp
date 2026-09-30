@@ -10,7 +10,7 @@ namespace Graphics
         _resources.push_back(resource);
     }
 
-    void RenderObject::Bind(const Device& device, const RenderContext& renderContext) const noexcept
+    void RenderObject::Bind(Device& device, const RenderContext& renderContext) const noexcept
     {
         for (const auto& resource : _resources)
         {

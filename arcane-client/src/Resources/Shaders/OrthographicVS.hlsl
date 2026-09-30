@@ -1,7 +1,5 @@
 // ReSharper disable All
 
-#include "Includes.hlsli"
-
 struct VSInput
 {
     float3 position : POSITION;

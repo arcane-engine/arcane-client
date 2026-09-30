@@ -82,7 +82,7 @@ namespace Core
         {
             const auto x = _window.GetMouse().GetSmoothDelta(event->GetX());
             const auto y = _window.GetMouse().GetSmoothDelta(event->GetY());
-            _camera.Rotate(y, -x, 0.0f);
+            _camera.Rotate(-y, x, 0.0f);
         }
 
         _camera.Update();

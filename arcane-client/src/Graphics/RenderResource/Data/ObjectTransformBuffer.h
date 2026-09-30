@@ -4,12 +4,15 @@
 
 namespace Graphics
 {
+    class RenderContext;
+
     struct ObjectTransformBuffer
     {
         DirectX::XMMATRIX WorldMatrix;
         DirectX::XMMATRIX WorldViewProjectionMatrix;
         
-        ObjectTransformBuffer() noexcept = default;
-        explicit ObjectTransformBuffer(const DirectX::XMMATRIX& worldMatrix, const DirectX::XMMATRIX& worldViewProjectionMatrix) noexcept;
+        ObjectTransformBuffer(const DirectX::XMMATRIX& worldMatrix, const DirectX::XMMATRIX& worldViewProjectionMatrix) noexcept;
+
+        static ObjectTransformBuffer FromRenderContext(const RenderContext& renderContext) noexcept;
     };
 }

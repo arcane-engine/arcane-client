@@ -35,19 +35,14 @@ namespace Graphics
     template <typename T>
     void ConstantBuffer<T>::Bind(const Device& device, const RenderContext& renderContext) const noexcept
     {
-        if constexpr (std::is_same_v<T, ObjectTransformBuffer>)
-        {
-            Update(device, ObjectTransformBuffer{
-                DirectX::XMMatrixTranspose(renderContext.WorldMatrix),
-                DirectX::XMMatrixTranspose(renderContext.WorldViewProjectionMatrix)
-            });
-        }
+
         if constexpr (std::is_same_v<T, CameraTransformBuffer>)
         {
-            Update(device, CameraTransformBuffer{
-                DirectX::XMMatrixTranspose(renderContext.ViewMatrix),
-                DirectX::XMMatrixTranspose(renderContext.ProjectionMatrix)
-            });
+            Update(device, CameraTransformBuffer::FromRenderContext(renderContext));
+        }
+        if constexpr (std::is_same_v<T, ObjectTransformBuffer>)
+        {
+            Update(device, ObjectTransformBuffer::FromRenderContext(renderContext));
         }
 
         if (_vertexShader)

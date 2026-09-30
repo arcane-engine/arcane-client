@@ -1,10 +1,10 @@
 // ReSharper disable All
 
-#include "Includes.hlsli"
+#include "Registers.hlsli"
 
-Texture2D albedoTexture : register(TEXTURE_BINDING_SLOT_ALBEDO);
+Texture2D albedoTexture : register(TEX_REGISTER_ALBEDO);
 
-SamplerState Sampler : register(SAMPLER_BINDING_SLOT);
+SamplerState Sampler : register(SMP_REGISTER_MAIN);
 
 struct PSInput
 {

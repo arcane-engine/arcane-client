@@ -4,12 +4,15 @@
 
 namespace Graphics
 {
+    class RenderContext;
+
     struct CameraTransformBuffer
     {
         DirectX::XMMATRIX ViewMatrix;
         DirectX::XMMATRIX ProjectionMatrix;
 
-        CameraTransformBuffer() noexcept = default;
         CameraTransformBuffer(const DirectX::XMMATRIX& viewMatrix, const DirectX::XMMATRIX& projectionMatrix) noexcept;
+
+        static CameraTransformBuffer FromRenderContext(const RenderContext& renderContext) noexcept;
     };
 }

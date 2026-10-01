@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderObjectBuilder.inl" />
     <ClCompile Include="src\Graphics\DeviceContextCache.cpp" />
     <ClCompile Include="src\Graphics\RenderContext.cpp" />
     <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderObjectBuilder.h" />
     <ClInclude Include="src\Graphics\DeviceContextCache.h" />
     <ClInclude Include="src\Graphics\RenderContext.h" />
     <ClInclude Include="src\Graphics\Camera\Camera.h" />

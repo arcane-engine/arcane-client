@@ -2,16 +2,8 @@
 
 #include "Graphics/RenderContext.h"
 #include "Graphics/RenderObject.h"
+#include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/Vertex.h"
-#include "Graphics/RenderResource/ConstantBuffer.h"
-#include "Graphics/RenderResource/InputLayout.h"
-#include "Graphics/RenderResource/PixelShader.h"
-#include "Graphics/RenderResource/Topology.h"
-#include "Graphics/RenderResource/VertexShader.h"
-#include "Graphics/RenderResource/IndexBuffer.h"
-#include "Graphics/RenderResource/Sampler.h"
-#include "Graphics/RenderResource/Texture.h"
-#include "Graphics/RenderResource/VertexBuffer.h"
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 
@@ -26,34 +18,37 @@ namespace Core
     {
         _renderPipeline.Build(_device, _shaderLibrary);
 
-        std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
+        const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
         {
             { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
-        std::vector<Graphics::Vertex> vertexBuffer = {
-            {  0.0f,  1.0f,  5.0f,  0.5f, 1.0f },
-            {  1.0f, -1.0f,  5.0f,  1.0f, 0.0f },
-            { -1.0f, -1.0f,  5.0f,  0.0f, 0.0f }
+        const std::vector<Graphics::Vertex> vertexBuffer = {
+            {  0.0f,  1.0f,  5.0f,  0.5f,  1.0f },
+            {  1.0f, -1.0f,  5.0f,  1.0f,  0.0f },
+            { -1.0f, -1.0f,  5.0f,  0.0f,  0.0f }
         };
 
-        std::vector<unsigned int> indexBuffer = {
+        const std::vector<unsigned int> indexBuffer = {
             0, 1, 2
         };
 
-        _cameraObject.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::CameraTransformBuffer>>(_device, 0));
+        _cameraObject = Graphics::RenderObjectBuilder(_device)
+            .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
+            .Build();
 
-        _object.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
-        _object.Add(std::make_unique<Graphics::PixelShader>(_shaderLibrary.GetPixelShader("Texture")));
-        _object.Add(std::make_unique<Graphics::VertexShader>(_shaderLibrary.GetVertexShader("Texture")));
-        _object.Add(std::make_unique<Graphics::VertexBuffer>(_device, vertexBuffer));
-        _object.Add(std::make_unique<Graphics::IndexBuffer>(_device, indexBuffer));
-        _object.Add(std::make_unique<Graphics::Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-        _object.Add(std::make_unique<Graphics::Sampler>(_device, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP));
-        _object.Add(std::make_unique<Graphics::Texture>(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo));
-        _object.Add(std::make_unique<Graphics::ConstantBuffer<Graphics::ObjectTransformBuffer>>(_device, 1));
-        _object.Add(std::make_unique<Graphics::InputLayout>(_device, inputLayout, _shaderLibrary.GetVertexShaderBlob("Texture")));
+        _object = Graphics::RenderObjectBuilder(_device, &_shaderLibrary, &_textureLibrary)
+            .WithVertexShader("Texture")
+            .WithPixelShader("Texture")
+            .WithInputLayout(inputLayout, "Texture")
+            .WithVertexBuffer(vertexBuffer)
+            .WithIndexBuffer(indexBuffer)
+            .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+            .WithSampler(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP)
+            .WithTexture("Texture", Resources::TextureBindingSlot::Albedo)
+            .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+            .Build();
     }
 
     int Application::Run()

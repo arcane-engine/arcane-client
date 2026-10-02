@@ -15,6 +15,8 @@ namespace Graphics
 {
     void RenderPipeline::Build(Device& device, Resources::ShaderLibrary shaderLibrary)
     {
+        _pipeline.clear();
+
         const auto geometryRenderTarget = device.GetGeometryRenderTarget();
         const auto compositeRenderTarget = device.GetCompositeRenderTarget();
         const auto depthStencil = device.GetDepthStencil();

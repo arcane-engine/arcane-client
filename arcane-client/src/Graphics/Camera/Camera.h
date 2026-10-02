@@ -13,6 +13,7 @@ namespace Graphics
         Camera(int width, int height) noexcept;
 
         void SetPosition(const Math::Vector3& position) noexcept;
+        void SetResolution(int width, int height) noexcept;
 
         [[nodiscard]] Math::Vector3 GetPosition() const noexcept;
         [[nodiscard]] Math::Vector3 GetDirection() const noexcept;

@@ -21,6 +21,8 @@ namespace Core
     private:
         void Update();
 
+        void ToggleFullscreen();
+
         Platform::Window _window;
         Graphics::Device _device;
         Graphics::RenderPipeline _renderPipeline;

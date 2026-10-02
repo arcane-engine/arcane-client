@@ -7,13 +7,21 @@ namespace Graphics
 {
     RenderTarget::RenderTarget(Device& device, ID3D11Texture2D* texture)
     {
-        if (texture != nullptr)
-        {
-            D3D11_TEXTURE2D_DESC desc;
-            texture->GetDesc(&desc);
-            _width = static_cast<int>(desc.Width);
-            _height = static_cast<int>(desc.Height);
-        }
+        Create(device, texture);
+    }
+
+    RenderTarget::RenderTarget(Device& device, const int width, const int height)
+        : _width(width), _height(height)
+    {
+        Create(device, width, height);
+    }
+
+    void RenderTarget::Create(Device& device, ID3D11Texture2D* texture)
+    {
+        D3D11_TEXTURE2D_DESC desc;
+        texture->GetDesc(&desc);
+        _width = static_cast<int>(desc.Width);
+        _height = static_cast<int>(desc.Height);
 
         device.SetMarker();
         const auto hResult = device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
@@ -23,9 +31,11 @@ namespace Graphics
         }
     }
 
-    RenderTarget::RenderTarget(Device& device, const int width, const int height)
-        : _width(width), _height(height)
+    void RenderTarget::Create(Device& device, const int width, const int height)
     {
+        _width = width;
+        _height = height;
+
         //
         // Create render target texture.
         //
@@ -85,9 +95,14 @@ namespace Graphics
         return _shaderResourceView.Get();
     }
 
-    void RenderTarget::Clear(const Device& device) const
+    void RenderTarget::Clear(const Device& device, const float r, const float g, const float b, const float a) const
     {
-        constexpr float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        const float color[] = { r, g, b, a };
         device.GetDeviceContext()->ClearRenderTargetView(_renderTargetView.Get(), color);
+    }
+
+    void RenderTarget::Reset() noexcept
+    {
+        _renderTargetView.Reset();
     }
 }

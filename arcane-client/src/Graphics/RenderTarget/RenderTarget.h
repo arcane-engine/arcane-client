@@ -13,10 +13,14 @@ namespace Graphics
         RenderTarget(Device& device, ID3D11Texture2D* texture);
         RenderTarget(Device& device, int width, int height);
 
+        void Create(Device& device, ID3D11Texture2D* texture);
+        void Create(Device& device, int width, int height);
+
         [[nodiscard]] ID3D11RenderTargetView* GetRenderTargetView() const noexcept;
         [[nodiscard]] ID3D11ShaderResourceView* GetShaderResourceView() const noexcept;
 
-        void Clear(const Device& device) const;
+        void Clear(const Device& device, float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 0.0f) const;
+        void Reset() noexcept;
 
     private:
         int _width;

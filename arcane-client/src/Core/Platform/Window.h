@@ -27,8 +27,10 @@ namespace Core::Platform
         [[nodiscard]] Input::Keyboard& GetKeyboard() noexcept;
         [[nodiscard]] Input::Mouse& GetMouse() noexcept;
         [[nodiscard]] HWND GetWindowHandle() const noexcept;
+        [[nodiscard]] int GetWidth() const noexcept;
+        [[nodiscard]] int GetHeight() const noexcept;
 
-        void SetTitle(const std::wstring& title) const noexcept;
+        void ToggleFullscreen();
 
     private:
         static void RegisterRawMouseInputDevice();
@@ -39,12 +41,12 @@ namespace Core::Platform
 
         [[nodiscard]] LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-        static void HandleSystemMessage(UINT msg) noexcept;
+        void HandleSystemMessage(UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
         void HandleKeyboardMessage(UINT msg, WPARAM wParam, LPARAM lParam);
         void HandleRawInputMessage(LPARAM lParam);
         void HandleMouseMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
-        static RECT GetWindowRect(int width, int height);
+        static RECT GetAdjustedWindowRect(int width, int height);
 
         [[nodiscard]] static bool IsAutoRepeat(LPARAM lParam) noexcept;
 
@@ -56,5 +58,9 @@ namespace Core::Platform
         Input::Keyboard _keyboard;
         Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
+        int _width;
+        int _height;
+        RECT _windowRect = {};
+        bool _fullscreen = false;
     };
 }

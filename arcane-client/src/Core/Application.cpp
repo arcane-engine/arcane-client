@@ -75,6 +75,11 @@ namespace Core
             _camera.Rotate(-y, x, 0.0f);
         }
 
+        if (_window.GetKeyboard().IsKeyPressed(VK_F11))
+        {
+            ToggleFullscreen();
+        }
+
         _camera.Update();
 
         auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
@@ -88,8 +93,20 @@ namespace Core
                 _renderQueue.Add(_object, DirectX::XMMatrixTranslation(x, y, 0.0f));
             }
         }
-        
 
         _renderPipeline.Execute(_device, _renderQueue, context);
+    }
+
+    void Application::ToggleFullscreen()
+    {
+        _window.ToggleFullscreen();
+
+        const auto width = _window.GetWidth();
+        const auto height = _window.GetHeight();
+
+        _device.SetResolution(width, height);
+        _camera.SetResolution(width, height);
+
+        _renderPipeline.Build(_device, _shaderLibrary);
     }
 }

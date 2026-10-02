@@ -12,6 +12,12 @@ namespace Graphics
         _position = position;
     }
 
+    void Camera::SetResolution(const int width, const int height) noexcept
+    {
+        _width = static_cast<float>(width);
+        _height = static_cast<float>(height);
+    }
+
     Math::Vector3 Camera::GetPosition() const noexcept
     {
         return _position;

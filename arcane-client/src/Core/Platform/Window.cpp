@@ -10,7 +10,7 @@ namespace Core::Platform
         _windowClass(HandleMessageSetup),
         _mouse(width, height)
     {
-        const auto wr = GetWindowRect(width, height);
+        const auto wr = GetAdjustedWindowRect(width, height);
 
         _hWnd = CreateWindow(
             _windowClass.GetName(),
@@ -59,7 +59,7 @@ namespace Core::Platform
 
     void Window::CaptureMouseCursor(const int width, const int height)
     {
-        const RECT rect = { .left = 0, .top = 0, .right = width, .bottom = height };
+        const RECT rect = { 0, 0, width, height };
         ClipCursor(&rect);
         ShowCursor(false);
     }
@@ -94,7 +94,7 @@ namespace Core::Platform
 
     LRESULT Window::HandleMessage(const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
     {
-        HandleSystemMessage(msg);
+        HandleSystemMessage(msg, wParam, lParam);
         HandleKeyboardMessage(msg, wParam, lParam);
         HandleRawInputMessage(lParam);
         HandleMouseMessage(msg, wParam, lParam);
@@ -107,8 +107,18 @@ namespace Core::Platform
         return DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
-    void Window::HandleSystemMessage(const UINT msg) noexcept
+    void Window::HandleSystemMessage(const UINT msg, const WPARAM wParam, const LPARAM lParam) noexcept
     {
+        if (msg == WM_SIZE)
+        {
+            if (wParam == SIZE_MINIMIZED)
+            {
+                return;
+            }
+
+            _width = LOWORD(lParam);
+            _height = HIWORD(lParam);
+        }
         if (msg == WM_CLOSE)
         {
             PostQuitMessage(0);
@@ -221,16 +231,70 @@ namespace Core::Platform
         return _hWnd;
     }
 
-    RECT Window::GetWindowRect(const int width, const int height)
+    int Window::GetWidth() const noexcept
     {
-        RECT rect = { .left = 0, .top = 0, .right = width, .bottom = height };
-        AdjustWindowRect(&rect, _windowStyle, FALSE);
-        return rect;
+        return _width;
     }
 
-    void Window::SetTitle(const std::wstring& title) const noexcept
+    int Window::GetHeight() const noexcept
     {
-        SetWindowTextW(_hWnd, title.c_str());
+        return _height;
+    }
+
+    void Window::ToggleFullscreen()
+    {
+        if (_fullscreen)
+        {
+            SetWindowLongPtr(_hWnd, GWL_STYLE, _windowStyle);
+
+            const int outerWidth = _windowRect.right - _windowRect.left;
+            const int outerHeight = _windowRect.bottom - _windowRect.top;
+
+            SetWindowPos(_hWnd, HWND_NOTOPMOST,
+                _windowRect.left,
+                _windowRect.top,
+                outerWidth,
+                outerHeight,
+                SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+
+            RECT clientRect{};
+            GetClientRect(_hWnd, &clientRect);
+            _width = clientRect.right - clientRect.left;
+            _height = clientRect.bottom - clientRect.top;
+            _fullscreen = false;
+        }
+        else
+        {
+            GetWindowRect(_hWnd, &_windowRect);
+
+            const auto style = GetWindowLongPtr(_hWnd, GWL_STYLE);
+            SetWindowLongPtr(_hWnd, GWL_STYLE, (style & ~WS_OVERLAPPEDWINDOW) | WS_POPUP);
+
+            const auto hMonitor = MonitorFromWindow(_hWnd, MONITOR_DEFAULTTONEAREST);
+            MONITORINFO monitorInfo = { sizeof(MONITORINFO) };
+            GetMonitorInfo(hMonitor, &monitorInfo);
+
+            const int width = monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left;
+            const int height = monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top;
+
+            SetWindowPos(_hWnd, HWND_TOP,
+                monitorInfo.rcMonitor.left,
+                monitorInfo.rcMonitor.top,
+                width,
+                height,
+                SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+
+            _width = width;
+            _height = height;
+            _fullscreen = true;
+        }
+    }
+
+    RECT Window::GetAdjustedWindowRect(const int width, const int height)
+    {
+        RECT rect = { 0, 0, width, height };
+        AdjustWindowRect(&rect, _windowStyle, FALSE);
+        return rect;
     }
 
     bool Window::IsAutoRepeat(const LPARAM lParam) noexcept

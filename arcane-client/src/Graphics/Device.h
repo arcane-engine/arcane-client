@@ -7,6 +7,7 @@
 
 #include "Graphics/DeviceContextCache.h"
 #include "Graphics/DXGIDebugQueue.h"
+#include "RenderTarget/DepthStencil.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -39,6 +40,8 @@ namespace Graphics
         [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<DepthStencil> GetDepthStencil() const noexcept;
         [[nodiscard]] DeviceContextCache& GetContextCache() noexcept;
+
+        void SetResolution(int width, int height);
 
         void SetMarker();
 

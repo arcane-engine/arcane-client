@@ -49,7 +49,7 @@ namespace Graphics
 
     inline RenderObjectBuilder& RenderObjectBuilder::WithIndexBuffer(const std::vector<unsigned int>& indexBuffer)
     {
-        _renderObject.SetIndexCount(indexBuffer.size());
+        _renderObject.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
         _renderObject.Add(std::make_unique<IndexBuffer>(_device, indexBuffer));
 
         return *this;

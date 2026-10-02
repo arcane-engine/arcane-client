@@ -49,6 +49,37 @@ namespace Graphics
         return _contextCache;
     }
 
+    void Device::SetResolution(const int width, const int height)
+    {
+        _geometryRenderTarget->Reset();
+        _compositeRenderTarget->Reset();
+        _depthStencil->Reset();
+
+        ID3D11RenderTargetView* nullRtv = nullptr;
+        _deviceContext->OMSetRenderTargets(1, &nullRtv, nullptr);
+
+        SetMarker();
+        auto hResult = _swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+        if (FAILED(hResult))
+        {
+            throw GraphicsException("Failed to resize swap chain buffer.", hResult, *this);
+        }
+        _geometryRenderTarget->Create(*this, width, height);
+
+        SetMarker();
+        Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
+        hResult = _swapChain->GetBuffer(0, IID_PPV_ARGS(&texture));
+        if (FAILED(hResult))
+        {
+            throw GraphicsException("Failed to create back buffer texture.", hResult, *this);
+        }
+        _compositeRenderTarget->Create(*this, texture.Get());
+
+        _depthStencil->Create(*this, width, height);
+
+        SetViewport(width, height);
+    }
+
     void Device::CreateDevice()
     {
 #ifdef NDEBUG

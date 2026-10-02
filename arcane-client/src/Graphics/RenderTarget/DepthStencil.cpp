@@ -5,7 +5,7 @@
 
 namespace Graphics
 {
-    DepthStencil::DepthStencil(Device& device, int width, int height)
+    DepthStencil::DepthStencil(Device& device, const int width, const int height)
         : _width(width), _height(height)
     {
         //
@@ -17,13 +17,19 @@ namespace Graphics
         depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
         device.SetMarker();
-        auto hResult = device.GetDevice()->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
+        const auto hResult = device.GetDevice()->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create depth stencil state.", hResult, device);
         }
 
-        device.GetDeviceContext()->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+        Create(device, width, height);
+    }
+
+    void DepthStencil::Create(Device& device, const int width, const int height)
+    {
+        _width = width;
+        _height = height;
 
         //
         // Create depth stencil texture.
@@ -42,7 +48,7 @@ namespace Graphics
         textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 
         device.SetMarker();
-        hResult = device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &depthStencilTexture);
+        auto hResult = device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &depthStencilTexture);
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create texture.", hResult, device);
@@ -93,5 +99,11 @@ namespace Graphics
     void DepthStencil::Clear(const Device& device) const
     {
         device.GetDeviceContext()->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    }
+
+    void DepthStencil::Reset() noexcept
+    {
+        _depthStencilView.Reset();
+        _shaderResourceView.Reset();
     }
 }

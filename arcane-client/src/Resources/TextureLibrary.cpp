@@ -20,12 +20,14 @@ namespace Resources
 
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> TextureLibrary::GetTexture(const std::string& name)
     {
-        if (!_textures.contains(name))
+        auto it = _textures.find(name);
+        if (it == _textures.end())
         {
             LoadTexture(name);
+            it = _textures.find(name);
         }
 
-        return _textures[name];
+        return it->second;
     }
 
     void TextureLibrary::LoadTexture(const std::string& name)

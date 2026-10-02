@@ -16,32 +16,38 @@ namespace Resources
 
     Microsoft::WRL::ComPtr<ID3D11VertexShader> ShaderLibrary::GetVertexShader(const std::string& name)
     {
-        if (!_vertexShaders.contains(name))
+        auto it = _vertexShaders.find(name);
+        if (it == _vertexShaders.end())
         {
             LoadVertexShader(name);
+            it = _vertexShaders.find(name);
         }
 
-        return _vertexShaders[name];
+        return it->second;
     }
 
-    Microsoft::WRL::ComPtr<ID3DBlob> ShaderLibrary::GetVertexShaderBlob(const std::string& name)
+    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(const std::string& name)
     {
-        if (!_vertexShaderBlobs.contains(name))
+        auto it = _vertexShaderBlobs.find(name);
+        if (it == _vertexShaderBlobs.end())
         {
             LoadVertexShader(name);
+            it = _vertexShaderBlobs.find(name);
         }
 
-        return _vertexShaderBlobs[name];
+        return it->second.Get();
     }
 
     Microsoft::WRL::ComPtr<ID3D11PixelShader> ShaderLibrary::GetPixelShader(const std::string& name)
     {
-        if (!_pixelShaders.contains(name))
+        auto it = _pixelShaders.find(name);
+        if (it == _pixelShaders.end())
         {
             LoadPixelShader(name);
+            it = _pixelShaders.find(name);
         }
 
-        return _pixelShaders[name];
+        return it->second;
     }
 
     void ShaderLibrary::LoadVertexShader(const std::string& name)

@@ -5,7 +5,7 @@
 
 namespace Graphics
 {
-    InputLayout::InputLayout(Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayout, const Microsoft::WRL::ComPtr<ID3DBlob>& blob)
+    InputLayout::InputLayout(Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayout, ID3DBlob* blob)
     {
         device.SetMarker();
         const auto hResult = device.GetDevice()->CreateInputLayout(inputLayout.data(), static_cast<UINT>(inputLayout.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &_inputLayout);

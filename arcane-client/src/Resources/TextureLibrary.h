@@ -15,7 +15,8 @@ namespace Resources
 {
     enum TextureBindingSlot
     {
-        Albedo = 0
+        Albedo = 0,
+        Composition = 0
     };
 
     class TextureLibrary

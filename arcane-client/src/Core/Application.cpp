@@ -38,15 +38,15 @@ namespace Core
             .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
             .Build();
 
-        _object = Graphics::RenderObjectBuilder(_device, &_shaderLibrary, &_textureLibrary)
-            .WithVertexShader("Texture")
-            .WithPixelShader("Texture")
-            .WithInputLayout(inputLayout, "Texture")
+        _object = Graphics::RenderObjectBuilder(_device)
+            .WithVertexShader(_shaderLibrary.GetVertexShader("Texture"))
+            .WithPixelShader(_shaderLibrary.GetPixelShader("Texture"))
+            .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob("Texture"))
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
             .WithSampler(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP)
-            .WithTexture("Texture", Resources::TextureBindingSlot::Albedo)
+            .WithTexture(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
             .Build();
     }

@@ -3,6 +3,7 @@
 #include <d3d11.h>
 
 #include "Graphics/RenderObject.h"
+#include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/RenderResource/IndexBuffer.h"
 #include "Graphics/RenderResource/InputLayout.h"
@@ -37,15 +38,16 @@ namespace Graphics
             2, 1, 3
         };
 
-        _renderObject.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
-        _renderObject.Add(std::make_unique<PixelShader>(shaderLibrary.GetPixelShader("Orthographic")));
-        _renderObject.Add(std::make_unique<VertexShader>(shaderLibrary.GetVertexShader("Orthographic")));
-        _renderObject.Add(std::make_unique<Sampler>(device, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP));
-        _renderObject.Add(std::make_unique<Texture>(geometryRenderTarget->GetShaderResourceView(), 0));
-        _renderObject.Add(std::make_unique<VertexBuffer>(device, vertexBuffer));
-        _renderObject.Add(std::make_unique<IndexBuffer>(device, indexBuffer));
-        _renderObject.Add(std::make_unique<Topology>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-        _renderObject.Add(std::make_unique<InputLayout>(device, inputLayout, shaderLibrary.GetVertexShaderBlob("Orthographic")));
+        _renderObject = RenderObjectBuilder(device)
+            .WithVertexShader(shaderLibrary.GetVertexShader("Orthographic"))
+            .WithPixelShader(shaderLibrary.GetPixelShader("Orthographic"))
+            .WithInputLayout(inputLayout, shaderLibrary.GetVertexShaderBlob("Orthographic"))
+            .WithVertexBuffer(vertexBuffer)
+            .WithIndexBuffer(indexBuffer)
+            .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+            .WithSampler(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP)
+            .WithTexture(geometryRenderTarget->GetShaderResourceView(), Resources::TextureBindingSlot::Composition)
+            .Build();
     }
 
     void CompositeRenderPass::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)

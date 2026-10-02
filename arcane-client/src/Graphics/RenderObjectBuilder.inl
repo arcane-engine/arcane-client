@@ -9,7 +9,6 @@
 #include "Graphics/RenderResource/Texture.h"
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
-#include "Resources/ShaderLibrary.h"
 #include "Resources/TextureLibrary.h"
 
 namespace Graphics
@@ -62,9 +61,9 @@ namespace Graphics
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithSampler(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE textureAddressMode)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot)
     {
-        _renderObject.Add(std::make_unique<Sampler>(_device, filter, textureAddressMode));
+        _renderObject.Add(std::make_unique<Sampler>(_device, samplerState, slot));
 
         return *this;
     }

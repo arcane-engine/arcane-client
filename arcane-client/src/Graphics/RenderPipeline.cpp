@@ -9,11 +9,12 @@
 #include "RenderPipeline/ClearDepthStencil.h"
 #include "RenderPipeline/CompositeRenderPass.h"
 #include "RenderPipeline/GeometryRenderPass.h"
+#include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
 
 namespace Graphics
 {
-    void RenderPipeline::Build(Device& device, Resources::ShaderLibrary shaderLibrary)
+    void RenderPipeline::Build(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary)
     {
         _pipeline.clear();
 
@@ -27,7 +28,7 @@ namespace Graphics
         Add(std::make_unique<BindRenderTarget>(geometryRenderTarget, depthStencil));
         Add(std::make_unique<GeometryRenderPass>());
         Add(std::make_unique<BindRenderTarget>(compositeRenderTarget));
-        Add(std::make_unique<CompositeRenderPass>(device, shaderLibrary, geometryRenderTarget));
+        Add(std::make_unique<CompositeRenderPass>(device, shaderLibrary, samplerLibrary, geometryRenderTarget));
         Add(std::make_unique<Present>());
     }
 

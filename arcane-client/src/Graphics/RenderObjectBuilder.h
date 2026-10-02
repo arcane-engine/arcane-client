@@ -32,7 +32,7 @@ namespace Graphics
 
         // Textures & Samplers
         [[nodiscard]] RenderObjectBuilder& WithTexture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, Resources::TextureBindingSlot slot);
-        [[nodiscard]] RenderObjectBuilder& WithSampler(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE textureAddressMode);
+        [[nodiscard]] RenderObjectBuilder& WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot);
 
         // Constant Buffers
         template<typename T>
@@ -43,8 +43,6 @@ namespace Graphics
     private:
         RenderObject _renderObject;
         Device& _device;
-        Resources::ShaderLibrary* _shaderLibrary;
-        Resources::TextureLibrary* _textureLibrary;
     };
 }
 

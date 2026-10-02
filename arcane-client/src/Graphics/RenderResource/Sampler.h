@@ -10,11 +10,12 @@ namespace Graphics
     class Sampler : public RenderResource
     {
     public:
-        explicit Sampler(Device& device, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE textureAddressMode);
+        explicit Sampler(Device& device, const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot);
 
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
-        Microsoft::WRL::ComPtr<ID3D11SamplerState> _sampler;
+        int _slot;
+        Microsoft::WRL::ComPtr<ID3D11SamplerState> _samplerState;
     };
 }

@@ -7,6 +7,7 @@
 
 namespace Resources
 {
+    class SamplerLibrary;
     class ShaderLibrary;
 }
 
@@ -21,7 +22,7 @@ namespace Graphics
     public:
         RenderPipeline() = default;
 
-        void Build(Device& device, Resources::ShaderLibrary shaderLibrary);
+        void Build(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary);
         void Add(std::unique_ptr<RenderPass> pass);
         void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) const;
 

@@ -5,6 +5,7 @@
 
 namespace Resources
 {
+    class SamplerLibrary;
     class ShaderLibrary;
 }
 
@@ -15,7 +16,7 @@ namespace Graphics
     class CompositeRenderPass : public RenderPass
     {
     public:
-        explicit CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget);
+        explicit CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget);
 
         void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
 

@@ -5,20 +5,14 @@
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/Vertex.h"
-#include "Graphics/RenderResource/IndexBuffer.h"
-#include "Graphics/RenderResource/InputLayout.h"
-#include "Graphics/RenderResource/PixelShader.h"
-#include "Graphics/RenderResource/Sampler.h"
-#include "Graphics/RenderResource/Texture.h"
-#include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexBuffer.h"
-#include "Graphics/RenderResource/VertexShader.h"
 #include "Graphics/RenderTarget/RenderTarget.h"
+#include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
 
 namespace Graphics
 {
-    CompositeRenderPass::CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget)
+    CompositeRenderPass::CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget)
     {
         const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
         {
@@ -45,7 +39,7 @@ namespace Graphics
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-            .WithSampler(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP)
+            .WithSampler(samplerLibrary.GetSampler(Resources::SamplerType::LinearClamp), 1)
             .WithTexture(geometryRenderTarget->GetShaderResourceView(), Resources::TextureBindingSlot::Composition)
             .Build();
     }

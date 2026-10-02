@@ -14,9 +14,10 @@ namespace Core
         _device(_window.GetWindowHandle(), width, height),
         _shaderLibrary(_device),
         _textureLibrary(_device),
+        _samplerLibrary(_device),
         _camera(width, height)
     {
-        _renderPipeline.Build(_device, _shaderLibrary);
+        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary);
 
         const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
         {
@@ -45,7 +46,7 @@ namespace Core
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-            .WithSampler(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP)
+            .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
             .WithTexture(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
             .Build();
@@ -107,6 +108,6 @@ namespace Core
         _device.SetResolution(width, height);
         _camera.SetResolution(width, height);
 
-        _renderPipeline.Build(_device, _shaderLibrary);
+        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary);
     }
 }

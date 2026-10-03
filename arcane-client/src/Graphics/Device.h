@@ -6,11 +6,8 @@
 #include <wrl/client.h>
 
 #include "Graphics/DeviceContextCache.h"
-#include "Graphics/DXGIDebugQueue.h"
+#include "Graphics/GraphicsDebugQueue.h"
 #include "RenderTarget/DepthStencil.h"
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dcompiler.lib")
 
 namespace Graphics
 {
@@ -20,8 +17,6 @@ namespace Graphics
 
     class Device
     {
-        friend GraphicsException;
-
     public:
         Device(HWND hWnd, int width, int height);
 
@@ -40,6 +35,7 @@ namespace Graphics
         [[nodiscard]] std::shared_ptr<RenderTarget> GetCompositeRenderTarget() const noexcept;
         [[nodiscard]] std::shared_ptr<DepthStencil> GetDepthStencil() const noexcept;
         [[nodiscard]] DeviceContextCache& GetContextCache() noexcept;
+        [[nodiscard]] std::vector<std::string> GetDebugMessages() const noexcept;
 
         void SetResolution(int width, int height);
 
@@ -51,8 +47,6 @@ namespace Graphics
         void CreateRenderTargets(int width, int height);
         void SetViewport(int width, int height) const;
 
-        DXGIDebugQueue& GetDebugQueue() noexcept;
-
     private:
         Microsoft::WRL::ComPtr<ID3D11Device> _device;
         Microsoft::WRL::ComPtr<IDXGISwapChain1> _swapChain;
@@ -61,6 +55,6 @@ namespace Graphics
         std::shared_ptr<RenderTarget> _compositeRenderTarget;
         std::shared_ptr<DepthStencil> _depthStencil;
         DeviceContextCache _contextCache;
-        DXGIDebugQueue _debugQueue;
+        mutable GraphicsDebugQueue _debugQueue;
     };
 }

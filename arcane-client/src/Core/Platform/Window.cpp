@@ -271,7 +271,8 @@ namespace Core::Platform
             SetWindowLongPtr(_hWnd, GWL_STYLE, (style & ~WS_OVERLAPPEDWINDOW) | WS_POPUP);
 
             const auto hMonitor = MonitorFromWindow(_hWnd, MONITOR_DEFAULTTONEAREST);
-            MONITORINFO monitorInfo = { sizeof(MONITORINFO) };
+            MONITORINFO monitorInfo{};
+            monitorInfo.cbSize = sizeof(MONITORINFO);
             GetMonitorInfo(hMonitor, &monitorInfo);
 
             const int width = monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left;

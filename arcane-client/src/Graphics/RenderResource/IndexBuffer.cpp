@@ -24,7 +24,7 @@ namespace Graphics
         }
     }
 
-    void IndexBuffer::Bind(Device& device, const RenderContext& renderContext) noexcept
+    void IndexBuffer::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
         auto& active = device.GetContextCache().IndexBuffer;
         auto* target = _indexBuffer.Get();

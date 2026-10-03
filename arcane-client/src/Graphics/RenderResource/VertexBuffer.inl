@@ -27,7 +27,7 @@ namespace Graphics
         }
     }
 
-    inline void VertexBuffer::Bind(Device& device, const RenderContext& renderContext) noexcept
+    inline void VertexBuffer::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
         auto& active = device.GetContextCache().VertexBuffer;
         auto* target = _vertexBuffer.Get();

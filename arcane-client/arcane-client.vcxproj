@@ -181,7 +181,7 @@
     <ClCompile Include="src\Graphics\RenderPipeline.cpp" />
     <ClCompile Include="src\Graphics\GraphicsException.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget\RenderTarget.cpp" />
-    <ClCompile Include="src\Graphics\DXGIDebugQueue.cpp" />
+    <ClCompile Include="src\Graphics\GraphicsDebugQueue.cpp" />
     <ClCompile Include="src\Graphics\Device.cpp" />
     <ClCompile Include="src\Core\Input\Mouse.cpp" />
     <ClCompile Include="src\Core\Input\MouseRawEvent.cpp" />
@@ -234,7 +234,7 @@
     <ClInclude Include="src\Graphics\RenderPipeline.h" />
     <ClInclude Include="src\Graphics\GraphicsException.h" />
     <ClInclude Include="src\Graphics\RenderTarget\RenderTarget.h" />
-    <ClInclude Include="src\Graphics\DXGIDebugQueue.h" />
+    <ClInclude Include="src\Graphics\GraphicsDebugQueue.h" />
     <ClInclude Include="src\Graphics\Device.h" />
     <ClInclude Include="src\Core\Input\Mouse.h" />
     <ClInclude Include="src\Core\Input\MouseRawEvent.h" />

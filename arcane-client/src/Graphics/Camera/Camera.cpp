@@ -30,7 +30,7 @@ namespace Graphics
 
     DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
     {
-        return DirectX::XMMatrixLookToLH(_position, _direction, _up);
+        return DirectX::XMMatrixLookToLH(static_cast<DirectX::XMVECTOR>(_position), static_cast<DirectX::XMVECTOR>(_direction), static_cast<DirectX::XMVECTOR>(_up));
     }
 
     DirectX::XMMATRIX Camera::GetProjectionMatrix() const noexcept

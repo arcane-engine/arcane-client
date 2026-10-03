@@ -10,7 +10,7 @@ namespace Graphics
         : _renderTarget(renderTarget), _depthStencil(depthStencil)
     {}
 
-    void BindRenderTarget::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
+    void BindRenderTarget::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, [[maybe_unused]] RenderContext& renderContext)
     {
         auto* const renderTargetView = _renderTarget ? _renderTarget->GetRenderTargetView() : nullptr;
         auto* const depthStencilView = _depthStencil ? _depthStencil->GetDepthStencilView() : nullptr;

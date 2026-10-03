@@ -1,4 +1,5 @@
 #pragma once
+
 #include <DirectXMath.h>
 
 namespace Math
@@ -11,6 +12,6 @@ namespace Math
 
         Vector3& operator=(const DirectX::XMVECTOR& vector) noexcept;
 
-        operator DirectX::XMVECTOR() const;
+        explicit operator DirectX::XMVECTOR() const;
     };
 }

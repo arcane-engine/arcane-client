@@ -8,7 +8,7 @@ namespace Graphics
         : _topology(topology)
     {}
 
-    void Topology::Bind(Device& device, const RenderContext& renderContext) noexcept
+    void Topology::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
         auto& active = device.GetContextCache().Topology;
         const auto target = _topology;

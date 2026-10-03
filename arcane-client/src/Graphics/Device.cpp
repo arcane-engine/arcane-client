@@ -4,6 +4,9 @@
 #include "Graphics/RenderTarget/RenderTarget.h"
 #include "Graphics/RenderTarget/DepthStencil.h"
 
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3dcompiler.lib")
+
 namespace Graphics
 {
     Device::Device(const HWND hWnd, const int width, const int height)
@@ -47,6 +50,11 @@ namespace Graphics
     DeviceContextCache& Device::GetContextCache() noexcept
     {
         return _contextCache;
+    }
+
+    std::vector<std::string> Device::GetDebugMessages() const noexcept
+    {
+        return _debugQueue.ReadMessages();
     }
 
     void Device::SetResolution(const int width, const int height)
@@ -192,11 +200,6 @@ namespace Graphics
         viewport.TopLeftY = 0;
 
         _deviceContext->RSSetViewports(1, &viewport);
-    }
-
-    DXGIDebugQueue& Device::GetDebugQueue() noexcept
-    {
-        return _debugQueue;
     }
 
     void Device::SetMarker()

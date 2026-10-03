@@ -21,7 +21,7 @@ namespace Core
         std::vector<unsigned char> buffer(size);
         if (file.read(reinterpret_cast<char*>(buffer.data()), size))
         {
-            return std::move(buffer);
+            return buffer;
         }
 
         throw Exception(std::format("Failed to read file '{}'.", path));

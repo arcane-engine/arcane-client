@@ -9,14 +9,14 @@
 
 namespace Graphics
 {
-    class DXGIDebugQueue
+    class GraphicsDebugQueue
     {
     public:
-        DXGIDebugQueue();
-        DXGIDebugQueue(const DXGIDebugQueue&) = delete;
-        ~DXGIDebugQueue() = default;
+        GraphicsDebugQueue();
+        GraphicsDebugQueue(const GraphicsDebugQueue&) = delete;
+        ~GraphicsDebugQueue() = default;
 
-        DXGIDebugQueue& operator=(const DXGIDebugQueue&) = delete;
+        GraphicsDebugQueue& operator=(const GraphicsDebugQueue&) = delete;
 
         void SetMarker() noexcept;
         [[nodiscard]] std::vector<std::string> ReadMessages() const;

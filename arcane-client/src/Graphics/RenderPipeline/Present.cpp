@@ -7,7 +7,7 @@
 
 namespace Graphics
 {
-    void Present::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
+    void Present::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, [[maybe_unused]] RenderContext& renderContext)
     {
         device.SetMarker();
         const auto hResult = device.GetSwapChain()->Present(1, 0);

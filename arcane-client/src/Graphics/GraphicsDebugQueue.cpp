@@ -1,4 +1,4 @@
-#include "Graphics/DXGIDebugQueue.h"
+#include "Graphics/GraphicsDebugQueue.h"
 
 #include <dxgidebug.h>
 #include <format>
@@ -13,20 +13,20 @@
 namespace Graphics
 {
 #ifdef NDEBUG
-    DXGIDebugQueue::DXGIDebugQueue()
+    GraphicsDebugQueue::GraphicsDebugQueue()
     {}
 
-    void DXGIDebugQueue::Mark() noexcept
+    void GraphicsDebugQueue::Mark() noexcept
     {}
 
-    std::vector<std::string> DXGIDebugQueue::GetMessages() const
+    std::vector<std::string> GraphicsDebugQueue::GetMessages() const
     {
         return {};
     }
 #else
-    DXGIDebugQueue::DXGIDebugQueue()
+    GraphicsDebugQueue::GraphicsDebugQueue()
     {
-        typedef HRESULT(WINAPI* DXGIGetDebugInterface)(REFIID, void**);
+        typedef HRESULT(WINAPI* GetDebugInterface)(REFIID, void**);
 
         const auto hModDxgiDebug = LoadLibraryEx(L"dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
         if (hModDxgiDebug == nullptr)
@@ -34,25 +34,26 @@ namespace Graphics
             throw Core::Platform::WindowException("Failed to load 'dxgidebug.dll' system library.", GetLastError());
         }
 
-        const auto dxgiGetDebugInterface = reinterpret_cast<DXGIGetDebugInterface>(reinterpret_cast<void*>(GetProcAddress(hModDxgiDebug, "DXGIGetDebugInterface")));
-        if (dxgiGetDebugInterface == nullptr)
+        const auto rawProc = reinterpret_cast<void*>(GetProcAddress(hModDxgiDebug, "DXGIGetDebugInterface"));
+        const auto getDebugInterface = reinterpret_cast<GetDebugInterface>(rawProc);
+        if (getDebugInterface == nullptr)
         {
             throw Core::Platform::WindowException("Failed to locate 'DXGIGetDebugInterface' export in 'dxgidebug.dll'.", GetLastError());
         }
 
-        const auto hResult = dxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &_queue);
+        const auto hResult = getDebugInterface(IID_PPV_ARGS(&_queue));
         if (FAILED(hResult))
         {
             throw GraphicsException("Failed to create DXGI debug info queue interface.", hResult);
         }
     }
 
-    void DXGIDebugQueue::SetMarker() noexcept
+    void GraphicsDebugQueue::SetMarker() noexcept
     {
         _next = _queue->GetNumStoredMessages(DXGI_DEBUG_ALL);
     }
 
-    std::vector<std::string> DXGIDebugQueue::ReadMessages() const
+    std::vector<std::string> GraphicsDebugQueue::ReadMessages() const
     {
         std::vector<std::string> messages;
         const auto end = _queue->GetNumStoredMessages(DXGI_DEBUG_ALL);

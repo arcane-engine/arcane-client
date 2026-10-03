@@ -10,10 +10,10 @@ namespace Graphics
         : WindowException(message, 0, location), _hResult(hResult)
     {}
 
-    GraphicsException::GraphicsException(const std::string& message, const HRESULT hResult, Device& device, const std::source_location& location) noexcept
+    GraphicsException::GraphicsException(const std::string& message, const HRESULT hResult, const Device& device, const std::source_location& location) noexcept
         : WindowException(message, 0, location), _hResult(hResult)
     {
-        for (const auto& informationMessage : device.GetDebugQueue().ReadMessages())
+        for (const auto& informationMessage : device.GetDebugMessages())
         {
             _information += informationMessage + "\n\n";
         }

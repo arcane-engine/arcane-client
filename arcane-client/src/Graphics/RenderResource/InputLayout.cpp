@@ -15,7 +15,7 @@ namespace Graphics
         }
     }
 
-    void InputLayout::Bind(Device& device, const RenderContext& renderContext) noexcept
+    void InputLayout::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
         auto& active = device.GetContextCache().InputLayout;
         auto* target = _inputLayout.Get();

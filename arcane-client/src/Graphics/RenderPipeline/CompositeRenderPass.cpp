@@ -27,7 +27,7 @@ namespace Graphics
             {  1.0f, -1.0f, 0.0f,  1.0f, 1.0f }
         };
 
-        std::vector<unsigned int> indexBuffer = {
+        const std::vector<unsigned int> indexBuffer = {
             0, 1, 2,
             2, 1, 3
         };
@@ -44,7 +44,7 @@ namespace Graphics
             .Build();
     }
 
-    void CompositeRenderPass::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
+    void CompositeRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, RenderContext& renderContext)
     {
         _renderObject.Bind(device, renderContext);
         _renderObject.Draw(device);

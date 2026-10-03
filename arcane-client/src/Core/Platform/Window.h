@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <optional>
-#include <string>
 
 #include "Core/Input/Keyboard.h"
 #include "Core/Input/Mouse.h"

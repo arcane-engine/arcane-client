@@ -12,10 +12,10 @@ namespace Core
     Application::Application(const int width, const int height) :
         _window(width, height),
         _device(_window.GetWindowHandle(), width, height),
+        _camera(width, height),
         _shaderLibrary(_device),
         _textureLibrary(_device),
-        _samplerLibrary(_device),
-        _camera(width, height)
+        _samplerLibrary(_device)
     {
         _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary);
 
@@ -71,8 +71,8 @@ namespace Core
 
         while (const auto event = _window.GetMouse().ReadRawEvent())
         {
-            const auto x = _window.GetMouse().GetSmoothDelta(event->GetX());
-            const auto y = _window.GetMouse().GetSmoothDelta(event->GetY());
+            const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetX()));
+            const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetY()));
             _camera.Rotate(-y, x, 0.0f);
         }
 
@@ -87,11 +87,11 @@ namespace Core
 
         _renderQueue.Add(_cameraObject);
 
-        for (auto x = -20.0f; x <= 20.0f; x += 2.0f)
+        for (auto x = -10; x <= 10; x++)
         {
-            for (auto y = -20.0f; y <= 20.0f; y += 2.0f)
+            for (auto y = -10; y <= 10; y++)
             {
-                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(x, y, 0.0f));
+                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 2), static_cast<float>(y * 2), 0.0f));
             }
         }
 

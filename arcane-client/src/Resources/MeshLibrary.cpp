@@ -21,7 +21,7 @@ namespace Resources
         return _indices;
     }
 
-    Mesh* MeshLibrary::GetMesh(const std::string& name)
+    const Mesh& MeshLibrary::GetMesh(const std::string& name)
     {
         auto it = _meshes.find(name);
         if (it == _meshes.end())
@@ -30,12 +30,12 @@ namespace Resources
             it = _meshes.find(name);
         }
 
-        return it->second.get();
+        return it->second;
     }
 
     void MeshLibrary::LoadTexture(const std::string& name)
     {
-        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-tools\data\{}.bin)", name)));
+        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name)));
 
         auto vertices = std::vector<Graphics::Vertex>{};
         auto indices = std::vector<unsigned int>{};
@@ -60,6 +60,6 @@ namespace Resources
             indices.push_back(index);
         }
 
-        _meshes[name] = std::make_unique<Mesh>(vertices, indices);
+        _meshes.emplace(name, Mesh(vertices, indices));
     }
 }

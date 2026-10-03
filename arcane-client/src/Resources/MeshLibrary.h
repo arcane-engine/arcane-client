@@ -23,11 +23,11 @@ namespace Resources
     class MeshLibrary
     {
     public:
-        [[nodiscard]] Mesh* GetMesh(const std::string& name);
+        [[nodiscard]] const Mesh& GetMesh(const std::string& name);
 
     private:
         void LoadTexture(const std::string& name);
 
-        std::unordered_map<std::string, std::unique_ptr<Mesh>> _meshes;
+        std::unordered_map<std::string, Mesh> _meshes;
     };
 }

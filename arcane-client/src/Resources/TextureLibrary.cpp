@@ -32,33 +32,33 @@ namespace Resources
 
     void TextureLibrary::LoadTexture(const std::string& name)
     {
-        const std::filesystem::path path = std::format(R"(C:\arcane\arcane-client\x64\Debug\{}.png)", name);
+        auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.png)", name);
 
         Microsoft::WRL::ComPtr<IWICBitmapDecoder> decoder;
-        auto hResult = _wicFactory->CreateDecoderFromFilename(path.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
+        auto hResult = _wicFactory->CreateDecoderFromFilename(std::filesystem::path(path).c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to open texture file for '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to open texture file for '{}'.", path), hResult, _device);
         }
 
         Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> frame;
         hResult = decoder->GetFrame(0, &frame);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to get frame for texture '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to get frame for texture '{}'.", path), hResult, _device);
         }
 
         Microsoft::WRL::ComPtr<IWICFormatConverter> converter;
         hResult = _wicFactory->CreateFormatConverter(&converter);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create format converter for texture '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create format converter for texture '{}'.", path), hResult, _device);
         }
 
         hResult = converter->Initialize(frame.Get(), GUID_WICPixelFormat32bppRGBA, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeMedianCut);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to convert pixel format for texture '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to convert pixel format for texture '{}'.", path), hResult, _device);
         }
 
         UINT width = 0;
@@ -66,7 +66,7 @@ namespace Resources
         hResult = converter->GetSize(&width, &height);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to get size for texture '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to get size for texture '{}'.", path), hResult, _device);
         }
 
         const auto stride = width * 4;
@@ -76,7 +76,7 @@ namespace Resources
         hResult = converter->CopyPixels(nullptr, stride, size, pixelData.data());
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to copy pixels for texture '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to copy pixels for texture '{}'.", path), hResult, _device);
         }
 
         D3D11_TEXTURE2D_DESC desc = {};

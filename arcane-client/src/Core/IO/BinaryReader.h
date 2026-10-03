@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 namespace Core::IO
 {
@@ -14,6 +15,7 @@ namespace Core::IO
         [[nodiscard]] int ReadInt() const;
         [[nodiscard]] unsigned int ReadUInt() const;
         [[nodiscard]] float ReadFloat() const;
+        [[nodiscard]] std::string ReadString() const;
 
     private:
         std::unique_ptr<Stream> _stream;

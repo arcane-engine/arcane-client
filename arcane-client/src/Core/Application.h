@@ -6,6 +6,7 @@
 #include "Graphics/RenderPipeline.h"
 #include "Graphics/RenderQueue.h"
 #include "Graphics/Camera/Camera.h"
+#include "Resources/MaterialLibrary.h"
 #include "Resources/MeshLibrary.h"
 #include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
@@ -32,6 +33,7 @@ namespace Core
         Graphics::Camera _camera;
         Resources::ShaderLibrary _shaderLibrary;
         Resources::TextureLibrary _textureLibrary;
+        Resources::MaterialLibrary _materialLibrary;
         Resources::MeshLibrary _meshLibrary;
         Resources::SamplerLibrary _samplerLibrary;
         Graphics::RenderObject _cameraObject;

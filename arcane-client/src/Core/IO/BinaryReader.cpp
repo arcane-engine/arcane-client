@@ -34,4 +34,15 @@ namespace Core::IO
 
         return value;
     }
+
+    std::string BinaryReader::ReadString() const
+    {
+        unsigned int length = {};
+
+        _stream->Read(reinterpret_cast<char*>(&length), sizeof(length));
+        std::string result(length, '\0');
+        _stream->Read(result.data(), length);
+
+        return result;
+    }
 }

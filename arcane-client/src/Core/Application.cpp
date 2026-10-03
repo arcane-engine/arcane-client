@@ -30,16 +30,17 @@ namespace Core
             .Build();
 
         const auto mesh = _meshLibrary.GetMesh("Cube");
+        const auto material = _materialLibrary.GetMaterial("Default");
 
         _object = Graphics::RenderObjectBuilder(_device)
-            .WithVertexShader(_shaderLibrary.GetVertexShader("Texture"))
-            .WithPixelShader(_shaderLibrary.GetPixelShader("Texture"))
-            .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob("Texture"))
-            .WithVertexBuffer(mesh->GetVertices())
-            .WithIndexBuffer(mesh->GetIndices())
+            .WithVertexShader(_shaderLibrary.GetVertexShader(material.VertexShader))
+            .WithPixelShader(_shaderLibrary.GetPixelShader(material.PixelShader))
+            .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob(material.VertexShader))
+            .WithVertexBuffer(mesh.GetVertices())
+            .WithIndexBuffer(mesh.GetIndices())
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
             .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-            .WithTexture(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo)
+            .WithTexture(_textureLibrary.GetTexture(material.AlbedoTexture), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
             .Build();
     }

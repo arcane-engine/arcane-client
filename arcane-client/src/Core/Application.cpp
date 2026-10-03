@@ -25,26 +25,18 @@ namespace Core
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
-        const std::vector<Graphics::Vertex> vertexBuffer = {
-            {  0.0f,  1.0f,  5.0f,  0.5f,  1.0f },
-            {  1.0f, -1.0f,  5.0f,  1.0f,  0.0f },
-            { -1.0f, -1.0f,  5.0f,  0.0f,  0.0f }
-        };
-
-        const std::vector<unsigned int> indexBuffer = {
-            0, 1, 2
-        };
-
         _cameraObject = Graphics::RenderObjectBuilder(_device)
             .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
             .Build();
+
+        const auto mesh = _meshLibrary.GetMesh("Cube");
 
         _object = Graphics::RenderObjectBuilder(_device)
             .WithVertexShader(_shaderLibrary.GetVertexShader("Texture"))
             .WithPixelShader(_shaderLibrary.GetPixelShader("Texture"))
             .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob("Texture"))
-            .WithVertexBuffer(vertexBuffer)
-            .WithIndexBuffer(indexBuffer)
+            .WithVertexBuffer(mesh->GetVertices())
+            .WithIndexBuffer(mesh->GetIndices())
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
             .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
             .WithTexture(_textureLibrary.GetTexture("Texture"), Resources::TextureBindingSlot::Albedo)
@@ -73,6 +65,7 @@ namespace Core
         {
             const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetX()));
             const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetY()));
+
             _camera.Rotate(-y, x, 0.0f);
         }
 
@@ -87,11 +80,11 @@ namespace Core
 
         _renderQueue.Add(_cameraObject);
 
-        for (auto x = -10; x <= 10; x++)
+        for (auto x = -5; x <= 5; x++)
         {
-            for (auto y = -10; y <= 10; y++)
+            for (auto y = -5; y <= 5; y++)
             {
-                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 2), static_cast<float>(y * 2), 0.0f));
+                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), static_cast<float>(y * 4), 5.0f));
             }
         }
 

@@ -150,6 +150,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Resources\MeshLibrary.cpp" />
+    <ClCompile Include="src\Core\IO\BinaryReader.cpp" />
+    <ClCompile Include="src\Core\IO\FileStream.cpp" />
     <ClCompile Include="src\Resources\SamplerLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderObjectBuilder.inl" />
     <ClCompile Include="src\Graphics\DeviceContextCache.cpp" />
@@ -200,8 +203,12 @@
     <ClCompile Include="src\Graphics\RenderResource\Texture.cpp" />
     <ClCompile Include="src\Math\Vector3.cpp" />
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
+    <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Resources\MeshLibrary.h" />
+    <ClInclude Include="src\Core\IO\BinaryReader.h" />
+    <ClInclude Include="src\Core\IO\FileStream.h" />
     <ClInclude Include="src\Resources\SamplerLibrary.h" />
     <ClInclude Include="src\Graphics\RenderObjectBuilder.h" />
     <ClInclude Include="src\Graphics\DeviceContextCache.h" />
@@ -252,6 +259,7 @@
     <ClInclude Include="src\Graphics\RenderResource\Texture.h" />
     <ClInclude Include="src\Math\Vector3.h" />
     <ClInclude Include="src\Resources\TextureLibrary.h" />
+    <ClInclude Include="src\Core\IO\Stream.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">

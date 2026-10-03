@@ -1,0 +1,33 @@
+#pragma once
+#include <memory>
+#include <string>
+#include <unordered_map>
+
+#include "Graphics/Vertex.h"
+
+namespace Resources
+{
+    class Mesh
+    {
+    public:
+        Mesh(std::vector<Graphics::Vertex> vertices, std::vector<unsigned int> indices);
+
+        [[nodiscard]] const std::vector<Graphics::Vertex>& GetVertices() const;
+        [[nodiscard]] const std::vector<unsigned int>& GetIndices() const;
+
+    private:
+        std::vector<Graphics::Vertex> _vertices;
+        std::vector<unsigned int> _indices;
+    };
+
+    class MeshLibrary
+    {
+    public:
+        [[nodiscard]] Mesh* GetMesh(const std::string& name);
+
+    private:
+        void LoadTexture(const std::string& name);
+
+        std::unordered_map<std::string, std::unique_ptr<Mesh>> _meshes;
+    };
+}

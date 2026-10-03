@@ -14,7 +14,7 @@ namespace Resources
     {
     }
 
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> ShaderLibrary::GetVertexShader(const std::string& name)
+    const Microsoft::WRL::ComPtr<ID3D11VertexShader>& ShaderLibrary::GetVertexShader(std::string_view name)
     {
         auto it = _vertexShaders.find(name);
         if (it == _vertexShaders.end())
@@ -26,7 +26,7 @@ namespace Resources
         return it->second;
     }
 
-    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(const std::string& name)
+    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(std::string_view name)
     {
         auto it = _vertexShaderBlobs.find(name);
         if (it == _vertexShaderBlobs.end())
@@ -38,7 +38,7 @@ namespace Resources
         return it->second.Get();
     }
 
-    Microsoft::WRL::ComPtr<ID3D11PixelShader> ShaderLibrary::GetPixelShader(const std::string& name)
+    const Microsoft::WRL::ComPtr<ID3D11PixelShader>& ShaderLibrary::GetPixelShader(const std::string_view name)
     {
         auto it = _pixelShaders.find(name);
         if (it == _pixelShaders.end())
@@ -50,7 +50,7 @@ namespace Resources
         return it->second;
     }
 
-    void ShaderLibrary::LoadVertexShader(const std::string& name)
+    void ShaderLibrary::LoadVertexShader(std::string_view name)
     {
         const auto buffer = Core::File::Read(std::format(R"(C:\arcane\arcane-client\x64\Debug\{}VS.cso)", name));
 
@@ -71,11 +71,11 @@ namespace Resources
             throw Graphics::GraphicsException(std::format("Failed to create vertex shader '{}'.", name), hResult, _device);
         }
 
-        _vertexShaders[name] = shader;
-        _vertexShaderBlobs[name] = blob;
+        _vertexShaders.emplace(name, shader);
+        _vertexShaderBlobs.emplace(name, blob);
     }
 
-    void ShaderLibrary::LoadPixelShader(const std::string& name)
+    void ShaderLibrary::LoadPixelShader(std::string_view name)
     {
         const auto buffer = Core::File::Read(std::format(R"(C:\arcane\arcane-client\x64\Debug\{}PS.cso)", name));
 
@@ -87,6 +87,6 @@ namespace Resources
             throw Graphics::GraphicsException(std::format("Failed to create pixel shader '{}'.", name), hResult, _device);
         }
 
-        _pixelShaders[name] = shader;
+        _pixelShaders.emplace(name, shader);
     }
 }

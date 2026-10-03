@@ -6,6 +6,8 @@
 #include <wincodec.h>
 #include <wrl/client.h>
 
+#include "Core/StringHash.h"
+
 namespace Graphics
 {
     class Device;
@@ -24,13 +26,13 @@ namespace Resources
     public:
         explicit TextureLibrary(Graphics::Device& device);
 
-        Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> GetTexture(const std::string& name);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetTexture(std::string_view name);
 
     private:
-        void LoadTexture(const std::string& name);
+        void LoadTexture(std::string_view name);
 
         Graphics::Device& _device;
         Microsoft::WRL::ComPtr<IWICImagingFactory> _wicFactory;
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> _textures;
+        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>, Core::StringHash, std::equal_to<>> _textures;
     };
 }

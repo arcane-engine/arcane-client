@@ -18,7 +18,7 @@ namespace Resources
         }
     }
 
-    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> TextureLibrary::GetTexture(const std::string& name)
+    const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& TextureLibrary::GetTexture(const std::string_view name)
     {
         auto it = _textures.find(name);
         if (it == _textures.end())
@@ -30,7 +30,7 @@ namespace Resources
         return it->second;
     }
 
-    void TextureLibrary::LoadTexture(const std::string& name)
+    void TextureLibrary::LoadTexture(std::string_view name)
     {
         auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.png)", name);
 
@@ -108,6 +108,6 @@ namespace Resources
             throw Graphics::GraphicsException(std::format("Failed to create shader resource view for '{}'.", name), hResult, _device);
         }
 
-        _textures[name] = view;
+        _textures.emplace(name, view);
     }
 }

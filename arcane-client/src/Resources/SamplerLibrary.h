@@ -23,7 +23,7 @@ namespace Resources
     public:
         explicit SamplerLibrary(Graphics::Device& device);
 
-        Microsoft::WRL::ComPtr<ID3D11SamplerState> GetSampler(SamplerType type);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11SamplerState>& GetSampler(SamplerType type);
 
     private:
         void CreateSampler(SamplerType type, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE address);

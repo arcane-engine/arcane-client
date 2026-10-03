@@ -21,7 +21,7 @@ namespace Resources
         return _indices;
     }
 
-    const Mesh& MeshLibrary::GetMesh(const std::string& name)
+    const Mesh& MeshLibrary::GetMesh(const std::string_view name)
     {
         auto it = _meshes.find(name);
         if (it == _meshes.end())
@@ -33,7 +33,7 @@ namespace Resources
         return it->second;
     }
 
-    void MeshLibrary::LoadTexture(const std::string& name)
+    void MeshLibrary::LoadTexture(std::string_view name)
     {
         const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name)));
 

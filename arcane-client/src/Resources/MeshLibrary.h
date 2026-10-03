@@ -1,9 +1,10 @@
 #pragma once
-#include <memory>
+
 #include <string>
 #include <unordered_map>
 
 #include "Graphics/Vertex.h"
+#include "Core/StringHash.h"
 
 namespace Resources
 {
@@ -23,11 +24,11 @@ namespace Resources
     class MeshLibrary
     {
     public:
-        [[nodiscard]] const Mesh& GetMesh(const std::string& name);
+        [[nodiscard]] const Mesh& GetMesh(std::string_view name);
 
     private:
-        void LoadTexture(const std::string& name);
+        void LoadTexture(std::string_view name);
 
-        std::unordered_map<std::string, Mesh> _meshes;
+        std::unordered_map<std::string, Mesh, Core::StringHash, std::equal_to<>> _meshes;
     };
 }

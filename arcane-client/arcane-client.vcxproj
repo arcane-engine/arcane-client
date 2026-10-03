@@ -203,10 +203,12 @@
     <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
     <ClCompile Include="src\Graphics\RenderResource\Texture.cpp" />
     <ClCompile Include="src\Math\Vector3.cpp" />
+    <ClCompile Include="src\Core\StringHash.cpp" />
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\StringHash.h" />
     <ClInclude Include="src\Resources\MaterialLibrary.h" />
     <ClInclude Include="src\Resources\MeshLibrary.h" />
     <ClInclude Include="src\Core\IO\BinaryReader.h" />

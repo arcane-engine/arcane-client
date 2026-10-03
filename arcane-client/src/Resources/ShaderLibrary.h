@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <wrl/client.h>
 
+#include "Core/StringHash.h"
+
 namespace Graphics
 {
     class Device;
@@ -17,18 +19,18 @@ namespace Resources
     public:
         explicit ShaderLibrary(Graphics::Device& device);
 
-        Microsoft::WRL::ComPtr<ID3D11VertexShader> GetVertexShader(const std::string& name);
-        ID3DBlob* GetVertexShaderBlob(const std::string& name);
-        Microsoft::WRL::ComPtr<ID3D11PixelShader> GetPixelShader(const std::string& name);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11VertexShader>& GetVertexShader(std::string_view name);
+        [[nodiscard]] ID3DBlob* GetVertexShaderBlob(std::string_view name);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11PixelShader>& GetPixelShader(std::string_view name);
 
     private:
-        void LoadVertexShader(const std::string& name);
-        void LoadPixelShader(const std::string& name);
+        void LoadVertexShader(std::string_view name);
+        void LoadPixelShader(std::string_view name);
 
         Graphics::Device& _device;
 
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11VertexShader>> _vertexShaders;
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3DBlob>> _vertexShaderBlobs;
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> _pixelShaders;
+        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11VertexShader>, Core::StringHash, std::equal_to<>> _vertexShaders;
+        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3DBlob>, Core::StringHash, std::equal_to<>> _vertexShaderBlobs;
+        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>, Core::StringHash, std::equal_to<>> _pixelShaders;
     };
 }

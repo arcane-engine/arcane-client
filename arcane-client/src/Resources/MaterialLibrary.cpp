@@ -8,7 +8,7 @@
 
 namespace Resources
 {
-    const Material& MaterialLibrary::GetMaterial(const std::string& name)
+    const Material& MaterialLibrary::GetMaterial(const std::string_view name)
     {
         auto it = _materials.find(name);
         if (it == _materials.end())
@@ -20,7 +20,7 @@ namespace Resources
         return it->second;
     }
 
-    void MaterialLibrary::LoadMaterial(const std::string& name)
+    void MaterialLibrary::LoadMaterial(std::string_view name)
     {
         const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-data\materials\{}.bin)", name)));
 

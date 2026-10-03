@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "Core/StringHash.h"
+
 namespace Resources
 {
     struct Material
@@ -15,11 +17,11 @@ namespace Resources
     class MaterialLibrary
     {
     public:
-        [[nodiscard]] const Material& GetMaterial(const std::string& name);
+        [[nodiscard]] const Material& GetMaterial(std::string_view name);
 
     private:
-        void LoadMaterial(const std::string& name);
+        void LoadMaterial(std::string_view name);
 
-        std::unordered_map<std::string, Material> _materials;
+        std::unordered_map<std::string, Material, Core::StringHash, std::equal_to<>> _materials;
     };
 }

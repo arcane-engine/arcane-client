@@ -45,7 +45,7 @@ namespace Core::Platform
         void HandleRawInputMessage(LPARAM lParam);
         void HandleMouseMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
-        static RECT GetAdjustedWindowRect(int width, int height);
+        [[nodiscard]] static RECT GetAdjustedWindowRect(int width, int height);
 
         [[nodiscard]] static bool IsAutoRepeat(LPARAM lParam) noexcept;
 

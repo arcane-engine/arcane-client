@@ -6,7 +6,7 @@
 #include <wincodec.h>
 #include <wrl/client.h>
 
-#include "Core/StringHash.h"
+#include "Core/Common/StringHash.h"
 
 namespace Graphics
 {

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-#include "Stream.h"
+#include "Core/IO/Stream.h"
 
 namespace Core::IO
 {

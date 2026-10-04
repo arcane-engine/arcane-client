@@ -24,7 +24,7 @@ namespace Graphics
         const auto hResult = device.GetDevice()->CreateBuffer(&desc, nullptr, &_buffer);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Unable to create empty constant buffer.", hResult, device);
+            throw GraphicsException("Unable to create empty constant buffer.", hResult, device.GetDebugMessages());
         }
     }
 

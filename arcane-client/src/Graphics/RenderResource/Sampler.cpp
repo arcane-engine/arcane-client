@@ -1,4 +1,4 @@
-#include "Sampler.h"
+#include "Graphics/RenderResource/Sampler.h"
 
 #include "Graphics/Device.h"
 

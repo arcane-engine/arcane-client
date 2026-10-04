@@ -3,7 +3,7 @@
 #include <source_location>
 #include <string>
 
-#include "Core/Exception.h"
+#include "Core/Common/Exception.h"
 
 namespace Core::Platform
 {

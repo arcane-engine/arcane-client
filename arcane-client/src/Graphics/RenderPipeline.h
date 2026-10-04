@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "RenderPipeline/RenderPass.h"
+#include "Graphics/RenderPipeline/RenderPass.h"
 
 namespace Resources
 {

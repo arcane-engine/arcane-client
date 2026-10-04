@@ -27,7 +27,7 @@ namespace Graphics
         const auto hResult = device.GetDevice()->CreateRenderTargetView(texture, nullptr, &_renderTargetView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target view for back buffer.", hResult, device);
+            throw GraphicsException("Failed to create render target view for back buffer.", hResult, device.GetDebugMessages());
         }
     }
 
@@ -56,7 +56,7 @@ namespace Graphics
         auto hResult = device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &texture);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target texture.", hResult, device);
+            throw GraphicsException("Failed to create render target texture.", hResult, device.GetDebugMessages());
         }
 
         //
@@ -71,7 +71,7 @@ namespace Graphics
         hResult = device.GetDevice()->CreateRenderTargetView(texture.Get(), &renderTargetViewDesc, &_renderTargetView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create render target view.", hResult, device);
+            throw GraphicsException("Failed to create render target view.", hResult, device.GetDebugMessages());
         }
 
         //
@@ -81,7 +81,7 @@ namespace Graphics
         hResult = device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &_shaderResourceView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create shader resource view.", hResult, device);
+            throw GraphicsException("Failed to create shader resource view.", hResult, device.GetDebugMessages());
         }
     }
 

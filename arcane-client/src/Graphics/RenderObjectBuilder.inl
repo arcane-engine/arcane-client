@@ -36,11 +36,10 @@ namespace Graphics
     RenderObjectBuilder& RenderObjectBuilder::WithVertexBuffer(const std::vector<T>& vertices)
     {
         _renderObject.Add(std::make_unique<VertexBuffer>(_device, vertices));
-
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithIndexBuffer(const std::vector<unsigned int>& indexBuffer)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithIndexBuffer(const std::span<const unsigned int>& indexBuffer)
     {
         _renderObject.SetIndexCount(static_cast<UINT>(indexBuffer.size()));
         _renderObject.Add(std::make_unique<IndexBuffer>(_device, indexBuffer));
@@ -55,7 +54,7 @@ namespace Graphics
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithInputLayout(const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayout, ID3DBlob* vertexShaderBlob)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithInputLayout(const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob)
     {
         _renderObject.Add(std::make_unique<InputLayout>(_device, inputLayout, vertexShaderBlob));
 

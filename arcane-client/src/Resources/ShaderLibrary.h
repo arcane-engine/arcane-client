@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <wrl/client.h>
 
-#include "Core/StringHash.h"
+#include "Core/Common/StringHash.h"
 
 namespace Graphics
 {

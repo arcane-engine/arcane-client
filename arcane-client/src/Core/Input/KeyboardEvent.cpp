@@ -2,22 +2,17 @@
 
 namespace Core::Input
 {
-    KeyboardEvent::KeyboardEvent(const Type type, const std::uint8_t keyCode) noexcept
-        : _type(type), _keyCode(keyCode)
+    KeyboardEvent::KeyboardEvent(const KeyboardEventType type, const std::uint8_t keyCode) noexcept
+        : Type(type), KeyCode(keyCode)
     {}
 
     bool KeyboardEvent::IsKeyDown() const noexcept
     {
-        return _type == Type::KeyDown;
+        return Type == KeyboardEventType::KeyDown;
     }
 
     bool KeyboardEvent::IsKeyUp() const noexcept
     {
-        return _type == Type::KeyUp;
-    }
-
-    std::uint8_t KeyboardEvent::GetKeyCode() const noexcept
-    {
-        return _keyCode;
+        return Type == KeyboardEventType::KeyUp;
     }
 }

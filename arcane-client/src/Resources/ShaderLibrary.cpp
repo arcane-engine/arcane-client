@@ -3,7 +3,7 @@
 #include <d3dcompiler.h>
 #include <format>
 
-#include "Core/Storage/File.h"
+#include "Core/IO/File.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 
@@ -59,7 +59,7 @@ namespace Resources
         auto hResult = D3DCreateBlob(buffer.size(), &blob);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to load vertex shader '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to load vertex shader '{}'.", name), hResult, _device.GetDebugMessages());
         }
         memcpy(blob->GetBufferPointer(), buffer.data(), buffer.size());
 
@@ -68,7 +68,7 @@ namespace Resources
         hResult = _device.GetDevice()->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &shader);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create vertex shader '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create vertex shader '{}'.", name), hResult, _device.GetDebugMessages());
         }
 
         _vertexShaders.emplace(name, shader);
@@ -84,7 +84,7 @@ namespace Resources
         const auto hResult = _device.GetDevice()->CreatePixelShader(buffer.data(), buffer.size(), nullptr, &shader);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create pixel shader '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create pixel shader '{}'.", name), hResult, _device.GetDebugMessages());
         }
 
         _pixelShaders.emplace(name, shader);

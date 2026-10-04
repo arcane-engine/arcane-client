@@ -11,7 +11,7 @@ namespace Core::Input
         if (!_keyState[key])
         {
             _keyState[key] = true;
-            _buffer.emplace(KeyboardEvent::Type::KeyDown, key);
+            _buffer.emplace(KeyboardEventType::KeyDown, key);
             TrimBuffer();
         }
     }
@@ -20,7 +20,7 @@ namespace Core::Input
     {
         _keyState[key] = false;
         _keyDown[key] = false;
-        _buffer.emplace(KeyboardEvent::Type::KeyUp, key);
+        _buffer.emplace(KeyboardEventType::KeyUp, key);
         TrimBuffer();
     }
 

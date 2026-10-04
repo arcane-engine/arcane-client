@@ -1,18 +1,12 @@
 #pragma once
 
-
 namespace Core::Input
 {
-    class MouseRawEvent
+    struct  MouseRawEvent
     {
-    public:
+        int X;
+        int Y;
+
         MouseRawEvent(int x, int y) noexcept;
-
-        [[nodiscard]] int GetX() const noexcept;
-        [[nodiscard]] int GetY() const noexcept;
-
-    private:
-        int _x;
-        int _y;
     };
 }

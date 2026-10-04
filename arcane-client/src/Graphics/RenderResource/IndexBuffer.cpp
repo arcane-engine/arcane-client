@@ -1,11 +1,11 @@
-#include "IndexBuffer.h"
+#include "Graphics/RenderResource/IndexBuffer.h"
 
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 
 namespace Graphics
 {
-    IndexBuffer::IndexBuffer(const Device& device, const std::vector<unsigned int>& indexBuffer)
+    IndexBuffer::IndexBuffer(const Device& device, const std::span<const unsigned int>& indexBuffer)
         : _count(static_cast<UINT>(indexBuffer.size()))
     {
         D3D11_BUFFER_DESC desc = {};
@@ -20,7 +20,7 @@ namespace Graphics
         const auto hResult = device.GetDevice()->CreateBuffer(&desc, &data, &_indexBuffer);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Unable to crete index buffer.", hResult, device);
+            throw GraphicsException("Unable to crete index buffer.", hResult, device.GetDebugMessages());
         }
     }
 

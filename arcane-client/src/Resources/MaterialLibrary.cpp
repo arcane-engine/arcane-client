@@ -26,9 +26,9 @@ namespace Resources
         const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(path));
 
         auto material = Material{};
-        material.VertexShader = reader.ReadString();
-        material.PixelShader = reader.ReadString();
-        material.AlbedoTexture = reader.ReadString();
+        material.Shaders.VertexShader = reader.ReadString();
+        material.Shaders.PixelShader = reader.ReadString();
+        material.Textures.Albedo = reader.ReadString();
 
         _materials.emplace(name, std::move(material));
     }

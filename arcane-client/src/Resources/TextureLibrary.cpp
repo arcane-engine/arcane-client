@@ -14,7 +14,7 @@ namespace Resources
         const HRESULT hResult = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&_wicFactory));
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException("Failed to create WIC imaging factory.", hResult, _device);
+            throw Graphics::GraphicsException("Failed to create WIC imaging factory.", hResult, _device.GetDebugMessages());
         }
     }
 
@@ -38,27 +38,27 @@ namespace Resources
         auto hResult = _wicFactory->CreateDecoderFromFilename(std::filesystem::path(path).c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to open texture file for '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to open texture file for '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> frame;
         hResult = decoder->GetFrame(0, &frame);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to get frame for texture '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to get frame for texture '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         Microsoft::WRL::ComPtr<IWICFormatConverter> converter;
         hResult = _wicFactory->CreateFormatConverter(&converter);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create format converter for texture '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create format converter for texture '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         hResult = converter->Initialize(frame.Get(), GUID_WICPixelFormat32bppRGBA, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeMedianCut);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to convert pixel format for texture '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to convert pixel format for texture '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         UINT width = 0;
@@ -66,7 +66,7 @@ namespace Resources
         hResult = converter->GetSize(&width, &height);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to get size for texture '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to get size for texture '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         const auto stride = width * 4;
@@ -76,7 +76,7 @@ namespace Resources
         hResult = converter->CopyPixels(nullptr, stride, size, pixelData.data());
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to copy pixels for texture '{}'.", path), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to copy pixels for texture '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         D3D11_TEXTURE2D_DESC desc = {};
@@ -97,7 +97,7 @@ namespace Resources
         hResult = _device.GetDevice()->CreateTexture2D(&desc, &initData, &texture);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create texture 2D for '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create texture 2D for '{}'.", name), hResult, _device.GetDebugMessages());
         }
 
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> view;
@@ -105,7 +105,7 @@ namespace Resources
 
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create shader resource view for '{}'.", name), hResult, _device);
+            throw Graphics::GraphicsException(std::format("Failed to create shader resource view for '{}'.", name), hResult, _device.GetDebugMessages());
         }
 
         _textures.emplace(name, view);

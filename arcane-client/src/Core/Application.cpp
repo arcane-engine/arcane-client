@@ -3,7 +3,6 @@
 #include "Graphics/RenderContext.h"
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
-#include "Graphics/Vertex.h"
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 
@@ -20,11 +19,11 @@ namespace Core
     {
         _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary);
 
-        const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
+        constexpr std::array inputLayout =
         {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+            D3D11_INPUT_ELEMENT_DESC { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            D3D11_INPUT_ELEMENT_DESC { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            D3D11_INPUT_ELEMENT_DESC { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
         _cameraObject = Graphics::RenderObjectBuilder(_device)
@@ -35,15 +34,15 @@ namespace Core
         const auto material = _materialLibrary.GetMaterial("Default");
 
         _object = Graphics::RenderObjectBuilder(_device)
-            .WithVertexShader(_shaderLibrary.GetVertexShader(material.VertexShader))
-            .WithPixelShader(_shaderLibrary.GetPixelShader(material.PixelShader))
-            .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob(material.VertexShader))
+            .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader))
+            .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
+            .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob(material.Shaders.VertexShader))
             .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
             .WithVertexBuffer(mesh.GetVertices())
             .WithIndexBuffer(mesh.GetIndices())
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
             .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-            .WithTexture(_textureLibrary.GetTexture(material.AlbedoTexture), Resources::TextureBindingSlot::Albedo)
+            .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
             .Build();
     }
@@ -67,8 +66,8 @@ namespace Core
 
         while (const auto event = _window.GetMouse().ReadRawEvent())
         {
-            const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetX()));
-            const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->GetY()));
+            const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->X));
+            const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->Y));
 
             _camera.Rotate(-y, x, 0.0f);
         }

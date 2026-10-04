@@ -3,15 +3,25 @@
 #include <string>
 #include <unordered_map>
 
-#include "Core/StringHash.h"
+#include "Core/Common/StringHash.h"
 
 namespace Resources
 {
-    struct Material
+    struct Shaders
     {
         std::string VertexShader;
         std::string PixelShader;
-        std::string AlbedoTexture;
+    };
+
+    struct Textures
+    {
+        std::string Albedo;
+    };
+
+    struct Material
+    {
+        Shaders Shaders;
+        Textures Textures;
     };
 
     class MaterialLibrary

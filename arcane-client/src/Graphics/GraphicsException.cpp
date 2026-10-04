@@ -10,12 +10,12 @@ namespace Graphics
         : WindowException(message, 0, location), _hResult(hResult)
     {}
 
-    GraphicsException::GraphicsException(const std::string_view message, const HRESULT hResult, const Device& device, const std::source_location& location) noexcept
+    GraphicsException::GraphicsException(const std::string_view message, const HRESULT hResult, const std::span<const std::string> debugMessages, const std::source_location& location) noexcept
         : WindowException(message, 0, location), _hResult(hResult)
     {
-        for (const auto& informationMessage : device.GetDebugMessages())
+        for (const auto& debugMessage : debugMessages)
         {
-            _information += informationMessage + "\n\n";
+            _information += std::format("{}\n\n", debugMessage);
         }
     }
 

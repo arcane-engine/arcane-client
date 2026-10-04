@@ -92,7 +92,7 @@ namespace Core::Input
         _x = x;
         _y = y;
 
-        _eventBuffer.emplace(MouseEvent::Type::Move, _x, _y, false, false);
+        _eventBuffer.emplace(MouseEventType::Move, _x, _y, false, false);
 
         TrimEventBuffer();
     }
@@ -108,7 +108,7 @@ namespace Core::Input
     {
         _inWindow = true;
 
-        _eventBuffer.emplace(MouseEvent::Type::Enter, _x, _y, false, false);
+        _eventBuffer.emplace(MouseEventType::Enter, _x, _y, false, false);
 
         TrimEventBuffer();
     }
@@ -117,7 +117,7 @@ namespace Core::Input
     {
         _inWindow = false;
 
-        _eventBuffer.emplace(MouseEvent::Type::Leave, _x, _y, false, false);
+        _eventBuffer.emplace(MouseEventType::Leave, _x, _y, false, false);
 
         TrimEventBuffer();
     }
@@ -126,7 +126,7 @@ namespace Core::Input
     {
         _leftPressed = true;
 
-        _eventBuffer.emplace(MouseEvent::Type::LeftDown, x, y, true, false);
+        _eventBuffer.emplace(MouseEventType::LeftDown, x, y, true, false);
 
         TrimEventBuffer();
     }
@@ -135,7 +135,7 @@ namespace Core::Input
     {
         _leftPressed = false;
 
-        _eventBuffer.emplace(MouseEvent::Type::LeftUp, x, y, false, false);
+        _eventBuffer.emplace(MouseEventType::LeftUp, x, y, false, false);
 
         TrimEventBuffer();
     }
@@ -144,7 +144,7 @@ namespace Core::Input
     {
         _rightPressed = true;
 
-        _eventBuffer.emplace(MouseEvent::Type::RightDown, x, y, false, true);
+        _eventBuffer.emplace(MouseEventType::RightDown, x, y, false, true);
 
         TrimEventBuffer();
     }
@@ -153,21 +153,21 @@ namespace Core::Input
     {
         _rightPressed = false;
 
-        _eventBuffer.emplace(MouseEvent::Type::RightUp, x, y, false, false);
+        _eventBuffer.emplace(MouseEventType::RightUp, x, y, false, false);
 
         TrimEventBuffer();
     }
 
     void Mouse::OnWheelUp(int x, int y)
     {
-        _eventBuffer.emplace(MouseEvent::Type::WheelUp, x, y, false, false);
+        _eventBuffer.emplace(MouseEventType::WheelUp, x, y, false, false);
 
         TrimEventBuffer();
     }
 
     void Mouse::OnWheelDown(int x, int y)
     {
-        _eventBuffer.emplace(MouseEvent::Type::WheelDown, x, y, false, false);
+        _eventBuffer.emplace(MouseEventType::WheelDown, x, y, false, false);
 
         TrimEventBuffer();
     }

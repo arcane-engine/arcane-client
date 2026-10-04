@@ -2,32 +2,7 @@
 
 namespace Core::Input
 {
-    MouseEvent::MouseEvent(const Type type, const int x, const int y, const bool left, const bool right) noexcept
-        : _type(type), _x(x), _y(y), _left(left), _right(right)
+    MouseEvent::MouseEvent(const MouseEventType type, const int x, const int y, const bool leftPressed, const bool rightPressed) noexcept
+        : Type(type), X(x), Y(y), LeftPressed(leftPressed), RightPressed(rightPressed)
     {}
-
-    MouseEvent::Type MouseEvent::GetType() const noexcept
-    {
-        return _type;
-    }
-
-    int MouseEvent::GetX() const noexcept
-    {
-        return _x;
-    }
-
-    int MouseEvent::GetY() const noexcept
-    {
-        return _y;
-    }
-
-    bool MouseEvent::IsLeftPressed() const noexcept
-    {
-        return _left;
-    }
-
-    bool MouseEvent::IsRightPressed() const noexcept
-    {
-        return _right;
-    }
 }

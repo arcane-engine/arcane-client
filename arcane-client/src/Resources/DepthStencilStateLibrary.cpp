@@ -1,5 +1,6 @@
-#include "DepthStencilStateLibrary.h"
+#include "Resources/DepthStencilStateLibrary.h"
 
+#include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 
 namespace Resources
@@ -27,7 +28,7 @@ namespace Resources
         const auto hResult = device.GetDevice()->CreateDepthStencilState(&desc, &_states[static_cast<std::size_t>(type)]);
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException("Failed to create depth stencil state.", hResult, device);
+            throw Graphics::GraphicsException("Failed to create depth stencil state.", hResult, device.GetDebugMessages());
         }
     }
 }

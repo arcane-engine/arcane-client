@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <span>
 #include <wrl/client.h>
 
 #include "Graphics/RenderResource/RenderResource.h"
@@ -12,7 +12,7 @@ namespace Graphics
     class IndexBuffer final : public RenderResource
     {
     public:
-        IndexBuffer(const Device& device, const std::vector<unsigned int>& indexBuffer);
+        IndexBuffer(const Device& device, const std::span<const unsigned int>& indexBuffer);
 
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 

@@ -75,7 +75,7 @@ namespace Graphics
         auto hResult = _swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to resize swap chain buffer.", hResult, *this);
+            throw GraphicsException("Failed to resize swap chain buffer.", hResult, this->GetDebugMessages());
         }
         _geometryRenderTarget->Create(*this, width, height);
 
@@ -84,7 +84,7 @@ namespace Graphics
         hResult = _swapChain->GetBuffer(0, IID_PPV_ARGS(&texture));
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create back buffer texture.", hResult, *this);
+            throw GraphicsException("Failed to create back buffer texture.", hResult, this->GetDebugMessages());
         }
         _compositeRenderTarget->Create(*this, texture.Get());
 
@@ -116,7 +116,7 @@ namespace Graphics
         );
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create D3D11 device.", hResult, *this);
+            throw GraphicsException("Failed to create D3D11 device.", hResult, this->GetDebugMessages());
         }
     }
 
@@ -127,7 +127,7 @@ namespace Graphics
         auto hResult = _device.As(&dxgiDevice);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to query DXGI device.", hResult, *this);
+            throw GraphicsException("Failed to query DXGI device.", hResult, this->GetDebugMessages());
         }
 
         SetMarker();
@@ -135,7 +135,7 @@ namespace Graphics
         hResult = dxgiDevice->GetAdapter(&dxgiAdapter);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to get DXGI adapter.", hResult, *this);
+            throw GraphicsException("Failed to get DXGI adapter.", hResult, this->GetDebugMessages());
         }
 
         SetMarker();
@@ -143,7 +143,7 @@ namespace Graphics
         hResult = dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to get DXGI factory.", hResult, *this);
+            throw GraphicsException("Failed to get DXGI factory.", hResult, this->GetDebugMessages());
         }
 
         DXGI_SWAP_CHAIN_DESC1 desc;
@@ -164,14 +164,14 @@ namespace Graphics
         hResult = dxgiFactory->CreateSwapChainForHwnd(_device.Get(), hWnd, &desc, nullptr, nullptr, &_swapChain);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create swap chain.", hResult, *this);
+            throw GraphicsException("Failed to create swap chain.", hResult, this->GetDebugMessages());
         }
 
         SetMarker();
         hResult = dxgiFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to disable ALT+ENTER fullscreen toggle.", hResult, *this);
+            throw GraphicsException("Failed to disable ALT+ENTER fullscreen toggle.", hResult, this->GetDebugMessages());
         }
     }
 
@@ -188,7 +188,7 @@ namespace Graphics
         const auto hResult = _swapChain->GetBuffer(0, IID_PPV_ARGS(&texture));
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create back buffer texture.", hResult, *this);
+            throw GraphicsException("Failed to create back buffer texture.", hResult, this->GetDebugMessages());
         }
 
         _compositeRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());

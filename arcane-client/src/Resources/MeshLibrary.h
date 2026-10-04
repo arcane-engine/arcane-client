@@ -3,8 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "Core/Common/StringHash.h"
 #include "Graphics/Vertex.h"
-#include "Core/StringHash.h"
 
 namespace Resources
 {

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <span>
 #include <Windows.h>
 
 #include "Core/Platform/WindowException.h"
-#include "Graphics/Device.h"
 
 namespace Graphics
 {
@@ -11,7 +11,7 @@ namespace Graphics
     {
     public:
         GraphicsException(std::string_view message, HRESULT hResult, const std::source_location& location = std::source_location::current()) noexcept;
-        GraphicsException(std::string_view message, HRESULT hResult, const Device& device, const std::source_location& location = std::source_location::current()) noexcept;
+        GraphicsException(std::string_view message, HRESULT hResult, std::span<const std::string> debugMessages, const std::source_location& location = std::source_location::current()) noexcept;
 
         [[nodiscard]] const char* GetType() const noexcept override;
         [[nodiscard]] std::string GetDescription() const override;

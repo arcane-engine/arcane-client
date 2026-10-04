@@ -1,5 +1,5 @@
 
-#include "Core/StringHash.h"
+#include "Core/Common/StringHash.h"
 
 namespace Core
 {

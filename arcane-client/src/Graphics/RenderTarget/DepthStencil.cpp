@@ -36,7 +36,7 @@ namespace Graphics
         auto hResult = device.GetDevice()->CreateTexture2D(&textureDesc, nullptr, &depthStencilTexture);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create texture.", hResult, device);
+            throw GraphicsException("Failed to create texture.", hResult, device.GetDebugMessages());
         }
 
         //
@@ -51,7 +51,7 @@ namespace Graphics
         hResult = device.GetDevice()->CreateDepthStencilView(depthStencilTexture.Get(), &depthStencilViewDesc, &_depthStencilView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create depth stencil view.", hResult, device);
+            throw GraphicsException("Failed to create depth stencil view.", hResult, device.GetDebugMessages());
         }
 
         //
@@ -67,7 +67,7 @@ namespace Graphics
         hResult = device.GetDevice()->CreateShaderResourceView(depthStencilTexture.Get(), &shaderResourceViewDesc, &_shaderResourceView);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Failed to create shader resource view.", hResult, device);
+            throw GraphicsException("Failed to create shader resource view.", hResult, device.GetDebugMessages());
         }
     }
 

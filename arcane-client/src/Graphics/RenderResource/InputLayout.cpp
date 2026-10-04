@@ -5,13 +5,13 @@
 
 namespace Graphics
 {
-    InputLayout::InputLayout(const Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputLayout, ID3DBlob* blob)
+    InputLayout::InputLayout(const Device& device, const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* blob)
     {
         device.SetMarker();
         const auto hResult = device.GetDevice()->CreateInputLayout(inputLayout.data(), static_cast<UINT>(inputLayout.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &_inputLayout);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Unable to create input layout.", hResult, device);
+            throw GraphicsException("Unable to create input layout.", hResult, device.GetDebugMessages());
         }
     }
 

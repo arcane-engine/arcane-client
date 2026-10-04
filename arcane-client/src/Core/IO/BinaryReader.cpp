@@ -1,6 +1,6 @@
-#include "BinaryReader.h"
+#include "Core/IO/BinaryReader.h"
 
-#include "Stream.h"
+#include "Core/IO/Stream.h"
 
 namespace Core::IO
 {

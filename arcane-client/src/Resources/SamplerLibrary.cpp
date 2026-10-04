@@ -1,4 +1,4 @@
-#include "SamplerLibrary.h"
+#include "Resources/SamplerLibrary.h"
 
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
@@ -35,7 +35,7 @@ namespace Resources
         const auto hResult = _device.GetDevice()->CreateSamplerState(&desc, samplerState.GetAddressOf());
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException("Unable to create sampler state.", hResult, _device);
+            throw Graphics::GraphicsException("Unable to create sampler state.", hResult, _device.GetDebugMessages());
         }
 
         _samplers[static_cast<size_t>(type)] = std::move(samplerState);

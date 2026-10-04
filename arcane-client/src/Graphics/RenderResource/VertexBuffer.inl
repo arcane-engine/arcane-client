@@ -23,7 +23,7 @@ namespace Graphics
         const auto hResult = device.GetDevice()->CreateBuffer(&desc, &data, &_vertexBuffer);
         if (FAILED(hResult))
         {
-            throw GraphicsException("Unable to create vertex buffer.", hResult, device);
+            throw GraphicsException("Unable to create vertex buffer.", hResult, device.GetDebugMessages());
         }
     }
 

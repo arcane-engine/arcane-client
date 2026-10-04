@@ -1,7 +1,7 @@
 #include <Windows.h>
 
 #include "Core/Application.h"
-#include "Core/Exception.h"
+#include "Core/Common/Exception.h"
 
 int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
 {

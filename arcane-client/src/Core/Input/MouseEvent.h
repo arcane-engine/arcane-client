@@ -4,35 +4,27 @@
 
 namespace Core::Input
 {
-    class MouseEvent
+    enum class MouseEventType : std::uint8_t
     {
-    public:
-        enum class Type : std::uint8_t
-        {
-            LeftDown,
-            LeftUp,
-            RightDown,
-            RightUp,
-            WheelUp,
-            WheelDown,
-            Move,
-            Enter,
-            Leave
-        };
+        LeftDown,
+        LeftUp,
+        RightDown,
+        RightUp,
+        WheelUp,
+        WheelDown,
+        Move,
+        Enter,
+        Leave
+    };
 
-        MouseEvent(Type type, int x, int y, bool left, bool right) noexcept;
+    struct MouseEvent
+    {
+        MouseEventType Type;
+        int X;
+        int Y;
+        bool LeftPressed;
+        bool RightPressed;
 
-        [[nodiscard]] Type GetType() const noexcept;
-        [[nodiscard]] int GetX() const noexcept;
-        [[nodiscard]] int GetY() const noexcept;
-        [[nodiscard]] bool IsLeftPressed() const noexcept;
-        [[nodiscard]] bool IsRightPressed() const noexcept;
-
-    private:
-        Type _type;
-        int _x;
-        int _y;
-        bool _left;
-        bool _right;
+        MouseEvent(MouseEventType type, int x, int y, bool leftPressed, bool rightPressed) noexcept;
     };
 }

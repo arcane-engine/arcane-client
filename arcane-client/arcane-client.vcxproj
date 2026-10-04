@@ -170,7 +170,7 @@
     <ClCompile Include="src\Graphics\RenderResource\Sampler.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\CompositeRenderPass.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\IndexBuffer.cpp" />
-    <ClCompile Include="src\Core\Storage\File.cpp" />
+    <ClCompile Include="src\Core\IO\File.cpp" />
     <ClCompile Include="src\Resources\ShaderLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderPipeline\GeometryRenderPass.cpp" />
     <ClCompile Include="src\Graphics\RenderQueue\RenderCommand.cpp" />
@@ -194,7 +194,7 @@
     <ClCompile Include="src\Core\Input\MouseEvent.cpp" />
     <ClCompile Include="src\Core\Input\KeyboardEvent.cpp" />
     <ClCompile Include="src\Core\Input\Keyboard.cpp" />
-    <ClCompile Include="src\Core\Exception.cpp" />
+    <ClCompile Include="src\Core\Common\Exception.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Core\Platform\Window.cpp" />
@@ -205,14 +205,14 @@
     <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
     <ClCompile Include="src\Graphics\RenderResource\Texture.cpp" />
     <ClCompile Include="src\Math\Vector3.cpp" />
-    <ClCompile Include="src\Core\StringHash.cpp" />
+    <ClCompile Include="src\Core\Common\StringHash.cpp" />
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Resources\DepthStencilStateLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\DepthStencilState.h" />
-    <ClInclude Include="src\Core\StringHash.h" />
+    <ClInclude Include="src\Core\Common\StringHash.h" />
     <ClInclude Include="src\Resources\MaterialLibrary.h" />
     <ClInclude Include="src\Resources\MeshLibrary.h" />
     <ClInclude Include="src\Core\IO\BinaryReader.h" />
@@ -231,7 +231,7 @@
     <ClInclude Include="src\Graphics\RenderResource\Sampler.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\CompositeRenderPass.h" />
     <ClInclude Include="src\Graphics\RenderResource\IndexBuffer.h" />
-    <ClInclude Include="src\Core\Storage\File.h" />
+    <ClInclude Include="src\Core\IO\File.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Resources\ShaderLibrary.h" />
     <ClInclude Include="src\Graphics\RenderPipeline\GeometryRenderPass.h" />
@@ -256,7 +256,7 @@
     <ClInclude Include="src\Core\Input\MouseEvent.h" />
     <ClInclude Include="src\Core\Input\KeyboardEvent.h" />
     <ClInclude Include="src\Core\Input\Keyboard.h" />
-    <ClInclude Include="src\Core\Exception.h" />
+    <ClInclude Include="src\Core\Common\Exception.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Platform\Window.h" />
     <ClInclude Include="src\Core\Platform\WindowClass.h" />

@@ -42,18 +42,23 @@ namespace Resources
         auto indices = std::vector<unsigned int>{};
 
         auto count = reader.ReadInt();
+        vertices.reserve(count);
         for (auto i = 0; i < count; i++)
         {
             const auto x = reader.ReadFloat();
             const auto y = reader.ReadFloat();
             const auto z = reader.ReadFloat();
+            const auto nx = reader.ReadFloat();
+            const auto ny = reader.ReadFloat();
+            const auto nz = reader.ReadFloat();
             const auto u = reader.ReadFloat();
             const auto v = reader.ReadFloat();
             
-            vertices.push_back(Graphics::Vertex{ x, y, z, u, v });
+            vertices.push_back(Graphics::Vertex{ x, y, z, nx, ny, nz, u, v });
         }
 
         count = reader.ReadInt();
+        indices.reserve(count);
         for (auto i = 0; i < count; i++)
         {
             const auto index = reader.ReadUInt();

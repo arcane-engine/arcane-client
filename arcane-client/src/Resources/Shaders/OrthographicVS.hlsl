@@ -6,18 +6,18 @@ struct VSInput
     float2 uv0 : TEXCOORD0;
 };
 
-struct VSResult
+struct VSOutput
 {
     float4 position : SV_POSITION;
     float2 uv0 : TEXCOORD0;
 };
 
-VSResult main(VSInput input)
+VSOutput main(VSInput input)
 {
-    VSResult result;
+    VSOutput output;
 
-    result.position = float4(input.position, 1.0f);
-    result.uv0 = input.uv0;
+    output.position = float4(input.position, 1.0f);
+    output.uv0 = input.uv0;
 
-    return result;
+    return output;
 }

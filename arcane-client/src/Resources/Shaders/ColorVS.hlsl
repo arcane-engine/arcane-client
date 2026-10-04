@@ -5,21 +5,24 @@
 struct VSInput
 {
     float3 position : POSITION;
+    float3 normal : NORMAL;
     float2 uv : TEXCOORD0;
 };
 
-struct VSResult
+struct VSOutput
 {
     float4 position : SV_POSITION;
+    float3 normal : NORMAL;
     float2 uv : TEXCOORD0;
 };
 
-VSResult main(VSInput input)
+VSOutput main(VSInput input)
 {
-    VSResult result;
+    VSOutput output;
 
-    result.position = mul(float4(input.position, 1.0f), worldViewProjectionMatrix);
-    result.uv = input.uv;
+    output.position = mul(float4(input.position, 1.0f), worldViewProjectionMatrix);
+    output.normal = normalize(mul(input.normal, (float3x3)worldMatrix));
+    output.uv = input.uv;
 
-    return result;
+    return output;
 }

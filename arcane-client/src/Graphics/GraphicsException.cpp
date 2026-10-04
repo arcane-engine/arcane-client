@@ -6,11 +6,11 @@
 
 namespace Graphics
 {
-    GraphicsException::GraphicsException(const std::string& message, const HRESULT hResult, const std::source_location& location) noexcept
+    GraphicsException::GraphicsException(const std::string_view message, const HRESULT hResult, const std::source_location& location) noexcept
         : WindowException(message, 0, location), _hResult(hResult)
     {}
 
-    GraphicsException::GraphicsException(const std::string& message, const HRESULT hResult, const Device& device, const std::source_location& location) noexcept
+    GraphicsException::GraphicsException(const std::string_view message, const HRESULT hResult, const Device& device, const std::source_location& location) noexcept
         : WindowException(message, 0, location), _hResult(hResult)
     {
         for (const auto& informationMessage : device.GetDebugMessages())
@@ -19,12 +19,12 @@ namespace Graphics
         }
     }
 
-    std::string GraphicsException::GetType() const noexcept
+    const char* GraphicsException::GetType() const noexcept
     {
         return "GraphicsException";
     }
 
-    std::string GraphicsException::GetDescription() const noexcept
+    std::string GraphicsException::GetDescription() const
     {
         auto result = std::format("{}\n\n{}\n{} (Line: {})", what(), TranslateErrorCode(_hResult), _filename, _line);
 

@@ -16,7 +16,7 @@ int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
     }
     catch (const Core::Exception& e)
     {
-        MessageBoxA(nullptr, e.GetDescription().c_str(), e.GetType().c_str(), MB_OK | MB_ICONERROR);
+        MessageBoxA(nullptr, e.GetDescription().c_str(), e.GetType(), MB_OK | MB_ICONERROR);
     }
     catch (const std::exception& e)
     {

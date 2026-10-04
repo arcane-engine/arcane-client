@@ -14,7 +14,7 @@ namespace Resources
     {
     }
 
-    const Microsoft::WRL::ComPtr<ID3D11VertexShader>& ShaderLibrary::GetVertexShader(std::string_view name)
+    const Microsoft::WRL::ComPtr<ID3D11VertexShader>& ShaderLibrary::GetVertexShader(const std::string_view name)
     {
         auto it = _vertexShaders.find(name);
         if (it == _vertexShaders.end())
@@ -26,7 +26,7 @@ namespace Resources
         return it->second;
     }
 
-    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(std::string_view name)
+    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(const std::string_view name)
     {
         auto it = _vertexShaderBlobs.find(name);
         if (it == _vertexShaderBlobs.end())

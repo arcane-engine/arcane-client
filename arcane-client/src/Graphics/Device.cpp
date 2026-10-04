@@ -202,7 +202,7 @@ namespace Graphics
         _deviceContext->RSSetViewports(1, &viewport);
     }
 
-    void Device::SetMarker()
+    void Device::SetMarker() const
     {
         _debugQueue.SetMarker();
     }

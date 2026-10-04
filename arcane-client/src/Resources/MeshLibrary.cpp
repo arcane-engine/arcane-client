@@ -35,7 +35,8 @@ namespace Resources
 
     void MeshLibrary::LoadTexture(std::string_view name)
     {
-        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name)));
+        auto path = std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name);
+        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(path));
 
         auto vertices = std::vector<Graphics::Vertex>{};
         auto indices = std::vector<unsigned int>{};

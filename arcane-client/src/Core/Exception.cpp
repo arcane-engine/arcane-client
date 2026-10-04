@@ -13,12 +13,12 @@ namespace Core
         return _message.c_str();
     }
 
-    std::string Exception::GetType() const noexcept
+    const char* Exception::GetType() const noexcept
     {
         return "Exception";
     }
 
-    std::string Exception::GetDescription() const noexcept
+    std::string Exception::GetDescription() const
     {
         return std::format("{}\n\n{} (Line: {})", _message, _filename, _line);
     }

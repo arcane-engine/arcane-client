@@ -1,5 +1,6 @@
 #include "Core/Storage/File.h"
 
+#include <filesystem>
 #include <format>
 #include <fstream>
 
@@ -7,9 +8,9 @@
 
 namespace Core
 {
-    std::vector<unsigned char> File::Read(const std::string& path)
+    std::vector<unsigned char> File::Read(std::string_view path)
     {
-        auto file = std::ifstream(path, std::ios::binary | std::ios::ate);
+        auto file = std::ifstream(std::filesystem::path(path), std::ios::binary | std::ios::ate);
         if (!file)
         {
             throw Exception(std::format("Failed to open file '{}'.", path));

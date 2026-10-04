@@ -22,7 +22,8 @@ namespace Resources
 
     void MaterialLibrary::LoadMaterial(std::string_view name)
     {
-        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(std::format(R"(C:\arcane\arcane-data\materials\{}.bin)", name)));
+        auto path = std::format(R"(C:\arcane\arcane-data\materials\{}.bin)", name);
+        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(path));
 
         auto material = Material{};
         material.VertexShader = reader.ReadString();

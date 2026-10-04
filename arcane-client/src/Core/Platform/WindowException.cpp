@@ -9,12 +9,12 @@ namespace Core::Platform
         : Exception(message, location), _errorCode(errorCode)
     {}
 
-    std::string WindowException::GetType() const noexcept
+    const char* WindowException::GetType() const noexcept
     {
         return "WindowException";
     }
 
-    std::string WindowException::GetDescription() const noexcept
+    std::string WindowException::GetDescription() const
     {
         return std::format("{}\n\n{}\n\n{} (Line: {})", what(), TranslateErrorCode(_errorCode), _filename, _line);
     }

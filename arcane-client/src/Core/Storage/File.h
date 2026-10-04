@@ -8,7 +8,7 @@ namespace Core
     class File
     {
     public:
-        static std::vector<unsigned char> Read(const std::string& path);
+        static std::vector<unsigned char> Read(std::string_view path);
     };
 }
 

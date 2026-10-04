@@ -2,8 +2,8 @@
 
 namespace Core::IO
 {
-    FileStream::FileStream(const std::string& path)
-        : _path(path), _stream(path, std::ios::binary | std::ios::in)
+    FileStream::FileStream(const std::string_view path)
+        : _path(path), _stream(_path, std::ios::binary | std::ios::in)
     {}
 
     std::streamsize FileStream::Read(char* buffer, const std::streamsize size)

@@ -83,9 +83,9 @@ namespace Core
 
         for (auto x = -5; x <= 5; x++)
         {
-            for (auto y = -5; y <= 5; y++)
+            for (auto z = -5; z <= 5; z++)
             {
-                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), static_cast<float>(y * 4), 5.0f));
+                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), -3.0f, static_cast<float>(z * 4)));
             }
         }
 

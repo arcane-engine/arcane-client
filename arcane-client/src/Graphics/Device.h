@@ -39,7 +39,7 @@ namespace Graphics
 
         void SetResolution(int width, int height);
 
-        void SetMarker();
+        void SetMarker() const;
 
     private:
         void CreateDevice();

@@ -12,8 +12,8 @@ namespace Core
 
         [[nodiscard]] const char* what() const noexcept override;
 
-        [[nodiscard]] virtual std::string GetType() const noexcept;
-        [[nodiscard]] virtual std::string GetDescription() const noexcept;
+        [[nodiscard]] virtual const char* GetType() const noexcept;
+        [[nodiscard]] virtual std::string GetDescription() const;
 
     protected:
         const char* _filename;

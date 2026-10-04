@@ -11,7 +11,7 @@ namespace Graphics
     class ConstantBuffer final : public RenderResource
     {
     public:
-        ConstantBuffer(Device& device, UINT slot, bool vertexShader = true, bool pixelShader = false);
+        ConstantBuffer(const Device& device, UINT slot, bool vertexShader = true, bool pixelShader = false);
 
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
         void Update(const Device& device, const T& data) const noexcept;

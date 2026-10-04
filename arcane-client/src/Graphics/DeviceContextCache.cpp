@@ -6,6 +6,7 @@ namespace Graphics
     {
         PixelShader = nullptr;
         VertexShader = nullptr;
+        DepthStencilState = nullptr;
         InputLayout = nullptr;
         IndexBuffer = nullptr;
         VertexBuffer = nullptr;
@@ -14,5 +15,10 @@ namespace Graphics
         Samplers.fill(nullptr);
         Textures.fill(nullptr);
         Topology = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
+    }
+
+    void DeviceContextCache::ResetTextures() noexcept
+    {
+        Textures.fill(nullptr);
     }
 }

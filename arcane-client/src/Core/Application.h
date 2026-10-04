@@ -6,6 +6,7 @@
 #include "Graphics/RenderPipeline.h"
 #include "Graphics/RenderQueue.h"
 #include "Graphics/Camera/Camera.h"
+#include "Resources/DepthStencilStateLibrary.h"
 #include "Resources/MaterialLibrary.h"
 #include "Resources/MeshLibrary.h"
 #include "Resources/SamplerLibrary.h"
@@ -36,6 +37,7 @@ namespace Core
         Resources::MaterialLibrary _materialLibrary;
         Resources::MeshLibrary _meshLibrary;
         Resources::SamplerLibrary _samplerLibrary;
+        Resources::DepthStencilStateLibrary _depthStencilStateLibrary;
         Graphics::RenderObject _cameraObject;
         Graphics::RenderObject _object;
     };

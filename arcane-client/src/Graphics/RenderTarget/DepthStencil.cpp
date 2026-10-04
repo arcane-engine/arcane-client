@@ -8,21 +8,6 @@ namespace Graphics
     DepthStencil::DepthStencil(Device& device, const int width, const int height)
         : _width(width), _height(height)
     {
-        //
-        // Create and set depth stencil state.
-        //
-        CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);
-        depthStencilDesc.DepthEnable = true;
-        depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-        depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-        device.SetMarker();
-        const auto hResult = device.GetDevice()->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
-        if (FAILED(hResult))
-        {
-            throw GraphicsException("Failed to create depth stencil state.", hResult, device);
-        }
-
         Create(device, width, height);
     }
 
@@ -98,7 +83,7 @@ namespace Graphics
 
     void DepthStencil::Clear(const Device& device) const
     {
-        device.GetDeviceContext()->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+        device.GetDeviceContext()->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
 
     void DepthStencil::Reset() noexcept

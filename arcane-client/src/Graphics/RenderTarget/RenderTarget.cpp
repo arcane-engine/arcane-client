@@ -5,18 +5,18 @@
 
 namespace Graphics
 {
-    RenderTarget::RenderTarget(Device& device, ID3D11Texture2D* texture)
+    RenderTarget::RenderTarget(const Device& device, ID3D11Texture2D* texture)
     {
         Create(device, texture);
     }
 
-    RenderTarget::RenderTarget(Device& device, const int width, const int height)
+    RenderTarget::RenderTarget(const Device& device, const int width, const int height)
         : _width(width), _height(height)
     {
         Create(device, width, height);
     }
 
-    void RenderTarget::Create(Device& device, ID3D11Texture2D* texture)
+    void RenderTarget::Create(const Device& device, ID3D11Texture2D* texture)
     {
         D3D11_TEXTURE2D_DESC desc;
         texture->GetDesc(&desc);
@@ -31,7 +31,7 @@ namespace Graphics
         }
     }
 
-    void RenderTarget::Create(Device& device, const int width, const int height)
+    void RenderTarget::Create(const Device& device, const int width, const int height)
     {
         _width = width;
         _height = height;

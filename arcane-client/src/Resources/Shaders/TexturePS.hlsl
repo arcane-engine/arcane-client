@@ -18,5 +18,5 @@ float4 main(PSInput input) : SV_TARGET
     float3 normalColor = input.normal * 0.5f + 0.5f;
     float4 albedoColor = albedoTexture.Sample(Sampler, input.uv0);
 
-    return float4(albedoColor * normalColor, 1.0f);
+    return float4(albedoColor.rgb * normalColor, 1.0f);
 }

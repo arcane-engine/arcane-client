@@ -2,6 +2,7 @@
 
 #include "Graphics/RenderObjectBuilder.h"
 
+#include "Graphics/RenderResource/DepthStencilState.h"
 #include "Graphics/RenderResource/IndexBuffer.h"
 #include "Graphics/RenderResource/InputLayout.h"
 #include "Graphics/RenderResource/PixelShader.h"
@@ -79,6 +80,13 @@ namespace Graphics
     RenderObjectBuilder& RenderObjectBuilder::WithConstantBuffer(UINT slot, bool vertexShader, bool pixelShader)
     {
         _renderObject.Add(std::make_unique<ConstantBuffer<T>>(_device, slot, vertexShader, pixelShader));
+
+        return *this;
+    }
+
+    inline RenderObjectBuilder& RenderObjectBuilder::WithDepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState)
+    {
+        _renderObject.Add(std::make_unique<DepthStencilState>(depthStencilState));
 
         return *this;
     }

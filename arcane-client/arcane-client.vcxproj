@@ -150,6 +150,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Resources\DepthStencilStateLibrary.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\DepthStencilState.cpp" />
     <ClCompile Include="src\Resources\MaterialLibrary.cpp" />
     <ClCompile Include="src\Resources\MeshLibrary.cpp" />
     <ClCompile Include="src\Core\IO\BinaryReader.cpp" />
@@ -208,6 +210,8 @@
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Resources\DepthStencilStateLibrary.h" />
+    <ClInclude Include="src\Graphics\RenderResource\DepthStencilState.h" />
     <ClInclude Include="src\Core\StringHash.h" />
     <ClInclude Include="src\Resources\MaterialLibrary.h" />
     <ClInclude Include="src\Resources\MeshLibrary.h" />

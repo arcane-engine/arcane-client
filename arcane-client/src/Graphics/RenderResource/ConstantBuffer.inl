@@ -11,7 +11,7 @@
 namespace Graphics
 {
     template <typename T>
-    ConstantBuffer<T>::ConstantBuffer(Device& device, const UINT slot, const bool vertexShader, const bool pixelShader)
+    ConstantBuffer<T>::ConstantBuffer(const Device& device, const UINT slot, const bool vertexShader, const bool pixelShader)
         : _vertexShader(vertexShader), _pixelShader(pixelShader), _slot(slot)
     {
         D3D11_BUFFER_DESC desc = {};

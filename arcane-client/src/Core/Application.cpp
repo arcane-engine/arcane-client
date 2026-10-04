@@ -15,9 +15,10 @@ namespace Core
         _camera(width, height),
         _shaderLibrary(_device),
         _textureLibrary(_device),
-        _samplerLibrary(_device)
+        _samplerLibrary(_device),
+        _depthStencilStateLibrary(_device)
     {
-        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary);
+        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary);
 
         const std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayout =
         {
@@ -37,6 +38,7 @@ namespace Core
             .WithVertexShader(_shaderLibrary.GetVertexShader(material.VertexShader))
             .WithPixelShader(_shaderLibrary.GetPixelShader(material.PixelShader))
             .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob(material.VertexShader))
+            .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
             .WithVertexBuffer(mesh.GetVertices())
             .WithIndexBuffer(mesh.GetIndices())
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
@@ -103,6 +105,6 @@ namespace Core
         _device.SetResolution(width, height);
         _camera.SetResolution(width, height);
 
-        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary);
+        _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary);
     }
 }

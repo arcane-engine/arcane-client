@@ -5,7 +5,7 @@
 
 namespace Graphics
 {
-    IndexBuffer::IndexBuffer(Device& device, const std::vector<unsigned int>& indexBuffer)
+    IndexBuffer::IndexBuffer(const Device& device, const std::vector<unsigned int>& indexBuffer)
         : _count(static_cast<UINT>(indexBuffer.size()))
     {
         D3D11_BUFFER_DESC desc = {};

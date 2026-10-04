@@ -10,10 +10,13 @@ namespace Graphics
 
     void VertexShader::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
-        if (device.GetContextCache().VertexShader != _vertexShader.Get())
+        auto& active = device.GetContextCache().VertexShader;
+        auto* target = _vertexShader.Get();
+
+        if (target != active)
         {
-            device.GetDeviceContext()->VSSetShader(_vertexShader.Get(), nullptr, 0);
-            device.GetContextCache().VertexShader = _vertexShader.Get();
+            device.GetDeviceContext()->VSSetShader(target, nullptr, 0);
+            active = target;
         }
     }
 }

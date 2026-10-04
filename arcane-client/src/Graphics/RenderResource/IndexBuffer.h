@@ -11,7 +11,7 @@ namespace Graphics
     class IndexBuffer final : public RenderResource
     {
     public:
-        IndexBuffer(Device& device, const std::vector<unsigned int>& indexBuffer);
+        IndexBuffer(const Device& device, const std::vector<unsigned int>& indexBuffer);
 
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 

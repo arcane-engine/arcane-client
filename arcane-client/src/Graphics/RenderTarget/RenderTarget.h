@@ -10,11 +10,11 @@ namespace Graphics
     class RenderTarget
     {
     public:
-        RenderTarget(Device& device, ID3D11Texture2D* texture);
-        RenderTarget(Device& device, int width, int height);
+        RenderTarget(const Device& device, ID3D11Texture2D* texture);
+        RenderTarget(const Device& device, int width, int height);
 
-        void Create(Device& device, ID3D11Texture2D* texture);
-        void Create(Device& device, int width, int height);
+        void Create(const Device& device, ID3D11Texture2D* texture);
+        void Create(const Device& device, int width, int height);
 
         [[nodiscard]] ID3D11RenderTargetView* GetRenderTargetView() const noexcept;
         [[nodiscard]] ID3D11ShaderResourceView* GetShaderResourceView() const noexcept;

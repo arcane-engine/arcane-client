@@ -8,6 +8,9 @@
 // Texture Slots
 #define TEX_REGISTER_ALBEDO t0
 
+#define TEX_REGISTER_RENDER_TARGET t0
+#define TEX_REGISTER_DEPTH_STENCIL t1
+
 // Sampler Slots
 #define SMP_REGISTER_MAIN   s0
 

@@ -38,6 +38,9 @@ namespace Graphics
         template<typename T>
         [[nodiscard]] RenderObjectBuilder& WithConstantBuffer(UINT slot = 1, bool vertexShader = true, bool pixelShader = false);
 
+        // Pipeline States
+        [[nodiscard]] RenderObjectBuilder& WithDepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState);
+
         [[nodiscard]] RenderObject Build();
 
     private:

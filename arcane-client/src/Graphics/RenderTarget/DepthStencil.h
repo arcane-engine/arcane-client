@@ -23,7 +23,6 @@ namespace Graphics
     private:
         int _width;
         int _height;
-        Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthStencilState;
         Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;
     };

@@ -5,7 +5,7 @@
 namespace Graphics
 {
     Texture::Texture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, const int slot)
-        : _slot(slot), _shaderResourceView(shaderResourceView)
+        : _shaderResourceView(shaderResourceView), _slot(slot)
     {}
 
     void Texture::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept

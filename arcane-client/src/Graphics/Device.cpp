@@ -1,8 +1,11 @@
 #include "Graphics/Device.h"
 
+#include <d3d11.h>
+#include <dxgi1_2.h>
+
 #include "Graphics/GraphicsException.h"
-#include "Graphics/RenderTarget/RenderTarget.h"
 #include "Graphics/RenderTarget/DepthStencil.h"
+#include "Graphics/RenderTarget/RenderTarget.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -16,6 +19,8 @@ namespace Graphics
         CreateRenderTargets(width, height);
         SetViewport(width, height);
     }
+
+    Device::~Device() = default;
 
     ID3D11Device* Device::GetDevice() const noexcept
     {

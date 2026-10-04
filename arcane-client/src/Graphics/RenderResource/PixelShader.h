@@ -1,14 +1,13 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
 
 #include "Graphics/RenderResource/RenderResource.h"
 
+struct ID3D11PixelShader;
+
 namespace Graphics
 {
-    class Device;
-
     class PixelShader final : public RenderResource
     {
     public:
@@ -17,7 +16,6 @@ namespace Graphics
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
-        static ID3D11PixelShader* _activePixelShader;
         Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
     };
 }

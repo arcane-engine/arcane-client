@@ -1,26 +1,26 @@
 #pragma once
 
-#include <d3d11.h>
-#include <dxgi1_2.h>
 #include <memory>
 #include <wrl/client.h>
 
 #include "Graphics/DeviceContextCache.h"
 #include "Graphics/GraphicsDebugQueue.h"
-#include "RenderTarget/DepthStencil.h"
+
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+struct IDXGISwapChain1;
 
 namespace Graphics
 {
     class DepthStencil;
     class RenderTarget;
-    class GraphicsException;
 
     class Device
     {
     public:
         Device(HWND hWnd, int width, int height);
 
-        ~Device() = default;
+        ~Device();
 
         Device(const Device&) = delete;
         Device(Device&&) = delete;

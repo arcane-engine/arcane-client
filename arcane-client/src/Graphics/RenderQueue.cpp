@@ -1,9 +1,9 @@
 #include "Graphics/RenderQueue.h"
-#include "Graphics/RenderObject.h"
 
 #include <DirectXMath.h>
 
-#include "RenderContext.h"
+#include "Graphics/RenderContext.h"
+#include "Graphics/RenderObject.h"
 
 namespace Graphics
 {

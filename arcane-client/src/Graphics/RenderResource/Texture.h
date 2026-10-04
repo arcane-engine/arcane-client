@@ -1,9 +1,10 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
 
-#include "RenderResource.h"
+#include "Graphics/RenderResource/RenderResource.h"
+
+struct ID3D11ShaderResourceView;
 
 namespace Graphics
 {
@@ -15,7 +16,7 @@ namespace Graphics
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 
     private:
-        int _slot;
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;
+        int _slot;
     };
 }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Device.h"
-#include "RenderObject.h"
-#include "RenderResource/ConstantBuffer.h"
-#include "RenderResource/VertexBuffer.h"
+#include "Graphics/Device.h"
+#include "Graphics/RenderObject.h"
+#include "Graphics/RenderResource/ConstantBuffer.h"
+#include "Graphics/RenderResource/VertexBuffer.h"
 #include "Resources/TextureLibrary.h"
 
 namespace Resources

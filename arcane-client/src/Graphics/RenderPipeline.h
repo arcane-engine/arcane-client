@@ -14,10 +14,6 @@ namespace Resources
 
 namespace Graphics
 {
-    class RenderContext;
-    class Device;
-    class RenderQueue;
-
     class RenderPipeline
     {
     public:

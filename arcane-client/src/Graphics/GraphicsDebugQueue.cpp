@@ -48,6 +48,8 @@ namespace Graphics
         }
     }
 
+    GraphicsDebugQueue::~GraphicsDebugQueue() = default;
+
     void GraphicsDebugQueue::SetMarker() noexcept
     {
         _next = _queue->GetNumStoredMessages(DXGI_DEBUG_ALL);

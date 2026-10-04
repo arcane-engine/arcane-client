@@ -1,14 +1,13 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
 
 #include "Graphics/RenderResource/RenderResource.h"
 
+struct ID3D11VertexShader;
+
 namespace Graphics
 {
-    class Device;
-
     class VertexShader final : public RenderResource
     {
     public:

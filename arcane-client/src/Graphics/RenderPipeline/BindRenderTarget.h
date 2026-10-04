@@ -8,7 +8,6 @@
 namespace Graphics
 {
     class DepthStencil;
-    class RenderTarget;
 
     class BindRenderTarget final : public RenderPass
     {

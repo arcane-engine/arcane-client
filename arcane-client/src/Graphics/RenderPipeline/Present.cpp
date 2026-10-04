@@ -1,5 +1,6 @@
 #include "Graphics/RenderPipeline/Present.h"
 
+#include <dxgi1_2.h>
 #include <intsafe.h>
 
 #include "Graphics/Device.h"

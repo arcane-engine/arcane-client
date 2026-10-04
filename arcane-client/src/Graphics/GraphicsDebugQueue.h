@@ -2,10 +2,11 @@
 
 #include <vector>
 #include <string>
-#include <dxgidebug.h>
 #include <wrl/client.h>
 
 #pragma comment(lib, "dxguid.lib")
+
+struct IDXGIInfoQueue;
 
 namespace Graphics
 {
@@ -14,7 +15,7 @@ namespace Graphics
     public:
         GraphicsDebugQueue();
         GraphicsDebugQueue(const GraphicsDebugQueue&) = delete;
-        ~GraphicsDebugQueue() = default;
+        ~GraphicsDebugQueue();
 
         GraphicsDebugQueue& operator=(const GraphicsDebugQueue&) = delete;
 

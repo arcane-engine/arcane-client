@@ -8,8 +8,6 @@
 
 namespace Graphics
 {
-    class Device;
-
     class InputLayout final : public RenderResource
     {
     public:

@@ -7,8 +7,8 @@
 
 namespace Graphics
 {
-    class RenderContext;
     class Device;
+    class RenderContext;
     class RenderObject;
 
     class RenderQueue

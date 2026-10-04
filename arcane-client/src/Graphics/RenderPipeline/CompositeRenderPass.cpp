@@ -6,6 +6,7 @@
 #include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/RenderResource/VertexBuffer.h"
+#include "Graphics/RenderTarget/DepthStencil.h"
 #include "Graphics/RenderTarget/RenderTarget.h"
 #include "Resources/DepthStencilStateLibrary.h"
 #include "Resources/SamplerLibrary.h"

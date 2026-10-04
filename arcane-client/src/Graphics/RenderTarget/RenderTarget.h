@@ -1,7 +1,10 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
+
+struct ID3D11Texture2D;
+struct ID3D11ShaderResourceView;
+struct ID3D11RenderTargetView;
 
 namespace Graphics
 {

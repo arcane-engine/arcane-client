@@ -1,9 +1,10 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
 
-#include "RenderResource.h"
+#include "Graphics/RenderResource/RenderResource.h"
+
+struct ID3D11DepthStencilState;
 
 namespace Graphics
 {

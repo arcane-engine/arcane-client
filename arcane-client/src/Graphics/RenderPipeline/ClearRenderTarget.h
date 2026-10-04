@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Graphics/RenderPipeline/RenderPass.h"
+#include "RenderPass.h"
 
 namespace Graphics
 {

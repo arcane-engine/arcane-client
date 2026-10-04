@@ -1,7 +1,9 @@
 #pragma once
 
-#include <d3d11.h>
 #include <wrl/client.h>
+
+struct ID3D11DepthStencilView;
+struct ID3D11ShaderResourceView;
 
 namespace Graphics
 {

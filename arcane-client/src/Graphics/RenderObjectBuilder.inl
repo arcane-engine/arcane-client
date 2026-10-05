@@ -10,6 +10,7 @@
 #include "Graphics/RenderResource/Texture.h"
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
+#include "RenderResource/InstanceVertexBuffer.h"
 #include "Resources/TextureLibrary.h"
 
 namespace Graphics
@@ -57,6 +58,13 @@ namespace Graphics
     inline RenderObjectBuilder& RenderObjectBuilder::WithInputLayout(const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob)
     {
         _renderObject.Add(std::make_unique<InputLayout>(_device, inputLayout, vertexShaderBlob));
+
+        return *this;
+    }
+
+    inline RenderObjectBuilder& RenderObjectBuilder::WithInstanceVertexBuffer(int slot)
+    {
+        _renderObject.Add(std::make_unique<InstanceVertexBuffer>(slot));
 
         return *this;
     }

@@ -11,28 +11,31 @@ namespace Resources
 {
     ShaderLibrary::ShaderLibrary(Graphics::Device& device)
         : _device(device)
-    {
-    }
+    {}
 
-    const Microsoft::WRL::ComPtr<ID3D11VertexShader>& ShaderLibrary::GetVertexShader(const std::string_view name)
+    const Microsoft::WRL::ComPtr<ID3D11VertexShader>& ShaderLibrary::GetVertexShader(const std::string_view name, const bool instanced)
     {
-        auto it = _vertexShaders.find(name);
+        const auto key = instanced ? std::format("{}Instanced", name) : std::string(name);
+
+        auto it = _vertexShaders.find(key);
         if (it == _vertexShaders.end())
         {
-            LoadVertexShader(name);
-            it = _vertexShaders.find(name);
+            LoadVertexShader(key);
+            it = _vertexShaders.find(key);
         }
 
         return it->second;
     }
 
-    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(const std::string_view name)
+    ID3DBlob* ShaderLibrary::GetVertexShaderBlob(const std::string_view name, const bool instanced)
     {
-        auto it = _vertexShaderBlobs.find(name);
+        const auto key = instanced ? std::format("{}Instanced", name) : std::string(name);
+
+        auto it = _vertexShaderBlobs.find(key);
         if (it == _vertexShaderBlobs.end())
         {
-            LoadVertexShader(name);
-            it = _vertexShaderBlobs.find(name);
+            LoadVertexShader(key);
+            it = _vertexShaderBlobs.find(key);
         }
 
         return it->second.Get();

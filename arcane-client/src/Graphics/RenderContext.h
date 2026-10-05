@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <span>
 #include <vector>
 
 namespace Graphics
@@ -22,5 +23,6 @@ namespace Graphics
         DirectX::XMMATRIX ViewProjectionMatrix;
         DirectX::XMMATRIX WorldViewProjectionMatrix;
         std::vector<Light> Lights;
+        std::span<const DirectX::XMMATRIX> InstanceMatrices;
     };
 }

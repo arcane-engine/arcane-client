@@ -23,6 +23,11 @@ namespace Graphics
         device.GetDeviceContext()->DrawIndexed(_indexCount, 0, 0);
     }
 
+    void RenderObject::Draw(const Device& device, const int instanceCount) const noexcept
+    {
+        device.GetDeviceContext()->DrawIndexedInstanced(_indexCount, instanceCount, 0, 0, 0);
+    }
+
     void RenderObject::SetIndexCount(const UINT indexCount) noexcept
     {
         _indexCount = indexCount;

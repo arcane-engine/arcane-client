@@ -34,7 +34,7 @@ namespace Core
         const auto mesh = _meshLibrary.GetMesh("Cube");
         const auto material = _materialLibrary.GetMaterial("Default");
 
-        _object = Graphics::RenderObjectBuilder(_device)
+        _object1 = Graphics::RenderObjectBuilder(_device)
             .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader))
             .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
             .WithInputLayout(inputLayout, _shaderLibrary.GetVertexShaderBlob(material.Shaders.VertexShader))
@@ -45,6 +45,31 @@ namespace Core
             .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
             .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+            .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
+            .Build();
+
+        constexpr D3D11_INPUT_ELEMENT_DESC inputLayout2[] =
+        {
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "INSTANCE_MATRIX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0,  D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+            { "INSTANCE_MATRIX", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+            { "INSTANCE_MATRIX", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+            { "INSTANCE_MATRIX", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 }
+        };
+
+        _object2 = Graphics::RenderObjectBuilder(_device)
+            .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader, true))
+            .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
+            .WithInputLayout(inputLayout2, _shaderLibrary.GetVertexShaderBlob(material.Shaders.VertexShader, true))
+            .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
+            .WithVertexBuffer(mesh.GetVertices())
+            .WithIndexBuffer(mesh.GetIndices())
+            .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+            .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
+            .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+            .WithInstanceVertexBuffer(1)
             .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
             .Build();
     }
@@ -91,13 +116,18 @@ namespace Core
 
         _renderQueue.Add(_cameraObject);
 
+        std::vector<DirectX::XMMATRIX> instanceMatrices;
+
         for (auto x = -5; x <= 5; x++)
         {
             for (auto z = -5; z <= 5; z++)
             {
-                _renderQueue.Add(_object, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), -3.0f, static_cast<float>(z * 4)));
+                _renderQueue.Add(_object1, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), -3.0f, static_cast<float>(z * 4)));
+                instanceMatrices.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(x, 2, z) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4), 6.0f, static_cast<float>(z * 4)));
             }
         }
+
+        _renderQueue.Add(_object2, instanceMatrices);
 
         _renderPipeline.Execute(_device, _renderQueue, context);
     }

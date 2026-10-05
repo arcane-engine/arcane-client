@@ -39,6 +39,7 @@ namespace Core
         Resources::SamplerLibrary _samplerLibrary;
         Resources::DepthStencilStateLibrary _depthStencilStateLibrary;
         Graphics::RenderObject _cameraObject;
-        Graphics::RenderObject _object;
+        Graphics::RenderObject _object1;
+        Graphics::RenderObject _object2;
     };
 }

@@ -19,8 +19,8 @@ namespace Resources
     public:
         explicit ShaderLibrary(Graphics::Device& device);
 
-        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11VertexShader>& GetVertexShader(std::string_view name);
-        [[nodiscard]] ID3DBlob* GetVertexShaderBlob(std::string_view name);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11VertexShader>& GetVertexShader(std::string_view name, bool instanced = false);
+        [[nodiscard]] ID3DBlob* GetVertexShaderBlob(std::string_view name, bool instanced = false);
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11PixelShader>& GetPixelShader(std::string_view name);
 
     private:

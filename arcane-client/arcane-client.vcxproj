@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderResource\InstanceVertexBuffer.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Data\LightBuffer.cpp" />
     <ClCompile Include="src\Resources\DepthStencilStateLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\DepthStencilState.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />
     <ClInclude Include="src\Resources\DepthStencilStateLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\DepthStencilState.h" />
@@ -279,6 +281,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\Resources\Shaders\ColorVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\TextureInstancedVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

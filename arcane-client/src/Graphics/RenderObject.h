@@ -20,6 +20,7 @@ namespace Graphics
         void Bind(Device& device, const RenderContext& renderContext) const noexcept;
 
         void Draw(const Device& device) const noexcept;
+        void Draw(const Device& device, int instanceCount) const noexcept;
 
         void SetIndexCount(UINT indexCount) noexcept;
         [[nodiscard]] UINT GetIndexCount() const noexcept;

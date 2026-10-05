@@ -18,4 +18,9 @@ namespace Math
     {
         return cosf(value);
     }
+
+    size_t Max(const size_t v1, const size_t v2)
+    {
+        return std::max(v1, v2);
+    }
 }

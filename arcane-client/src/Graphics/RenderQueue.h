@@ -16,8 +16,9 @@ namespace Graphics
     public:
         void Clear() noexcept;
 
-        void Add(const RenderObject& object);
-        void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix);
+        void Add(const RenderObject& object) noexcept;
+        void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix) noexcept;
+        void Add(const RenderObject& object, std::span<const DirectX::XMMATRIX> instanceMatrices) noexcept;
 
         void Execute(Device& device, RenderContext& renderContext) const noexcept;
 

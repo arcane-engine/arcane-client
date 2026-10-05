@@ -11,7 +11,7 @@ namespace Graphics
     class InputLayout final : public RenderResource
     {
     public:
-        InputLayout(const Device& device, const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* blob);
+        InputLayout(const Device& device, std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* blob);
 
         void Bind(Device& device, const RenderContext& renderContext) noexcept override;
 

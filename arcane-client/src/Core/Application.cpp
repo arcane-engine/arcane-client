@@ -4,6 +4,7 @@
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
+#include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 
 namespace Core
@@ -19,11 +20,11 @@ namespace Core
     {
         _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary);
 
-        constexpr std::array inputLayout =
+        constexpr D3D11_INPUT_ELEMENT_DESC inputLayout[] =
         {
-            D3D11_INPUT_ELEMENT_DESC { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            D3D11_INPUT_ELEMENT_DESC { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            D3D11_INPUT_ELEMENT_DESC { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
         _cameraObject = Graphics::RenderObjectBuilder(_device)
@@ -44,6 +45,7 @@ namespace Core
             .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
             .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
             .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+            .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
             .Build();
     }
 
@@ -80,6 +82,12 @@ namespace Core
         _camera.Update();
 
         auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+        context.Lights = {
+            { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
+            { {  8.0f, 4.0f, -8.0f, 1.0f }, { 0.6f, 0.8f, 1.0f, 1.0f } },
+            { { -8.0f, 4.0f,  8.0f, 1.0f }, { 1.0f, 0.6f, 0.6f, 1.0f } },
+            { {  8.0f, 4.0f,  8.0f, 1.0f }, { 0.6f, 1.0f, 0.6f, 1.0f } }
+        };
 
         _renderQueue.Add(_cameraObject);
 

@@ -33,9 +33,9 @@ namespace Graphics
     }
 
     template <typename T>
-    RenderObjectBuilder& RenderObjectBuilder::WithVertexBuffer(const std::vector<T>& vertices)
+    RenderObjectBuilder& RenderObjectBuilder::WithVertexBuffer(const std::vector<T>& vertexBuffer)
     {
-        _renderObject.Add(std::make_unique<VertexBuffer>(_device, vertices));
+        _renderObject.Add(std::make_unique<VertexBuffer>(_device, vertexBuffer));
         return *this;
     }
 

@@ -25,8 +25,8 @@ namespace Graphics
 
         // Geometry & Input Assembly
         template<typename T>
-        [[nodiscard]] RenderObjectBuilder& WithVertexBuffer(const std::vector<T>& vertices);
-        [[nodiscard]] RenderObjectBuilder& WithIndexBuffer(const std::span< const unsigned int>& indexBuffer);
+        [[nodiscard]] RenderObjectBuilder& WithVertexBuffer(const std::vector<T>& vertexBuffer);
+        [[nodiscard]] RenderObjectBuilder& WithIndexBuffer(const std::span<const unsigned int>& indexBuffer);
         [[nodiscard]] RenderObjectBuilder& WithTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
         [[nodiscard]] RenderObjectBuilder& WithInputLayout(std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob);
 

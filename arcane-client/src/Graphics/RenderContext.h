@@ -1,9 +1,16 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <vector>
 
 namespace Graphics
 {
+    struct Light
+    {
+        DirectX::XMFLOAT4 Position;
+        DirectX::XMFLOAT4 Color;
+    };
+
     class RenderContext
     {
     public:
@@ -14,5 +21,6 @@ namespace Graphics
         DirectX::XMMATRIX ProjectionMatrix;
         DirectX::XMMATRIX ViewProjectionMatrix;
         DirectX::XMMATRIX WorldViewProjectionMatrix;
+        std::vector<Light> Lights;
     };
 }

@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderResource\Data\LightBuffer.cpp" />
     <ClCompile Include="src\Resources\DepthStencilStateLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\DepthStencilState.cpp" />
     <ClCompile Include="src\Resources\MaterialLibrary.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />
     <ClInclude Include="src\Resources\DepthStencilStateLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\DepthStencilState.h" />
     <ClInclude Include="src\Core\Common\StringHash.h" />
@@ -309,7 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Resources\Shaders\Registers.hlsli" />
-    <None Include="src\Resources\Shaders\TransformBuffers.hlsli" />
+    <None Include="src\Resources\Shaders\ConstantBuffers.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

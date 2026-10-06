@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Network\NetworkClient.cpp" />
     <ClCompile Include="src\Resources\InputLayoutLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\InstanceVertexBuffer.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Data\LightBuffer.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="src\Core\IO\Stream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Network\NetworkClient.h" />
     <ClInclude Include="src\Resources\InputLayoutLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />

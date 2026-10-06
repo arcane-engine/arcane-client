@@ -1,6 +1,8 @@
+#define WIN32_LEAN_AND_MEAN
+
 #include "Core/Platform/WindowException.h"
 
-#include <Windows.h>
+#include <windows.h>
 #include <format>
 
 namespace Core::Platform

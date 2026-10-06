@@ -16,7 +16,7 @@ namespace Graphics
     {
     }
 
-    void InstanceVertexBuffer::Bind(Device& device, const RenderContext& renderContext) noexcept
+    void InstanceVertexBuffer::Bind(Device& device, const RenderContext& renderContext)
     {
         const auto matrices = renderContext.InstanceMatrices;
         if (matrices.empty())

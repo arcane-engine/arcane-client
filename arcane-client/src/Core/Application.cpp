@@ -19,6 +19,20 @@ namespace Core
         _depthStencilStateLibrary(_device),
         _inputLayoutLibrary(_device, _shaderLibrary)
     {
+        if (!_networkClient.Connect("127.0.0.1", 5000)) {
+            throw std::exception("Failed to connect to server.");
+        }
+
+        const std::string request = "Hello, I'm Client";
+        auto _ = _networkClient.SendPacket(request.data(), static_cast<uint32_t>(request.size()));
+
+        std::vector<char> responsePayload;
+        if (_networkClient.ReceivePacket(responsePayload))
+        {
+            std::string response(responsePayload.begin(), responsePayload.end());
+            SetWindowTextW(_window.GetWindowHandle(), std::wstring(response.begin(), response.end()).c_str());
+        }
+
         _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary, _inputLayoutLibrary);
 
         _cameraObject = Graphics::RenderObjectBuilder(_device)

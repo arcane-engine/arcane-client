@@ -1,7 +1,8 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
 
 #include <span>
-#include <Windows.h>
+#include <windows.h>
 
 #include "Core/Platform/WindowException.h"
 

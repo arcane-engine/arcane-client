@@ -6,6 +6,7 @@
 #include "Graphics/RenderPipeline.h"
 #include "Graphics/RenderQueue.h"
 #include "Graphics/Camera/Camera.h"
+#include "Network/NetworkClient.h"
 #include "Resources/DepthStencilStateLibrary.h"
 #include "Resources/InputLayoutLibrary.h"
 #include "Resources/MaterialLibrary.h"
@@ -30,6 +31,7 @@ namespace Core
 
         Platform::Window _window;
         Graphics::Device _device;
+        Network::NetworkClient _networkClient;
         Graphics::RenderPipeline _renderPipeline;
         Graphics::RenderQueue _renderQueue;
         Graphics::Camera _camera;

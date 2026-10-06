@@ -55,9 +55,9 @@ namespace Graphics
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithInputLayout(const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithInputLayout(const Microsoft::WRL::ComPtr<ID3D11InputLayout>& inputLayout)
     {
-        _renderObject.Add(std::make_unique<InputLayout>(_device, inputLayout, vertexShaderBlob));
+        _renderObject.Add(std::make_unique<InputLayout>(inputLayout));
 
         return *this;
     }

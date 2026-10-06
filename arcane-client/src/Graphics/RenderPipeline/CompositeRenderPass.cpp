@@ -9,19 +9,14 @@
 #include "Graphics/RenderTarget/DepthStencil.h"
 #include "Graphics/RenderTarget/RenderTarget.h"
 #include "Resources/DepthStencilStateLibrary.h"
+#include "Resources/InputLayoutLibrary.h"
 #include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
 
 namespace Graphics
 {
-    CompositeRenderPass::CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
+    CompositeRenderPass::CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
     {
-        constexpr D3D11_INPUT_ELEMENT_DESC inputLayout[] =
-        {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-        };
-
         const std::vector<CompositionVertex> vertexBuffer =
         {
             { -1.0f,  1.0f, 0.0f,  0.0f,  0.0f },
@@ -39,7 +34,7 @@ namespace Graphics
         _renderObject = RenderObjectBuilder(device)
             .WithVertexShader(shaderLibrary.GetVertexShader("Orthographic"))
             .WithPixelShader(shaderLibrary.GetPixelShader("Orthographic"))
-            .WithInputLayout(inputLayout, shaderLibrary.GetVertexShaderBlob("Orthographic"))
+            .WithInputLayout(inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionTexture))
             .WithDepthStencilState(depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::Disabled))
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)

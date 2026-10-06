@@ -21,14 +21,13 @@ namespace Resources
     class SamplerLibrary
     {
     public:
-        explicit SamplerLibrary(Graphics::Device& device);
+        explicit SamplerLibrary(const Graphics::Device& device);
 
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11SamplerState>& GetSampler(SamplerType type);
 
     private:
-        void CreateSampler(SamplerType type, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE address);
+        void CreateSampler(const Graphics::Device& device, SamplerType type, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE address);
 
-        Graphics::Device& _device;
         std::array<Microsoft::WRL::ComPtr<ID3D11SamplerState>, 2> _samplers;
     };
 }

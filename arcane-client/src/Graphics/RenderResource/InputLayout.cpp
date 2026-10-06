@@ -1,19 +1,12 @@
 #include "Graphics/RenderResource/InputLayout.h"
 
 #include "Graphics/Device.h"
-#include "Graphics/GraphicsException.h"
 
 namespace Graphics
 {
-    InputLayout::InputLayout(const Device& device, const std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* blob)
-    {
-        device.SetMarker();
-        const auto hResult = device.GetDevice()->CreateInputLayout(inputLayout.data(), static_cast<UINT>(inputLayout.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &_inputLayout);
-        if (FAILED(hResult))
-        {
-            throw GraphicsException("Unable to create input layout.", hResult, device.GetDebugMessages());
-        }
-    }
+    InputLayout::InputLayout(const Microsoft::WRL::ComPtr<ID3D11InputLayout>& inputLayout)
+        : _inputLayout(inputLayout)
+    {}
 
     void InputLayout::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {

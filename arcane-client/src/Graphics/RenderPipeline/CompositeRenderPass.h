@@ -5,6 +5,7 @@
 
 namespace Resources
 {
+    class InputLayoutLibrary;
     class DepthStencilStateLibrary;
     class SamplerLibrary;
     class ShaderLibrary;
@@ -18,7 +19,7 @@ namespace Graphics
     class CompositeRenderPass : public RenderPass
     {
     public:
-        explicit CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil);
+        explicit CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil);
 
         void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
 

@@ -14,7 +14,7 @@
 
 namespace Graphics
 {
-    void RenderPipeline::Build(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary)
+    void RenderPipeline::Build(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary)
     {
         _pipeline.clear();
 
@@ -28,7 +28,7 @@ namespace Graphics
         Add(std::make_unique<BindRenderTarget>(geometryRenderTarget, depthStencil));
         Add(std::make_unique<GeometryRenderPass>());
         Add(std::make_unique<BindRenderTarget>(compositeRenderTarget));
-        Add(std::make_unique<CompositeRenderPass>(device, shaderLibrary, samplerLibrary, depthStencilStateLibrary, geometryRenderTarget, depthStencil));
+        Add(std::make_unique<CompositeRenderPass>(device, shaderLibrary, samplerLibrary, depthStencilStateLibrary, inputLayoutLibrary, geometryRenderTarget, depthStencil));
         Add(std::make_unique<Present>());
     }
 

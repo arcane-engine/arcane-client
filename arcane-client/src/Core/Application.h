@@ -14,6 +14,7 @@
 #include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
 #include "Resources/TextureLibrary.h"
+#include "Time/Timer.h"
 
 namespace Core
 {
@@ -31,6 +32,7 @@ namespace Core
 
         Platform::Window _window;
         Graphics::Device _device;
+        Timer _timer;
         Network::NetworkClient _networkClient;
         Graphics::RenderPipeline _renderPipeline;
         Graphics::RenderQueue _renderQueue;

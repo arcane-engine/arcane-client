@@ -1,5 +1,7 @@
 #include "Core/Application.h"
 
+#include <format>
+
 #include "Graphics/RenderContext.h"
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
@@ -87,6 +89,9 @@ namespace Core
     void Application::Update()
     {
         _renderQueue.Clear();
+        _timer.Update();
+
+        SetWindowTextW(_window.GetWindowHandle(), std::wstring(std::format(L"FPS: {:.1f}", 1.0f / _timer.GetSmoothDelta())).c_str());
 
         while (const auto event = _window.GetMouse().ReadRawEvent())
         {

@@ -212,6 +212,7 @@
     <ClCompile Include="src\Core\Common\StringHash.cpp" />
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
+    <ClCompile Include="src\Core\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Network\NetworkClient.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="src\Math\Vector3.h" />
     <ClInclude Include="src\Resources\TextureLibrary.h" />
     <ClInclude Include="src\Core\IO\Stream.h" />
+    <ClInclude Include="src\Core\Time\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">

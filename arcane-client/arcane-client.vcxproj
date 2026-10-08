@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Network\Protocol\PacketBuilder.cpp" />
     <ClCompile Include="src\Network\NetworkClient.cpp" />
     <ClCompile Include="src\Resources\InputLayoutLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\InstanceVertexBuffer.cpp" />
@@ -172,7 +173,7 @@
     <ClCompile Include="src\Graphics\RenderPipeline\ClearRenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Data\ObjectTransformBuffer.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Sampler.cpp" />
-    <ClCompile Include="src\Graphics\RenderPipeline\CompositeRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\CompositionRenderPass.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\IndexBuffer.cpp" />
     <ClCompile Include="src\Core\IO\File.cpp" />
     <ClCompile Include="src\Resources\ShaderLibrary.cpp" />
@@ -199,11 +200,11 @@
     <ClCompile Include="src\Core\Input\KeyboardEvent.cpp" />
     <ClCompile Include="src\Core\Input\Keyboard.cpp" />
     <ClCompile Include="src\Core\Common\Exception.cpp" />
-    <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Core\Platform\Window.cpp" />
-    <ClCompile Include="src\Core\Platform\WindowClass.cpp" />
-    <ClCompile Include="src\Core\Platform\WindowException.cpp" />
+    <ClCompile Include="src\Platform\Window.cpp" />
+    <ClCompile Include="src\Platform\WindowClass.cpp" />
+    <ClCompile Include="src\Platform\WindowException.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\VertexShader.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\Topology.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\VertexBuffer.inl" />
@@ -215,6 +216,7 @@
     <ClCompile Include="src\Core\Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Network\Protocol\PacketBuilder.h" />
     <ClInclude Include="src\Network\NetworkClient.h" />
     <ClInclude Include="src\Resources\InputLayoutLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
@@ -238,7 +240,7 @@
     <ClInclude Include="src\Graphics\RenderPipeline\ClearDepthStencil.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\ObjectTransformBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Sampler.h" />
-    <ClInclude Include="src\Graphics\RenderPipeline\CompositeRenderPass.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\CompositionRenderPass.h" />
     <ClInclude Include="src\Graphics\RenderResource\IndexBuffer.h" />
     <ClInclude Include="src\Core\IO\File.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
@@ -266,10 +268,10 @@
     <ClInclude Include="src\Core\Input\KeyboardEvent.h" />
     <ClInclude Include="src\Core\Input\Keyboard.h" />
     <ClInclude Include="src\Core\Common\Exception.h" />
-    <ClInclude Include="src\Core\Application.h" />
-    <ClInclude Include="src\Core\Platform\Window.h" />
-    <ClInclude Include="src\Core\Platform\WindowClass.h" />
-    <ClInclude Include="src\Core\Platform\WindowException.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Platform\Window.h" />
+    <ClInclude Include="src\Platform\WindowClass.h" />
+    <ClInclude Include="src\Platform\WindowException.h" />
     <ClInclude Include="src\Graphics\RenderResource\VertexShader.h" />
     <ClInclude Include="src\Graphics\RenderResource\Topology.h" />
     <ClInclude Include="src\Graphics\RenderResource\VertexBuffer.h" />
@@ -316,13 +318,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="src\Resources\Shaders\OrthographicPS.hlsl">
+    <FxCompile Include="src\Resources\Shaders\CompositionPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="src\Resources\Shaders\OrthographicVS.hlsl">
+    <FxCompile Include="src\Resources\Shaders\CompositionVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

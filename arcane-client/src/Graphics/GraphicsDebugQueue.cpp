@@ -4,8 +4,8 @@
 #include <format>
 #include <memory>
 
-#include "Core/Platform/Window.h"
-#include "Core/Platform/WindowException.h"
+#include "Platform/Window.h"
+#include "Platform/WindowException.h"
 #include "Graphics/GraphicsException.h"
 
 #pragma comment(lib, "dxguid.lib")
@@ -31,14 +31,14 @@ namespace Graphics
         const auto hModDxgiDebug = LoadLibraryEx(L"dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
         if (hModDxgiDebug == nullptr)
         {
-            throw Core::Platform::WindowException("Failed to load 'dxgidebug.dll' system library.", GetLastError());
+            throw Platform::WindowException("Failed to load 'dxgidebug.dll' system library.", GetLastError());
         }
 
         const auto rawProc = reinterpret_cast<void*>(GetProcAddress(hModDxgiDebug, "DXGIGetDebugInterface"));
         const auto getDebugInterface = reinterpret_cast<GetDebugInterface>(rawProc);
         if (getDebugInterface == nullptr)
         {
-            throw Core::Platform::WindowException("Failed to locate 'DXGIGetDebugInterface' export in 'dxgidebug.dll'.", GetLastError());
+            throw Platform::WindowException("Failed to locate 'DXGIGetDebugInterface' export in 'dxgidebug.dll'.", GetLastError());
         }
 
         const auto hResult = getDebugInterface(IID_PPV_ARGS(&_queue));

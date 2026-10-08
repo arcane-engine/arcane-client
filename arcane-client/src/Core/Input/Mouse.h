@@ -6,7 +6,7 @@
 #include "Core/Input/MouseEvent.h"
 #include "Core/Input/MouseRawEvent.h"
 
-namespace Core::Platform
+namespace Platform
 {
     class Window;
 }

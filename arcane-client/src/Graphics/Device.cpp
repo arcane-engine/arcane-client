@@ -42,9 +42,9 @@ namespace Graphics
         return _geometryRenderTarget;
     }
 
-    std::shared_ptr<RenderTarget> Device::GetCompositeRenderTarget() const noexcept
+    std::shared_ptr<RenderTarget> Device::GetCompositionRenderTarget() const noexcept
     { 
-        return _compositeRenderTarget;
+        return _compositionRenderTarget;
     }
 
     std::shared_ptr<DepthStencil> Device::GetDepthStencil() const noexcept
@@ -65,7 +65,7 @@ namespace Graphics
     void Device::SetResolution(const int width, const int height)
     {
         _geometryRenderTarget->Reset();
-        _compositeRenderTarget->Reset();
+        _compositionRenderTarget->Reset();
         _depthStencil->Reset();
 
         ID3D11RenderTargetView* nullRtv = nullptr;
@@ -86,7 +86,7 @@ namespace Graphics
         {
             throw GraphicsException("Failed to create back buffer texture.", hResult, this->GetDebugMessages());
         }
-        _compositeRenderTarget->Create(*this, texture.Get());
+        _compositionRenderTarget->Create(*this, texture.Get());
 
         _depthStencil->Create(*this, width, height);
 
@@ -191,7 +191,7 @@ namespace Graphics
             throw GraphicsException("Failed to create back buffer texture.", hResult, this->GetDebugMessages());
         }
 
-        _compositeRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());
+        _compositionRenderTarget = std::make_shared<RenderTarget>(*this, texture.Get());
     }
 
     void Device::SetViewport(const int width, const int height) const

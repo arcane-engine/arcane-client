@@ -1,4 +1,4 @@
-#include "Graphics/RenderPipeline/CompositeRenderPass.h"
+#include "Graphics/RenderPipeline/CompositionRenderPass.h"
 
 #include <d3d11.h>
 
@@ -15,7 +15,7 @@
 
 namespace Graphics
 {
-    CompositeRenderPass::CompositeRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
+    CompositionRenderPass::CompositionRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
     {
         const std::vector<CompositionVertex> vertexBuffer =
         {
@@ -32,8 +32,8 @@ namespace Graphics
         };
 
         _renderObject = RenderObjectBuilder(device)
-            .WithVertexShader(shaderLibrary.GetVertexShader("Orthographic"))
-            .WithPixelShader(shaderLibrary.GetPixelShader("Orthographic"))
+            .WithVertexShader(shaderLibrary.GetVertexShader("Composition"))
+            .WithPixelShader(shaderLibrary.GetPixelShader("Composition"))
             .WithInputLayout(inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionTexture))
             .WithDepthStencilState(depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::Disabled))
             .WithVertexBuffer(vertexBuffer)
@@ -45,7 +45,7 @@ namespace Graphics
             .Build();
     }
 
-    void CompositeRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, RenderContext& renderContext)
+    void CompositionRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, RenderContext& renderContext)
     {
         _renderObject.Bind(device, renderContext);
         _renderObject.Draw(device);

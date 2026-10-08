@@ -1,11 +1,11 @@
 #define WIN32_LEAN_AND_MEAN
 
-#include "Core/Platform/WindowException.h"
+#include "Platform/WindowException.h"
 
 #include <windows.h>
 #include <format>
 
-namespace Core::Platform
+namespace Platform
 {
     WindowException::WindowException(const std::string_view message, const uint32_t errorCode, const std::source_location& location)
         : Exception(message, location), _errorCode(errorCode)

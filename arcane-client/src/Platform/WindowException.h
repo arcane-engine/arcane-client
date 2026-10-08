@@ -5,9 +5,9 @@
 
 #include "Core/Common/Exception.h"
 
-namespace Core::Platform
+namespace Platform
 {
-    class WindowException : public Exception
+    class WindowException : public Core::Exception
     {
     public:
         WindowException(std::string_view message, uint32_t errorCode, const std::source_location& location = std::source_location::current());

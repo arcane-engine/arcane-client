@@ -1,14 +1,15 @@
 #pragma once
+
 #define WIN32_LEAN_AND_MEAN
 
 #include <span>
 #include <windows.h>
 
-#include "Core/Platform/WindowException.h"
+#include "Platform/WindowException.h"
 
 namespace Graphics
 {
-    class GraphicsException : public Core::Platform::WindowException
+    class GraphicsException : public Platform::WindowException
     {
     public:
         GraphicsException(std::string_view message, HRESULT hResult, const std::source_location& location = std::source_location::current()) noexcept;

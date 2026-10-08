@@ -87,23 +87,23 @@ namespace Network
             return false;
         }
 
-        std::vector<char> buffer(4 + size);
-        std::memcpy(buffer.data(), &size, 4);
-        std::memcpy(buffer.data() + 4, data, size);
+        auto netSize = size;
 
-        auto totalSent = 0;
-        const auto targetSize = static_cast<int>(buffer.size());
+        WSABUF buffers[2];
+        buffers[0].buf = reinterpret_cast<char*>(&netSize);
+        buffers[0].len = sizeof(netSize);
 
-        while (totalSent < targetSize)
+        buffers[1].buf = const_cast<char*>(static_cast<const char*>(data));
+        buffers[1].len = size;
+
+        DWORD bytesSent = 0;
+        const auto result = WSASend(_socket, buffers, 2, &bytesSent, 0, nullptr, nullptr);
+
+        if (result == SOCKET_ERROR)
         {
-            const auto sent = send(_socket, buffer.data() + totalSent, targetSize - totalSent, 0);
-            if (sent == SOCKET_ERROR)
-            {
-                int error = WSAGetLastError();
-                Disconnect();
-                throw std::runtime_error(std::format("Send failed: {}", error));
-            }
-            totalSent += sent;
+            int error = WSAGetLastError();
+            Disconnect();
+            throw std::runtime_error(std::format("Send failed: {}", error));
         }
 
         return true;

@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "Core/Application.h"
+#include "Application.h"
 #include "Core/Common/Exception.h"
 
 int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
@@ -10,7 +10,7 @@ int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
     try
     {
 
-        auto application = Core::Application(640, 480);
+        auto application = Application(640, 480);
 
         application.Run();
 

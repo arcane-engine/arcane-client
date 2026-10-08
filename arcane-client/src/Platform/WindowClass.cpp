@@ -1,8 +1,8 @@
-#include "Core/Platform/WindowClass.h"
+#include "Platform/WindowClass.h"
 
-#include "Core/Platform/WindowException.h"
+#include "Platform/WindowException.h"
 
-namespace Core::Platform
+namespace Platform
 {
     WindowClass::WindowClass(const WNDPROC handleMessageSetup)
         : _name(L"arcane-client"), _hInstance(GetModuleHandle(nullptr))

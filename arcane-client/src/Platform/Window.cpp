@@ -1,10 +1,10 @@
-#include "Core/Platform/Window.h"
+#include "Platform/Window.h"
 
 #include <bit>
 
-#include "Core/Platform/WindowException.h"
+#include "Platform/WindowException.h"
 
-namespace Core::Platform
+namespace Platform
 {
     Window::Window(const int width, const int height) :
         _windowClass(HandleMessageSetup),
@@ -53,7 +53,7 @@ namespace Core::Platform
 
         if (RegisterRawInputDevices(&device, 1, sizeof(device)) == false)
         {
-            throw Exception("Unable to register raw mouse input.");
+            throw Core::Exception("Unable to register raw mouse input.");
         }
     }
 
@@ -216,12 +216,12 @@ namespace Core::Platform
         return std::nullopt;
     }
 
-    Input::Keyboard& Window::GetKeyboard() noexcept
+    Core::Input::Keyboard& Window::GetKeyboard() noexcept
     {
         return _keyboard;
     }
 
-    Input::Mouse& Window::GetMouse() noexcept
+    Core::Input::Mouse& Window::GetMouse() noexcept
     {
         return _mouse;
     }

@@ -5,10 +5,10 @@
 
 #include "Core/Input/Keyboard.h"
 #include "Core/Input/Mouse.h"
-#include "Core/Platform/WindowClass.h"
+#include "Platform/WindowClass.h"
 #include "Graphics/Device.h"
 
-namespace Core::Platform
+namespace Platform
 {
     class Window
     {
@@ -23,8 +23,8 @@ namespace Core::Platform
 
         [[nodiscard]] static std::optional<WPARAM> ProcessMessages();
 
-        [[nodiscard]] Input::Keyboard& GetKeyboard() noexcept;
-        [[nodiscard]] Input::Mouse& GetMouse() noexcept;
+        [[nodiscard]] Core::Input::Keyboard& GetKeyboard() noexcept;
+        [[nodiscard]] Core::Input::Mouse& GetMouse() noexcept;
         [[nodiscard]] HWND GetWindowHandle() const noexcept;
         [[nodiscard]] int GetWidth() const noexcept;
         [[nodiscard]] int GetHeight() const noexcept;
@@ -54,8 +54,8 @@ namespace Core::Platform
 
         WindowClass _windowClass;
         HWND _hWnd;
-        Input::Keyboard _keyboard;
-        Input::Mouse _mouse;
+        Core::Input::Keyboard _keyboard;
+        Core::Input::Mouse _mouse;
         std::vector<std::uint8_t> _rawInputBuffer;
         int _width;
         int _height;

@@ -15,6 +15,7 @@
 #include "Resources/ShaderLibrary.h"
 #include "Resources/TextureLibrary.h"
 #include "Core/Time/Timer.h"
+#include "Network/NetworkWorker.h"
 
 class Application
 {
@@ -31,7 +32,7 @@ private:
     Platform::Window _window;
     Graphics::Device _device;
     Core::Timer _timer;
-    Network::NetworkClient _networkClient;
+    Network::NetworkWorker _networkWorker;
     Graphics::RenderPipeline _renderPipeline;
     Graphics::RenderQueue _renderQueue;
     Graphics::Camera _camera;

@@ -150,6 +150,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Network\NetworkWorker.cpp" />
+    <ClCompile Include="src\Network\Protocol\InputPacketBuilder.cpp" />
     <ClCompile Include="src\Network\Protocol\PacketBuilder.cpp" />
     <ClCompile Include="src\Network\NetworkClient.cpp" />
     <ClCompile Include="src\Resources\InputLayoutLibrary.cpp" />
@@ -214,10 +216,15 @@
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
     <ClCompile Include="src\Core\Time\Timer.cpp" />
+    <ClCompile Include="src\Network\PacketQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Network\NetworkWorker.h" />
+    <ClInclude Include="src\Network\Protocol\InputPacketBuilder.h" />
     <ClInclude Include="src\Network\Protocol\PacketBuilder.h" />
     <ClInclude Include="src\Network\NetworkClient.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ClientInputPacket.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ClientPacket.h" />
     <ClInclude Include="src\Resources\InputLayoutLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />
@@ -280,6 +287,7 @@
     <ClInclude Include="src\Resources\TextureLibrary.h" />
     <ClInclude Include="src\Core\IO\Stream.h" />
     <ClInclude Include="src\Core\Time\Timer.h" />
+    <ClInclude Include="src\Network\PacketQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">

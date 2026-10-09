@@ -32,7 +32,7 @@ namespace Network
         }
     }
 
-    bool NetworkClient::Connect(const std::string& ip, const uint16_t port)
+    bool NetworkClient::Connect(const std::string& ip, const std::uint16_t port)
     {
         if (!_initialized)
         {
@@ -80,21 +80,21 @@ namespace Network
         return _connected;
     }
 
-    bool NetworkClient::SendPacket(const void* data, const uint32_t size)
+    bool NetworkClient::SendPacket(const void* data, const std::size_t size)
     {
         if (!_connected)
         {
             return false;
         }
 
-        auto netSize = size;
+        std::uint32_t netSize = static_cast<std::uint32_t>(size);
 
         WSABUF buffers[2];
         buffers[0].buf = reinterpret_cast<char*>(&netSize);
         buffers[0].len = sizeof(netSize);
 
         buffers[1].buf = const_cast<char*>(static_cast<const char*>(data));
-        buffers[1].len = size;
+        buffers[1].len = static_cast<ULONG>(size);
 
         DWORD bytesSent = 0;
         const auto result = WSASend(_socket, buffers, 2, &bytesSent, 0, nullptr, nullptr);
@@ -109,21 +109,21 @@ namespace Network
         return true;
     }
 
-    bool NetworkClient::ReceivePacket(std::vector<uint8_t>& outPayload)
+    bool NetworkClient::ReceivePacket(std::vector<std::uint8_t>& outPayload)
     {
         if (!_connected)
         {
             return false;
         }
 
-        uint8_t lengthBuffer[4];
+        std::uint8_t lengthBuffer[4];
         if (!ReceiveAll(lengthBuffer, 4))
         {
             Disconnect();
             return false;
         }
 
-        const auto payloadSize = *reinterpret_cast<uint32_t*>(lengthBuffer);
+        const auto payloadSize = *reinterpret_cast<std::uint32_t*>(lengthBuffer);
 
         outPayload.resize(payloadSize);
         if (!ReceiveAll(outPayload.data(), static_cast<int>(payloadSize)))
@@ -135,7 +135,7 @@ namespace Network
         return true;
     }
 
-    bool NetworkClient::ReceiveAll(uint8_t* buffer, const int size) const
+    bool NetworkClient::ReceiveAll(std::uint8_t* buffer, const int size) const
     {
         auto totalBytesRead = 0;
 

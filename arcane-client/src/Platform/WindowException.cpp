@@ -7,7 +7,7 @@
 
 namespace Platform
 {
-    WindowException::WindowException(const std::string_view message, const uint32_t errorCode, const std::source_location& location)
+    WindowException::WindowException(const std::string_view message, const std::uint32_t errorCode, const std::source_location& location)
         : Exception(message, location), _errorCode(errorCode)
     {}
 
@@ -21,12 +21,12 @@ namespace Platform
         return std::format("{}\n\n{}\n\n{} (Line: {})", what(), TranslateErrorCode(_errorCode), _filename, _line);
     }
 
-    uint32_t WindowException::GetErrorCode() const noexcept
+    std::uint32_t WindowException::GetErrorCode() const noexcept
     {
         return _errorCode;
     }
 
-    std::string WindowException::TranslateErrorCode(const uint32_t errorCode) noexcept
+    std::string WindowException::TranslateErrorCode(const std::uint32_t errorCode) noexcept
     {
         char* messageBuffer = nullptr;
         const auto length = FormatMessageA(

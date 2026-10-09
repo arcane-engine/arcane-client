@@ -8,6 +8,9 @@
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
+#include "Network/Protocol/PacketBuilder.h"
+#include "Network/Protocol/Packets/ClientInputPacket.h"
+#include "Network/Protocol/Packets/ClientPacket.h"
 
 Application::Application(const int width, const int height) :
     _window(width, height),
@@ -26,7 +29,8 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
         .Build();
 
-    const auto mesh = _meshLibrary.GetMesh("Cube");
+    const auto grid = _meshLibrary.GetMesh("Grid");
+    const auto cube = _meshLibrary.GetMesh("Cube");
     const auto material = _materialLibrary.GetMaterial("Default");
 
     _object1 = Graphics::RenderObjectBuilder(_device)
@@ -34,8 +38,8 @@ Application::Application(const int width, const int height) :
         .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
         .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
         .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
-        .WithVertexBuffer(mesh.GetVertices())
-        .WithIndexBuffer(mesh.GetIndices())
+        .WithVertexBuffer(grid.GetVertices())
+        .WithIndexBuffer(grid.GetIndices())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
         .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
         .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
@@ -48,8 +52,8 @@ Application::Application(const int width, const int height) :
         .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
         .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
         .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
-        .WithVertexBuffer(mesh.GetVertices())
-        .WithIndexBuffer(mesh.GetIndices())
+        .WithVertexBuffer(cube.GetVertices())
+        .WithIndexBuffer(cube.GetIndices())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
         .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
         .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
@@ -92,6 +96,17 @@ void Application::Update()
         ToggleFullscreen();
     }
 
+    if (_window.GetKeyboard().IsKeyPressed('W'))
+    {
+        std::uint8_t buffer[256]{};
+
+        const auto size = Network::PacketBuilder(buffer, Network::ClientPacket{ Network::ClientInputPacket{ true, false, false, false } }).Build();
+
+        std::vector data(buffer, buffer + size);
+
+        _networkWorker.GetSendQueue().Push(std::move(data));
+    }
+
     _camera.Update();
 
     auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
@@ -106,12 +121,13 @@ void Application::Update()
 
     std::vector<DirectX::XMMATRIX> instanceMatrices;
 
+    _renderQueue.Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
+
     for (auto x = -5; x <= 5; x++)
     {
         for (auto z = -5; z <= 5; z++)
         {
-            _renderQueue.Add(_object1, DirectX::XMMatrixTranslation(static_cast<float>(x * 4), -3.0f, static_cast<float>(z * 4)));
-            instanceMatrices.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4), 3.0f, static_cast<float>(z * 4)));
+            instanceMatrices.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4) - 20, 3.0f, static_cast<float>(z * 4) - 20));
         }
     }
 

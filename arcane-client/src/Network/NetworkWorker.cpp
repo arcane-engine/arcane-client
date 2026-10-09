@@ -41,16 +41,17 @@ namespace Network
         {
             auto startTime = std::chrono::steady_clock::now();
 
-            uint8_t buffer[256]{};
-            auto packet = ClientPacket();
-            packet.Input = ClientInputPacket();
-            packet.Input->Forward = true;
-            packet.Input->Backward = true;
-            packet.Input->Left = false;
-            packet.Input->Right = false;
-            const auto size = PacketBuilder(buffer, packet).Build();
+            std::queue<std::vector<std::uint8_t>> queue;
+            _sendQueue.Swap(queue);
 
-            auto _ = _client.SendPacket(buffer, size);
+            while (!queue.empty())
+            {
+                const auto& data = queue.front();
+
+                auto _ = _client.SendPacket(data.data(), data.size());
+
+                queue.pop();
+            }
 
             auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - startTime);
 
@@ -69,11 +70,12 @@ namespace Network
         {
             auto startTime = std::chrono::steady_clock::now();
 
-            std::vector<uint8_t> buffer;
-
-            if (!_client.ReceivePacket(buffer))
+            std::vector<std::uint8_t> packet;
+            while (_client.ReceivePacket(packet))
             {
-                break;
+                _receiveQueue.Push(std::move(packet));
+
+                packet = std::vector<std::uint8_t>();
             }
 
             auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - startTime);

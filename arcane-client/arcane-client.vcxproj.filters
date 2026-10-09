@@ -108,10 +108,10 @@
     <ClCompile Include="src\Network\NetworkWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Network\Protocol\InputPacketBuilder.cpp">
+    <ClCompile Include="src\Network\Protocol\ClientInputPacketBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Network\Protocol\PacketBuilder.cpp">
+    <ClCompile Include="src\Network\Protocol\ClientPacketBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Network\NetworkClient.cpp">
@@ -216,6 +216,12 @@
     <ClCompile Include="src\Network\PacketQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Network\Protocol\ServerPacketReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\IO\BitReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Input\Keyboard.h">
@@ -311,10 +317,10 @@
     <ClInclude Include="src\Network\NetworkWorker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Network\Protocol\InputPacketBuilder.h">
+    <ClInclude Include="src\Network\Protocol\ClientInputPacketBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Network\Protocol\PacketBuilder.h">
+    <ClInclude Include="src\Network\Protocol\ClientPacketBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Network\NetworkClient.h">
@@ -423,6 +429,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Network\Protocol\Packets\ClientInputPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\Protocol\Packets\ServerPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\Protocol\Packets\ServerRegisterPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Network\Protocol\ServerPacketReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\IO\BitReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

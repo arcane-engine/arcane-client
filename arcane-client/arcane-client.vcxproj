@@ -150,9 +150,11 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\IO\BitReader.cpp" />
+    <ClCompile Include="src\Network\Protocol\ServerPacketReader.cpp" />
     <ClCompile Include="src\Network\NetworkWorker.cpp" />
-    <ClCompile Include="src\Network\Protocol\InputPacketBuilder.cpp" />
-    <ClCompile Include="src\Network\Protocol\PacketBuilder.cpp" />
+    <ClCompile Include="src\Network\Protocol\ClientInputPacketBuilder.cpp" />
+    <ClCompile Include="src\Network\Protocol\ClientPacketBuilder.cpp" />
     <ClCompile Include="src\Network\NetworkClient.cpp" />
     <ClCompile Include="src\Resources\InputLayoutLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\InstanceVertexBuffer.cpp" />
@@ -219,12 +221,16 @@
     <ClCompile Include="src\Network\PacketQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\IO\BitReader.h" />
+    <ClInclude Include="src\Network\Protocol\ServerPacketReader.h" />
     <ClInclude Include="src\Network\NetworkWorker.h" />
-    <ClInclude Include="src\Network\Protocol\InputPacketBuilder.h" />
-    <ClInclude Include="src\Network\Protocol\PacketBuilder.h" />
+    <ClInclude Include="src\Network\Protocol\ClientInputPacketBuilder.h" />
+    <ClInclude Include="src\Network\Protocol\ClientPacketBuilder.h" />
     <ClInclude Include="src\Network\NetworkClient.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ClientInputPacket.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ClientPacket.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ServerPacket.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ServerRegisterPacket.h" />
     <ClInclude Include="src\Resources\InputLayoutLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />

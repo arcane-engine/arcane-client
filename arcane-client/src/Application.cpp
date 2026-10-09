@@ -8,7 +8,8 @@
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
-#include "Network/Protocol/PacketBuilder.h"
+#include "Network/Protocol/ClientPacketBuilder.h"
+#include "Network/Protocol/ServerPacketReader.h"
 #include "Network/Protocol/Packets/ClientInputPacket.h"
 #include "Network/Protocol/Packets/ClientPacket.h"
 
@@ -81,8 +82,6 @@ void Application::Update()
     _renderQueue.Clear();
     _timer.Update();
 
-    SetWindowTextW(_window.GetWindowHandle(), std::wstring(std::format(L"FPS: {:.1f}", 1.0f / _timer.GetSmoothDelta())).c_str());
-
     while (const auto event = _window.GetMouse().ReadRawEvent())
     {
         const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->X));
@@ -100,11 +99,20 @@ void Application::Update()
     {
         std::uint8_t buffer[256]{};
 
-        const auto size = Network::PacketBuilder(buffer, Network::ClientPacket{ Network::ClientInputPacket{ true, false, false, false } }).Build();
+        const auto size = Network::ClientPacketBuilder(buffer, Network::ClientPacket{ Network::ClientInputPacket{ true, false, false, false } }).Build();
 
         std::vector data(buffer, buffer + size);
 
         _networkWorker.GetSendQueue().Push(std::move(data));
+    }
+
+    std::queue<std::vector<std::uint8_t>> queue;
+    _networkWorker.GetReceiveQueue().Swap(queue);
+    while (!queue.empty())
+    {
+        const auto packet = Network::ServerPacketReader::Read(queue.front().data());
+        SetWindowTextW(_window.GetWindowHandle(), packet.Register[0].Register ? std::format(L"JOINED{}", packet.Register[0].Id).c_str() : L"LEFT");
+        queue.pop();
     }
 
     _camera.Update();

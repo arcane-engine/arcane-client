@@ -7,10 +7,10 @@
 
 namespace Network
 {
-    class InputPacketBuilder
+    class ClientInputPacketBuilder
     {
     public:
-        InputPacketBuilder(std::uint8_t* buffer, const std::optional<ClientInputPacket>& packet, int offset) noexcept;
+        ClientInputPacketBuilder(std::uint8_t* buffer, const std::optional<ClientInputPacket>& packet, int offset) noexcept;
 
         [[nodiscard]] int Build() const;
 

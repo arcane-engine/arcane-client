@@ -1,7 +1,7 @@
 #include "Network/NetworkWorker.h"
 
 #include "Core/Common/Exception.h"
-#include "Network/Protocol/PacketBuilder.h"
+#include "Network/Protocol/ClientPacketBuilder.h"
 #include "Network/Protocol/Packets/ClientPacket.h"
 
 namespace Network

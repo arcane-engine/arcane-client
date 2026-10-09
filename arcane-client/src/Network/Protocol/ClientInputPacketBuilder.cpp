@@ -1,4 +1,4 @@
-#include "Network/Protocol/InputPacketBuilder.h"
+#include "Network/Protocol/ClientInputPacketBuilder.h"
 
 namespace Network
 {
@@ -13,7 +13,7 @@ namespace Network
         constexpr int Right    = Size - 5;
     }
 
-    InputPacketBuilder::InputPacketBuilder(std::uint8_t* buffer, const std::optional<ClientInputPacket>& packet, const int offset) noexcept
+    ClientInputPacketBuilder::ClientInputPacketBuilder(std::uint8_t* buffer, const std::optional<ClientInputPacket>& packet, const int offset) noexcept
         : _packet(packet), _offset(offset)
     {
         if (_packet)
@@ -26,12 +26,12 @@ namespace Network
         }
     }
 
-    int InputPacketBuilder::Build() const
+    int ClientInputPacketBuilder::Build() const
     {
         return _packet ? _offset + Size : _offset + 1;
     }
 
-    void InputPacketBuilder::SetFlag(std::uint8_t* buffer, const int flag, const bool value) const noexcept
+    void ClientInputPacketBuilder::SetFlag(std::uint8_t* buffer, const int flag, const bool value) const noexcept
     {
         if (value)
         {

@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include "NetworkClient.h"
+#include "Network/NetworkClient.h"
 
 namespace Network
 {
@@ -13,9 +13,11 @@ namespace Network
         void Stop();
 
     private:
-        void Run();
+        void Send();
+        void Receive();
 
-        std::thread _thread;
+        std::thread _send;
+        std::thread _receive;
         std::atomic<bool> _running{ false };
         NetworkClient _client;
     };

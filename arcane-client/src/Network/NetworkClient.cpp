@@ -1,4 +1,4 @@
-#include "NetworkClient.h"
+#include "Network/NetworkClient.h"
 
 #include <iostream>
 #include <ws2tcpip.h>
@@ -109,14 +109,14 @@ namespace Network
         return true;
     }
 
-    bool NetworkClient::ReceivePacket(std::vector<char>& outPayload)
+    bool NetworkClient::ReceivePacket(std::vector<uint8_t>& outPayload)
     {
         if (!_connected)
         {
             return false;
         }
 
-        char lengthBuffer[4];
+        uint8_t lengthBuffer[4];
         if (!ReceiveAll(lengthBuffer, 4))
         {
             Disconnect();
@@ -135,13 +135,13 @@ namespace Network
         return true;
     }
 
-    bool NetworkClient::ReceiveAll(char* buffer, const int size) const
+    bool NetworkClient::ReceiveAll(uint8_t* buffer, const int size) const
     {
         auto totalBytesRead = 0;
 
         while (totalBytesRead < size)
         {
-            const auto bytesRead = recv(_socket, buffer + totalBytesRead, size - totalBytesRead, 0);
+            const auto bytesRead = recv(_socket, reinterpret_cast<char*>(buffer + totalBytesRead), size - totalBytesRead, 0);
             if (bytesRead <= 0)
             {
                 return false;

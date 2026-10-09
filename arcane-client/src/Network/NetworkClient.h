@@ -24,10 +24,10 @@ namespace Network
         [[nodiscard]] bool IsConnected() const;
 
         [[nodiscard]] bool SendPacket(const void* data, uint32_t size);
-        [[nodiscard]] bool ReceivePacket(std::vector<char>& outPayload);
+        [[nodiscard]] bool ReceivePacket(std::vector<uint8_t>& outPayload);
 
     private:
-        bool ReceiveAll(char* buffer, int size) const;
+        bool ReceiveAll(uint8_t* buffer, int size) const;
 
         SOCKET _socket;
         bool _initialized;

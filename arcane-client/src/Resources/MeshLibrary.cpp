@@ -2,23 +2,27 @@
 
 #include <format>
 
-#include "Core/IO/BinaryReader.h"
 #include "Core/IO/FileStream.h"
 
 namespace Resources
 {
-    Mesh::Mesh(std::vector<Graphics::Vertex> vertices, std::vector<unsigned int> indices)
-        : _vertices(std::move(vertices)), _indices(std::move(indices))
+    Mesh::Mesh(std::vector<std::byte> vertexBuffer, const int stride, std::vector<unsigned int> indexBuffer)
+        : _vertexBuffer(std::move(vertexBuffer)), _stride(stride), _indexBuffer(std::move(indexBuffer))
     {}
 
-    const std::vector<Graphics::Vertex>& Mesh::GetVertices() const
+    const std::vector<std::byte>& Mesh::GetVertexBuffer() const
     {
-        return _vertices;
+        return _vertexBuffer;
     }
 
-    const std::vector<unsigned int>& Mesh::GetIndices() const
+    int Mesh::GetStride() const
     {
-        return _indices;
+        return _stride;
+    }
+
+    const std::vector<unsigned int>& Mesh::GetIndexBuffer() const
+    {
+        return _indexBuffer;
     }
 
     const Mesh& MeshLibrary::GetMesh(const std::string_view name)
@@ -26,46 +30,32 @@ namespace Resources
         auto it = _meshes.find(name);
         if (it == _meshes.end())
         {
-            LoadTexture(name);
+            LoadMesh(name);
             it = _meshes.find(name);
         }
 
         return it->second;
     }
 
-    void MeshLibrary::LoadTexture(std::string_view name)
+    void MeshLibrary::LoadMesh(std::string_view name)
     {
-        auto path = std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name);
-        const auto reader = Core::IO::BinaryReader(std::make_unique<Core::IO::FileStream>(path));
+        const auto path = std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name);
+        std::ifstream file(path, std::ios::binary);
 
-        auto vertices = std::vector<Graphics::Vertex>{};
-        auto indices = std::vector<unsigned int>{};
+        int vertexCount = 0;
+        int vertexStride = 0;
+        int indexCount = 0;
 
-        auto count = reader.ReadInt();
-        vertices.reserve(count);
-        for (auto i = 0; i < count; i++)
-        {
-            const auto x = reader.ReadFloat();
-            const auto y = reader.ReadFloat();
-            const auto z = reader.ReadFloat();
-            const auto nx = reader.ReadFloat();
-            const auto ny = reader.ReadFloat();
-            const auto nz = reader.ReadFloat();
-            const auto u = reader.ReadFloat();
-            const auto v = reader.ReadFloat();
-            
-            vertices.push_back(Graphics::Vertex{ x, y, z, nx, ny, nz, u, v });
-        }
+        file.read(reinterpret_cast<char*>(&vertexCount), sizeof(vertexCount));
+        file.read(reinterpret_cast<char*>(&vertexStride), sizeof(vertexStride));
+        file.read(reinterpret_cast<char*>(&indexCount), sizeof(indexCount));
 
-        count = reader.ReadInt();
-        indices.reserve(count);
-        for (auto i = 0; i < count; i++)
-        {
-            const auto index = reader.ReadUInt();
+        std::vector<std::byte> vertexData(vertexCount * vertexStride);
+        file.read(reinterpret_cast<char*>(vertexData.data()), static_cast<std::streamsize>(vertexCount * vertexStride));
 
-            indices.push_back(index);
-        }
+        std::vector<unsigned int> indices(indexCount);
+        file.read(reinterpret_cast<char*>(indices.data()), static_cast<std::streamsize>(indexCount * sizeof(unsigned int)));
 
-        _meshes.emplace(name, Mesh(vertices, indices));
+        _meshes.emplace(name, Mesh(std::move(vertexData), vertexStride, std::move(indices)));
     }
 }

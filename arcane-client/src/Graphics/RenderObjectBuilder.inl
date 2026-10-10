@@ -10,6 +10,7 @@
 #include "Graphics/RenderResource/Texture.h"
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
+#include "RenderResource/ConstantBuffer.h"
 #include "RenderResource/InstanceVertexBuffer.h"
 #include "Resources/TextureLibrary.h"
 
@@ -37,6 +38,12 @@ namespace Graphics
     RenderObjectBuilder& RenderObjectBuilder::WithVertexBuffer(const std::vector<T>& vertexBuffer)
     {
         _renderObject.Add(std::make_unique<VertexBuffer>(_device, vertexBuffer));
+        return *this;
+    }
+
+    inline RenderObjectBuilder& RenderObjectBuilder::WithVertexBuffer(const std::vector<std::byte>& vertexBuffer, std::size_t stride)
+    {
+        _renderObject.Add(std::make_unique<VertexBuffer>(_device, vertexBuffer, stride));
         return *this;
     }
 

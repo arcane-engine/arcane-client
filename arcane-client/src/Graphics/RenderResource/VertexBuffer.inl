@@ -27,6 +27,25 @@ namespace Graphics
         }
     }
 
+    inline VertexBuffer::VertexBuffer(const Device& device, const std::vector<std::byte>& vertexBuffer, const std::size_t stride)
+        : _stride(static_cast<UINT>(stride))
+    {
+        D3D11_BUFFER_DESC desc = {};
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.ByteWidth = static_cast<UINT>(std::size(vertexBuffer));
+
+        D3D11_SUBRESOURCE_DATA data = {};
+        data.pSysMem = vertexBuffer.data();
+
+        device.SetMarker();
+        const auto hResult = device.GetDevice()->CreateBuffer(&desc, &data, &_vertexBuffer);
+        if (FAILED(hResult))
+        {
+            throw GraphicsException("Unable to create vertex buffer.", hResult, device.GetDebugMessages());
+        }
+    }
+
     inline void VertexBuffer::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
     {
         auto& active = device.GetContextCache().VertexBuffer;

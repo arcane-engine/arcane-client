@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Graphics/Device.h"
 #include "Graphics/RenderObject.h"
-#include "Graphics/RenderResource/ConstantBuffer.h"
 #include "Graphics/RenderResource/VertexBuffer.h"
 #include "Resources/TextureLibrary.h"
 
@@ -26,6 +24,7 @@ namespace Graphics
         // Geometry & Input Assembly
         template<typename T>
         [[nodiscard]] RenderObjectBuilder& WithVertexBuffer(const std::vector<T>& vertexBuffer);
+        [[nodiscard]] RenderObjectBuilder& WithVertexBuffer(const std::vector<std::byte>& vertexBuffer, std::size_t stride);
         [[nodiscard]] RenderObjectBuilder& WithIndexBuffer(const std::span<const unsigned int>& indexBuffer);
         [[nodiscard]] RenderObjectBuilder& WithTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
         [[nodiscard]] RenderObjectBuilder& WithInputLayout(const Microsoft::WRL::ComPtr<ID3D11InputLayout>& inputLayout);

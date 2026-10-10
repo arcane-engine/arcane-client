@@ -11,14 +11,16 @@ namespace Resources
     class Mesh
     {
     public:
-        Mesh(std::vector<Graphics::Vertex> vertices, std::vector<unsigned int> indices);
+        Mesh(std::vector<std::byte> vertexBuffer, int stride, std::vector<unsigned int> indexBuffer);
 
-        [[nodiscard]] const std::vector<Graphics::Vertex>& GetVertices() const;
-        [[nodiscard]] const std::vector<unsigned int>& GetIndices() const;
+        [[nodiscard]] const std::vector<std::byte>& GetVertexBuffer() const;
+        [[nodiscard]] int GetStride() const;
+        [[nodiscard]] const std::vector<unsigned int>& GetIndexBuffer() const;
 
     private:
-        std::vector<Graphics::Vertex> _vertices;
-        std::vector<unsigned int> _indices;
+        std::vector<std::byte> _vertexBuffer;
+        int _stride;
+        std::vector<unsigned int> _indexBuffer;
     };
 
     class MeshLibrary
@@ -27,7 +29,7 @@ namespace Resources
         [[nodiscard]] const Mesh& GetMesh(std::string_view name);
 
     private:
-        void LoadTexture(std::string_view name);
+        void LoadMesh(std::string_view name);
 
         std::unordered_map<std::string, Mesh, Core::StringHash, std::equal_to<>> _meshes;
     };

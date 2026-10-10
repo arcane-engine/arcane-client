@@ -17,7 +17,8 @@ namespace Resources
     {
         PositionTexture,
         PositionNormalTexture,
-        PositionNormalTextureInstanced
+        PositionNormalTextureInstanced,
+        Terrain
     };
 
     class InputLayoutLibrary
@@ -30,6 +31,6 @@ namespace Resources
     private:
         void CreateInputLayout(const Graphics::Device& device, InputLayoutType type, std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob);
 
-        std::array<Microsoft::WRL::ComPtr<ID3D11InputLayout>, 3> _inputLayouts;
+        std::array<Microsoft::WRL::ComPtr<ID3D11InputLayout>, 20> _inputLayouts;
     };
 }

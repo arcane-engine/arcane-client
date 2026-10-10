@@ -35,15 +35,16 @@ Application::Application(const int width, const int height) :
     const auto material = _materialLibrary.GetMaterial("Default");
 
     _object1 = Graphics::RenderObjectBuilder(_device)
-        .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader))
-        .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
-        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
+        .WithVertexShader(_shaderLibrary.GetVertexShader("Terrain"))
+        .WithPixelShader(_shaderLibrary.GetPixelShader("Terrain"))
+        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::Terrain))
         .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
         .WithVertexBuffer(grid.GetVertexBuffer(), grid.GetStride())
         .WithIndexBuffer(grid.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
         .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight)
+        .WithTexture(_textureLibrary.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase)
         .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();

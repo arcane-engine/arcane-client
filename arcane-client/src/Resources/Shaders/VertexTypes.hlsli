@@ -23,3 +23,11 @@ struct VSInput_PositionNormalTexture_Instanced
     float4 instanceMatrixRow2 : INSTANCE_MATRIX2;
     float4 instanceMatrixRow3 : INSTANCE_MATRIX3;
 };
+
+struct VSInput_Terrain
+{
+    float3 position : POSITION;
+    float3 normal : NORMAL;
+    float2 uv0 : TEXCOORD0;
+    float2 uv1 : TEXCOORD1;
+};

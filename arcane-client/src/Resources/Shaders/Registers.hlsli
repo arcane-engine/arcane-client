@@ -12,6 +12,13 @@
 #define TEX_REGISTER_RENDER_TARGET    t0
 #define TEX_REGISTER_DEPTH_STENCIL    t1
 
+#define TEX_REGISTER_TERRAIN_WEIGHT   t0
+#define TEX_REGISTER_TERRAIN_BASE     t1
+#define TEX_REGISTER_TERRAIN_R        t2
+#define TEX_REGISTER_TERRAIN_G        t3
+#define TEX_REGISTER_TERRAIN_B        t4
+#define TEX_REGISTER_TERRAIN_A        t5
+
 // Sampler Slots
 #define SMP_REGISTER_MAIN             s0
 

@@ -11,7 +11,7 @@ namespace Resources
         CreateSampler(device, SamplerType::LinearClamp, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP);
     }
 
-    const Microsoft::WRL::ComPtr<ID3D11SamplerState>& SamplerLibrary::GetSampler(const SamplerType type)
+    const Microsoft::WRL::ComPtr<ID3D11SamplerState>& SamplerLibrary::GetSampler(const SamplerType type) const
     {
         return _samplers[static_cast<size_t>(type)];
     }

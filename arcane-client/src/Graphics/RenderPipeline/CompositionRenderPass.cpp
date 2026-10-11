@@ -35,7 +35,7 @@ namespace Graphics
             .WithVertexShader(shaderLibrary.GetVertexShader("Composition"))
             .WithPixelShader(shaderLibrary.GetPixelShader("Composition"))
             .WithInputLayout(inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionTexture))
-            .WithDepthStencilState(depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::Disabled))
+            .WithDepthStencilState(depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)

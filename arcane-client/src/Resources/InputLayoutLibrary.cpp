@@ -49,7 +49,7 @@ namespace Resources
         CreateInputLayout(device, InputLayoutType::Terrain, terrain, shaderLibrary.GetVertexShaderBlob("Terrain"));
     }
 
-    const Microsoft::WRL::ComPtr<ID3D11InputLayout>& InputLayoutLibrary::GetInputLayout(InputLayoutType type)
+    const Microsoft::WRL::ComPtr<ID3D11InputLayout>& InputLayoutLibrary::GetInputLayout(InputLayoutType type) const
     {
         return _inputLayouts[static_cast<int>(type)];
     }

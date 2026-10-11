@@ -17,62 +17,58 @@ Application::Application(const int width, const int height) :
     _window(width, height),
     _device(_window.GetWindowHandle(), width, height),
     _camera(width, height),
-    _shaderLibrary(_device),
-    _textureLibrary(_device),
-    _samplerLibrary(_device),
-    _depthStencilStateLibrary(_device),
-    _inputLayoutLibrary(_device, _shaderLibrary)
+    _resourceManager(_device)
 {
     _networkWorker.Start();
-    _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary, _inputLayoutLibrary);
+    _renderPipeline.Build(_device, _resourceManager.GetShaderLibrary(), _resourceManager.GetSamplerLibrary(), _resourceManager.GetDepthStencilStateLibrary(), _resourceManager.GetInputLayoutLibrary());
 
     _cameraObject = Graphics::RenderObjectBuilder(_device)
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
         .Build();
 
-    const auto grid = _meshLibrary.GetMesh("Grid");
-    const auto cube = _meshLibrary.GetMesh("Cube");
-    const auto material = _materialLibrary.GetMaterial("Default");
+    const auto grid = _resourceManager.GetMesh("Grid");
+    const auto cube = _resourceManager.GetMesh("Cube");
+    const auto material = _resourceManager.GetMaterial("Default");
 
     _object1 = Graphics::RenderObjectBuilder(_device)
-        .WithVertexShader(_shaderLibrary.GetVertexShader("Terrain"))
-        .WithPixelShader(_shaderLibrary.GetPixelShader("Terrain"))
-        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::Terrain))
-        .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
+        .WithVertexShader(_resourceManager.GetVertexShader("Terrain"))
+        .WithPixelShader(_resourceManager.GetPixelShader("Terrain"))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Terrain))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
         .WithVertexBuffer(grid.GetVertexBuffer(), grid.GetStride())
         .WithIndexBuffer(grid.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight)
-        .WithTexture(_textureLibrary.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight)
+        .WithTexture(_resourceManager.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase)
         .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
     _object2 = Graphics::RenderObjectBuilder(_device)
-        .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader, true))
-        .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.PixelShader))
-        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
-        .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::ReadWrite))
+        .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader, true))
+        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
         .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
         .WithIndexBuffer(cube.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
         .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
     _object3 = Graphics::RenderObjectBuilder(_device)
-        .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader))
-        .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.VertexShader))
-        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
-        .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::Disabled))
+        .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
+        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.VertexShader))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
         .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
         .WithIndexBuffer(cube.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
         .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
@@ -181,5 +177,5 @@ void Application::ToggleFullscreen()
     _camera.SetResolution(width, height);
     _window.GetMouse().SetResolution(width, height);
 
-    _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary, _inputLayoutLibrary);
+    _renderPipeline.Build(_device, _resourceManager.GetShaderLibrary(), _resourceManager.GetSamplerLibrary(), _resourceManager.GetDepthStencilStateLibrary(), _resourceManager.GetInputLayoutLibrary());
 }

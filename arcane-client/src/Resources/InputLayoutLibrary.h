@@ -26,7 +26,7 @@ namespace Resources
     public:
         explicit InputLayoutLibrary(const Graphics::Device& device, ShaderLibrary& shaderLibrary);
 
-        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11InputLayout>& GetInputLayout(InputLayoutType type);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11InputLayout>& GetInputLayout(InputLayoutType type) const;
 
     private:
         void CreateInputLayout(const Graphics::Device& device, InputLayoutType type, std::span<const D3D11_INPUT_ELEMENT_DESC> inputLayout, ID3DBlob* vertexShaderBlob);

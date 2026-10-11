@@ -13,10 +13,10 @@ namespace Graphics
 
 namespace Resources
 {
-    enum class DepthStencilType : std::uint8_t
+    enum class DepthStencilStateType : std::uint8_t
     {
-        ReadWrite,
-        ReadOnly,
+        Read,
+        Write,
         Disabled
     };
 
@@ -25,10 +25,10 @@ namespace Resources
     public:
         explicit DepthStencilStateLibrary(const Graphics::Device& device);
 
-        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& GetDepthStencilState(DepthStencilType type) const;
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& GetDepthStencilState(DepthStencilStateType type) const;
 
     private:
-        void CreateDepthStencilState(const Graphics::Device& device, DepthStencilType type, bool depthEnable, D3D11_DEPTH_WRITE_MASK depthWriteMask, D3D11_COMPARISON_FUNC depthFunc);
+        void CreateDepthStencilState(const Graphics::Device& device, DepthStencilStateType type, bool depthEnable, D3D11_DEPTH_WRITE_MASK depthWriteMask, D3D11_COMPARISON_FUNC depthFunc);
 
         std::array<Microsoft::WRL::ComPtr<ID3D11DepthStencilState>, 3> _states;
     };

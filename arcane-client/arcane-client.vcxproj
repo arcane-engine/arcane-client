@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderSystem.cpp" />
     <ClCompile Include="src\Resources\ResourceManager.cpp" />
     <ClCompile Include="src\Math\Ray.cpp" />
     <ClCompile Include="src\Core\IO\BitReader.cpp" />
@@ -223,6 +224,7 @@
     <ClCompile Include="src\Network\PacketQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\RenderSystem.h" />
     <ClInclude Include="src\Resources\ResourceManager.h" />
     <ClInclude Include="src\Math\Ray.h" />
     <ClInclude Include="src\Core\IO\BitReader.h" />

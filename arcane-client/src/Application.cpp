@@ -15,14 +15,15 @@
 
 Application::Application(const int width, const int height) :
     _window(width, height),
-    _device(_window.GetWindowHandle(), width, height),
     _camera(width, height),
-    _resourceManager(_device)
+    _renderSystem(_window.GetWindowHandle(), width, height),
+    _resourceManager(_renderSystem.GetDevice())
 {
     _networkWorker.Start();
-    _renderPipeline.Build(_device, _resourceManager.GetShaderLibrary(), _resourceManager.GetSamplerLibrary(), _resourceManager.GetDepthStencilStateLibrary(), _resourceManager.GetInputLayoutLibrary());
 
-    _cameraObject = Graphics::RenderObjectBuilder(_device)
+    _renderSystem.BuildRenderPipeline(_resourceManager);
+
+    _cameraObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
         .Build();
 
@@ -30,7 +31,7 @@ Application::Application(const int width, const int height) :
     const auto cube = _resourceManager.GetMesh("Cube");
     const auto material = _resourceManager.GetMaterial("Default");
 
-    _object1 = Graphics::RenderObjectBuilder(_device)
+    _object1 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Terrain"))
         .WithPixelShader(_resourceManager.GetPixelShader("Terrain"))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Terrain))
@@ -45,7 +46,7 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
-    _object2 = Graphics::RenderObjectBuilder(_device)
+    _object2 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader, true))
         .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
@@ -59,9 +60,9 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
-    _object3 = Graphics::RenderObjectBuilder(_device)
+    _object3 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
-        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.VertexShader))
+        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
         .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
         .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
@@ -91,14 +92,14 @@ int Application::Run()
 void Application::DrawCursor()
 {
     auto mouse = _window.GetMouse().GetRay();
-    mouse.Direction = mouse.Direction * 10.0f;
+    mouse.Direction = mouse.Direction * 30.0f;
     const auto position = mouse.Origin + mouse.Direction;
-    _renderQueue.Add(_object3, DirectX::XMMatrixTranslation(position.X, position.Y, position.Z));
+    _renderSystem.GetRenderQueue().Add(_object3, DirectX::XMMatrixTranslation(position.X, position.Y, position.Z));
 }
 
 void Application::Update()
 {
-    _renderQueue.Clear();
+    _renderSystem.ClearRenderQueue();
     _timer.Update();
 
     while (const auto event = _window.GetMouse().ReadRawEvent())
@@ -145,10 +146,10 @@ void Application::Update()
         { {  8.0f, 4.0f,  8.0f, 1.0f }, { 0.6f, 1.0f, 0.6f, 1.0f } }
     };
 
-    _renderQueue.Add(_cameraObject);
+    _renderSystem.GetRenderQueue().Add(_cameraObject);
 
 
-    _renderQueue.Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
+    _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
 
     std::vector<DirectX::XMMATRIX> instanceMatrices;
     for (auto x = -5; x <= 5; x++)
@@ -159,11 +160,11 @@ void Application::Update()
         }
     }
 
-    _renderQueue.Add(_object2, instanceMatrices);
+    _renderSystem.GetRenderQueue().Add(_object2, instanceMatrices);
 
     DrawCursor();
 
-    _renderPipeline.Execute(_device, _renderQueue, context);
+    _renderSystem.ExecuteRenderPipeline(context);
 }
 
 void Application::ToggleFullscreen()
@@ -173,9 +174,9 @@ void Application::ToggleFullscreen()
     const auto width = _window.GetWidth();
     const auto height = _window.GetHeight();
 
-    _device.SetResolution(width, height);
+    _renderSystem.GetDevice().SetResolution(width, height);
     _camera.SetResolution(width, height);
     _window.GetMouse().SetResolution(width, height);
 
-    _renderPipeline.Build(_device, _resourceManager.GetShaderLibrary(), _resourceManager.GetSamplerLibrary(), _resourceManager.GetDepthStencilStateLibrary(), _resourceManager.GetInputLayoutLibrary());
+    _renderSystem.BuildRenderPipeline(_resourceManager);
 }

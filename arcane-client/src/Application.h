@@ -1,13 +1,11 @@
 #pragma once
 
 #include "Platform/Window.h"
-#include "Graphics/Device.h"
 #include "Graphics/RenderObject.h"
-#include "Graphics/RenderPipeline.h"
-#include "Graphics/RenderQueue.h"
 #include "Graphics/Camera/Camera.h"
 #include "Resources/ResourceManager.h"
 #include "Core/Time/Timer.h"
+#include "Graphics/RenderSystem.h"
 #include "Network/NetworkWorker.h"
 
 class Application
@@ -24,12 +22,10 @@ private:
     void ToggleFullscreen();
 
     Platform::Window _window;
-    Graphics::Device _device;
     Core::Timer _timer;
     Network::NetworkWorker _networkWorker;
-    Graphics::RenderPipeline _renderPipeline;
-    Graphics::RenderQueue _renderQueue;
     Graphics::Camera _camera;
+    Graphics::RenderSystem _renderSystem;
     Resources::ResourceManager _resourceManager;
     Graphics::RenderObject _cameraObject;
     Graphics::RenderObject _object1;

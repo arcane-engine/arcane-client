@@ -18,17 +18,13 @@ namespace Graphics
     {
         _pipeline.clear();
 
-        const auto geometryRenderTarget = device.GetGeometryRenderTarget();
-        const auto compositionRenderTarget = device.GetCompositionRenderTarget();
-        const auto depthStencil = device.GetDepthStencil();
-
-        Add(std::make_unique<ClearRenderTarget>(geometryRenderTarget));
-        Add(std::make_unique<ClearRenderTarget>(compositionRenderTarget));
-        Add(std::make_unique<ClearDepthStencil>(depthStencil));
-        Add(std::make_unique<BindRenderTarget>(geometryRenderTarget, depthStencil));
+        Add(std::make_unique<ClearRenderTarget>(device.GetGeometryRenderTarget()));
+        Add(std::make_unique<ClearRenderTarget>(device.GetCompositionRenderTarget()));
+        Add(std::make_unique<ClearDepthStencil>(device.GetDepthStencil()));
+        Add(std::make_unique<BindRenderTarget>(device.GetGeometryRenderTarget(), device.GetDepthStencil()));
         Add(std::make_unique<GeometryRenderPass>());
-        Add(std::make_unique<BindRenderTarget>(compositionRenderTarget));
-        Add(std::make_unique<CompositionRenderPass>(device, shaderLibrary, samplerLibrary, depthStencilStateLibrary, inputLayoutLibrary, geometryRenderTarget, depthStencil));
+        Add(std::make_unique<BindRenderTarget>(device.GetCompositionRenderTarget()));
+        Add(std::make_unique<CompositionRenderPass>(device, shaderLibrary, samplerLibrary, depthStencilStateLibrary, inputLayoutLibrary, device.GetGeometryRenderTarget(), device.GetDepthStencil()));
         Add(std::make_unique<Present>());
     }
 

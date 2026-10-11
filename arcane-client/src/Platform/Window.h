@@ -5,8 +5,8 @@
 
 #include "Core/Input/Keyboard.h"
 #include "Core/Input/Mouse.h"
-#include "Platform/WindowClass.h"
 #include "Graphics/Device.h"
+#include "Platform/WindowClass.h"
 
 namespace Platform
 {

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Platform/Window.h"
-#include "Graphics/RenderObject.h"
-#include "Graphics/Camera/Camera.h"
-#include "Resources/ResourceManager.h"
 #include "Core/Time/Timer.h"
+#include "Graphics/RenderObject.h"
 #include "Graphics/RenderSystem.h"
+#include "Graphics/Camera/Camera.h"
 #include "Network/NetworkWorker.h"
+#include "Platform/Window.h"
+#include "Resources/ResourceManager.h"
 
 class Application
 {

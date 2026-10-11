@@ -1,5 +1,3 @@
-#define WIN32_LEAN_AND_MEAN
-
 #include "Core/Input/Mouse.h"
 
 #include <windows.h>

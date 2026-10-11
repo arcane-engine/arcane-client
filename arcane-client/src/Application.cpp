@@ -62,6 +62,20 @@ Application::Application(const int width, const int height) :
         .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
+
+    _object3 = Graphics::RenderObjectBuilder(_device)
+        .WithVertexShader(_shaderLibrary.GetVertexShader(material.Shaders.VertexShader))
+        .WithPixelShader(_shaderLibrary.GetPixelShader(material.Shaders.VertexShader))
+        .WithInputLayout(_inputLayoutLibrary.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
+        .WithDepthStencilState(_depthStencilStateLibrary.GetDepthStencilState(Resources::DepthStencilType::Disabled))
+        .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
+        .WithIndexBuffer(cube.GetIndexBuffer())
+        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        .WithSampler(_samplerLibrary.GetSampler(Resources::SamplerType::LinearWrap), 0)
+        .WithTexture(_textureLibrary.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+        .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
+        .Build();
 }
 
 int Application::Run()
@@ -78,6 +92,14 @@ int Application::Run()
     }
 }
 
+void Application::DrawCursor()
+{
+    auto mouse = _window.GetMouse().GetRay();
+    mouse.Direction = mouse.Direction * 10.0f;
+    const auto position = mouse.Origin + mouse.Direction;
+    _renderQueue.Add(_object3, DirectX::XMMatrixTranslation(position.X, position.Y, position.Z));
+}
+
 void Application::Update()
 {
     _renderQueue.Clear();
@@ -88,7 +110,10 @@ void Application::Update()
         const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->X));
         const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->Y));
 
-        _camera.Rotate(-y, x, 0.0f);
+        if (_window.GetMouse().IsRightPressed())
+        {
+            _camera.Rotate(-y, x, 0.0f);
+        }
     }
 
     if (_window.GetKeyboard().IsKeyPressed(VK_F11))
@@ -99,11 +124,8 @@ void Application::Update()
     if (_window.GetKeyboard().IsKeyPressed('W'))
     {
         std::uint8_t buffer[256]{};
-
         const auto size = Network::ClientPacketBuilder(buffer, Network::ClientPacket{ Network::ClientInputPacket{ true, false, false, false } }).Build();
-
         std::vector data(buffer, buffer + size);
-
         _networkWorker.GetSendQueue().Push(std::move(data));
     }
 
@@ -117,6 +139,7 @@ void Application::Update()
     }
 
     _camera.Update();
+    _window.GetMouse().Update(_camera);
 
     auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
     context.Lights = {
@@ -128,10 +151,10 @@ void Application::Update()
 
     _renderQueue.Add(_cameraObject);
 
-    std::vector<DirectX::XMMATRIX> instanceMatrices;
 
     _renderQueue.Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
 
+    std::vector<DirectX::XMMATRIX> instanceMatrices;
     for (auto x = -5; x <= 5; x++)
     {
         for (auto z = -5; z <= 5; z++)
@@ -141,6 +164,8 @@ void Application::Update()
     }
 
     _renderQueue.Add(_object2, instanceMatrices);
+
+    DrawCursor();
 
     _renderPipeline.Execute(_device, _renderQueue, context);
 }
@@ -154,6 +179,7 @@ void Application::ToggleFullscreen()
 
     _device.SetResolution(width, height);
     _camera.SetResolution(width, height);
+    _window.GetMouse().SetResolution(width, height);
 
     _renderPipeline.Build(_device, _shaderLibrary, _samplerLibrary, _depthStencilStateLibrary, _inputLayoutLibrary);
 }

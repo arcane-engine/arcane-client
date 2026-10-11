@@ -4,11 +4,14 @@
 
 #include <windows.h>
 
+#include "Graphics/Camera/Camera.h"
+
 namespace Core::Input
 {
     Mouse::Mouse(const int width, const int height)
         : _width(width), _height(height)
-    {}
+    {
+    }
 
     int Mouse::GetX() const noexcept
     {
@@ -30,6 +33,18 @@ namespace Core::Input
         return -2.0f * static_cast<float>(_y) / static_cast<float>(_height) + 1.0f;
     }
 
+    const Math::Ray& Mouse::GetRay() const noexcept
+    {
+        return _ray;
+    }
+
+    float Mouse::GetSmoothDelta(const float value) noexcept
+    {
+        _smoothDeltaX = _smoothDeltaX * (1.0f - _smoothAlpha) + value * _smoothAlpha;
+
+        return _smoothDeltaX / 600.0f;
+    }
+
     bool Mouse::IsInWindow() const noexcept
     {
         return _inWindow;
@@ -43,6 +58,11 @@ namespace Core::Input
     bool Mouse::IsRightPressed() const noexcept
     {
         return _rightPressed;
+    }
+
+    bool Mouse::IsCaptured() const noexcept
+    {
+        return _captured;
     }
 
     std::optional<MouseEvent> Mouse::ReadEvent() noexcept
@@ -76,17 +96,49 @@ namespace Core::Input
         return _eventBuffer.empty();
     }
 
-    float Mouse::GetSmoothDelta(const float value) noexcept
-    {
-        _smoothDeltaX = _smoothDeltaX * (1.0f - _smoothAlpha) + value * _smoothAlpha;
-
-        return _smoothDeltaX / 600.0f;
-    }
-
     void Mouse::Flush() noexcept
     {
         _eventBuffer = std::queue<MouseEvent>();
         _rawEventBuffer = std::queue<MouseRawEvent>();
+    }
+
+    void Mouse::Update(const Graphics::Camera& camera) noexcept
+    {
+        if (_skipFrame)
+        {
+            _skipFrame = false;
+            return;
+        }
+
+        const auto x = _captured ? _capturedX : GetNormalizedX();
+        const auto y = _captured ? _capturedY : GetNormalizedY();
+
+        const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, camera.GetViewProjectionMatrix());
+
+        const auto position = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 0.0f, 1.0f), inverseViewProjectionMatrix);
+        const auto direction = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 1.0f, 1.0f), inverseViewProjectionMatrix);
+
+        _ray.Origin = position;
+        _ray.Direction = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(direction, position));
+    }
+
+    void Mouse::SetResolution(const int width, const int height) noexcept
+    {
+        _width = width;
+        _height = height;
+    }
+
+    void Mouse::Capture() noexcept
+    {
+        _captured = true;
+        _capturedX = GetNormalizedX();
+        _capturedY = GetNormalizedY();
+    }
+
+    void Mouse::Release() noexcept
+    {
+        _captured = false;
+        _skipFrame = true;
     }
 
     void Mouse::OnMove(const int x, const int y)

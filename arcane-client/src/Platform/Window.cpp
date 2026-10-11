@@ -8,7 +8,9 @@ namespace Platform
 {
     Window::Window(const int width, const int height) :
         _windowClass(HandleMessageSetup),
-        _mouse(width, height)
+        _mouse(width, height),
+        _width(width),
+        _height(height)
     {
         const auto wr = GetAdjustedWindowRect(width, height);
 
@@ -35,7 +37,7 @@ namespace Platform
 
         ShowWindow(_hWnd, SW_SHOWDEFAULT);
 
-        CaptureMouseCursor(width, height);
+        CaptureMouse();
     }
 
     Window::~Window()
@@ -57,11 +59,22 @@ namespace Platform
         }
     }
 
-    void Window::CaptureMouseCursor(const int width, const int height)
+    void Window::CaptureMouse()
     {
-        const RECT rect = { 0, 0, width, height };
-        ClipCursor(&rect);
+        _mouse.Capture();
+
+        SetCapture(_hWnd);
+        GetCursorPos(&_mousePosistion);
         ShowCursor(false);
+    }
+
+    void Window::ReleaseMouse()
+    {
+        ShowCursor(true);
+        SetCursorPos(_mousePosistion.x, _mousePosistion.y);
+        ReleaseCapture();
+
+        _mouse.Release();
     }
 
     LRESULT CALLBACK Window::HandleMessageSetup(const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
@@ -188,9 +201,11 @@ namespace Platform
             _mouse.OnLeftReleased(x, y);
             break;
         case WM_RBUTTONDOWN:
+            CaptureMouse();
             _mouse.OnRightPressed(x, y);
             break;
         case WM_RBUTTONUP:
+            ReleaseMouse();
             _mouse.OnRightReleased(x, y);
             break;
         default:
@@ -289,6 +304,8 @@ namespace Platform
             _height = height;
             _fullscreen = true;
         }
+
+        CaptureMouse();
     }
 
     RECT Window::GetAdjustedWindowRect(const int width, const int height)

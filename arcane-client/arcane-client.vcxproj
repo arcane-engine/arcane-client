@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Math\Ray.cpp" />
     <ClCompile Include="src\Core\IO\BitReader.cpp" />
     <ClCompile Include="src\Network\Protocol\ServerPacketReader.cpp" />
     <ClCompile Include="src\Network\NetworkWorker.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="src\Network\PacketQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Math\Ray.h" />
     <ClInclude Include="src\Core\IO\BitReader.h" />
     <ClInclude Include="src\Network\Protocol\ServerPacketReader.h" />
     <ClInclude Include="src\Network\NetworkWorker.h" />

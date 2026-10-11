@@ -38,6 +38,16 @@ namespace Graphics
         return DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), _width / _height, 0.5f, 500.0f);
     }
 
+    DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const noexcept
+    {
+        return GetViewMatrix() * GetProjectionMatrix();
+    }
+
+    Math::Ray Camera::GetRay() const noexcept
+    {
+        return { _position, _direction };
+    }
+
     void Camera::Rotate(const float pitch, const float yaw, const float roll) noexcept
     {
         _pitch.Rotate(pitch);

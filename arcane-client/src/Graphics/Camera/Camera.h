@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 
 #include "Graphics/Camera/CameraRotation.h"
+#include "Math/Ray.h"
 #include "Math/Vector3.h"
 
 namespace Graphics
@@ -19,6 +20,8 @@ namespace Graphics
         [[nodiscard]] Math::Vector3 GetDirection() const noexcept;
         [[nodiscard]] DirectX::XMMATRIX GetViewMatrix() const noexcept;
         [[nodiscard]] DirectX::XMMATRIX GetProjectionMatrix() const noexcept;
+        [[nodiscard]] DirectX::XMMATRIX GetViewProjectionMatrix() const noexcept;
+        [[nodiscard]] Math::Ray GetRay() const noexcept;
 
         void Rotate(float pitch, float yaw, float roll) noexcept;
         void Update() noexcept;

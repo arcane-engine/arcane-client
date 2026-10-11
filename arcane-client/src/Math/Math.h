@@ -11,5 +11,6 @@ namespace Math
     [[nodiscard]] float Clamp(float value, float min, float max) noexcept;
     [[nodiscard]] float Sin(float value) noexcept;
     [[nodiscard]] float Cos(float value) noexcept;
+    [[nodiscard]] float Sqrt(float value) noexcept;
     [[nodiscard]] size_t Max(size_t v1, size_t v2);
 }

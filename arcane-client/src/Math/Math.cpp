@@ -1,6 +1,7 @@
 #include "Math/Math.h"
 
 #include <algorithm>
+#include <complex>
 
 namespace Math
 {
@@ -11,12 +12,17 @@ namespace Math
 
     float Sin(const float value) noexcept
     {
-        return sinf(value);
+        return std::sinf(value);
     }
 
     float Cos(const float value) noexcept
     {
-        return cosf(value);
+        return std::cosf(value);
+    }
+
+    float Sqrt(const float value) noexcept
+    {
+        return std::sqrtf(value);
     }
 
     size_t Max(const size_t v1, const size_t v2)

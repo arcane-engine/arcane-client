@@ -5,6 +5,12 @@
 
 #include "Core/Input/MouseEvent.h"
 #include "Core/Input/MouseRawEvent.h"
+#include "Math/Ray.h"
+
+namespace Graphics
+{
+    class Camera;
+}
 
 namespace Platform
 {
@@ -24,14 +30,22 @@ namespace Core::Input
         [[nodiscard]] int GetY() const noexcept;
         [[nodiscard]] float GetNormalizedX() const noexcept;
         [[nodiscard]] float GetNormalizedY() const noexcept;
+        [[nodiscard]] const Math::Ray& GetRay() const noexcept;
         [[nodiscard]] float GetSmoothDelta(float value) noexcept;
         [[nodiscard]] bool IsInWindow() const noexcept;
         [[nodiscard]] bool IsLeftPressed() const noexcept;
         [[nodiscard]] bool IsRightPressed() const noexcept;
+        [[nodiscard]] bool IsCaptured() const noexcept;
         [[nodiscard]] std::optional<MouseEvent> ReadEvent() noexcept;
         [[nodiscard]] std::optional<MouseRawEvent> ReadRawEvent() noexcept;
         [[nodiscard]] bool IsEmpty() const noexcept;
+
         void Flush() noexcept;
+        void Update(const Graphics::Camera& camera) noexcept;
+
+        void SetResolution(int width, int height) noexcept;
+        void Capture() noexcept;
+        void Release() noexcept;
 
     private:
         void OnMove(int x, int y);
@@ -56,11 +70,15 @@ namespace Core::Input
         int _y = 0;
         int _width;
         int _height;
+        bool _captured = false;
+        float _capturedX = 0.0f;
+        float _capturedY = 0.0f;
+        bool _skipFrame = false;
+        Math::Ray _ray = {};
         int _wheelDelta = 0;
         float _smoothAlpha = 0.8f;
         float _smoothDeltaX = 0.0f;
         float _smoothDeltaY = 0.0f;
-
         bool _leftPressed = false;
         bool _rightPressed = false;
         bool _inWindow = false;

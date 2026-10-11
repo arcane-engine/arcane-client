@@ -31,10 +31,11 @@ namespace Platform
 
         void ToggleFullscreen();
 
+        void CaptureMouse();
+        void ReleaseMouse();
+
     private:
         static void RegisterRawMouseInputDevice();
-        static void CaptureMouseCursor(int width, int height);
-
         static LRESULT CALLBACK HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
         static LRESULT CALLBACK HandleMessageProxy(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -56,6 +57,7 @@ namespace Platform
         HWND _hWnd;
         Core::Input::Keyboard _keyboard;
         Core::Input::Mouse _mouse;
+        POINT _mousePosistion{};
         std::vector<std::uint8_t> _rawInputBuffer;
         int _width;
         int _height;

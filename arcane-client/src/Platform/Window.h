@@ -43,7 +43,7 @@ namespace Platform
 
         void HandleSystemMessage(UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
         void HandleKeyboardMessage(UINT msg, WPARAM wParam, LPARAM lParam);
-        void HandleRawInputMessage(LPARAM lParam);
+        void HandleRawInputMessage(UINT msg, LPARAM lParam);
         void HandleMouseMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
         [[nodiscard]] static RECT GetAdjustedWindowRect(int width, int height);

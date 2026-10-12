@@ -59,20 +59,6 @@ Application::Application(const int width, const int height) :
         .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
-
-    _object3 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
-        .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
-        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
-        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTexture))
-        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
-        .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
-        .WithIndexBuffer(cube.GetIndexBuffer())
-        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
-        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
-        .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
-        .Build();
 }
 
 int Application::Run()
@@ -87,14 +73,6 @@ int Application::Run()
 
         Update();
     }
-}
-
-void Application::DrawCursor()
-{
-    auto mouse = _window.GetMouse().GetRay();
-    mouse.Direction = mouse.Direction * 30.0f;
-    const auto position = mouse.Origin + mouse.Direction;
-    _renderSystem.GetRenderQueue().Add(_object3, DirectX::XMMatrixTranslation(position.X, position.Y, position.Z));
 }
 
 void Application::Update()
@@ -161,8 +139,6 @@ void Application::Update()
     }
 
     _renderSystem.GetRenderQueue().Add(_object2, instanceMatrices);
-
-    DrawCursor();
 
     _renderSystem.ExecuteRenderPipeline(context);
 }

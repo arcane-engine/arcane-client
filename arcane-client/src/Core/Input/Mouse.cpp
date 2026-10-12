@@ -102,14 +102,8 @@ namespace Core::Input
 
     void Mouse::Update(const Graphics::Camera& camera) noexcept
     {
-        if (_skipFrame)
-        {
-            _skipFrame = false;
-            return;
-        }
-
-        const auto x = _captured ? _capturedX : GetNormalizedX();
-        const auto y = _captured ? _capturedY : GetNormalizedY();
+        const auto x = GetNormalizedX();
+        const auto y = GetNormalizedY();
 
         const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, camera.GetViewProjectionMatrix());
 
@@ -129,14 +123,11 @@ namespace Core::Input
     void Mouse::Capture() noexcept
     {
         _captured = true;
-        _capturedX = GetNormalizedX();
-        _capturedY = GetNormalizedY();
     }
 
     void Mouse::Release() noexcept
     {
         _captured = false;
-        _skipFrame = true;
     }
 
     void Mouse::OnMove(const int x, const int y)

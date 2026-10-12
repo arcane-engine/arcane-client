@@ -15,7 +15,7 @@ namespace Platform
         wc.cbWndExtra = 0;
         wc.hInstance = _hInstance;
         wc.hIcon = nullptr;
-        wc.hCursor = nullptr;
+        wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
         wc.hbrBackground = nullptr;
         wc.lpszMenuName = nullptr;
         wc.lpszClassName = GetName();

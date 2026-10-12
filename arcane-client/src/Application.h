@@ -14,7 +14,6 @@ public:
     Application(int width, int height);
 
     int Run();
-    void DrawCursor();
 
 private:
     void Update();
@@ -30,5 +29,4 @@ private:
     Graphics::RenderObject _cameraObject;
     Graphics::RenderObject _object1;
     Graphics::RenderObject _object2;
-    Graphics::RenderObject _object3;
 };

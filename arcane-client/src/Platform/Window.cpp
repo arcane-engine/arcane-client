@@ -36,8 +36,6 @@ namespace Platform
         RegisterRawMouseInputDevice();
 
         ShowWindow(_hWnd, SW_SHOWDEFAULT);
-
-        CaptureMouse();
     }
 
     Window::~Window()
@@ -109,7 +107,7 @@ namespace Platform
     {
         HandleSystemMessage(msg, wParam, lParam);
         HandleKeyboardMessage(msg, wParam, lParam);
-        HandleRawInputMessage(lParam);
+        HandleRawInputMessage(msg, lParam);
         HandleMouseMessage(msg, wParam, lParam);
 
         if (msg == WM_CLOSE)
@@ -158,8 +156,13 @@ namespace Platform
         }
     }
 
-    void Window::HandleRawInputMessage(const LPARAM lParam)
+    void Window::HandleRawInputMessage(const UINT msg, const LPARAM lParam)
     {
+        if (msg != WM_INPUT)
+        {
+            return;
+        }
+
         UINT size = 0;
         const auto hRawInput = std::bit_cast<HRAWINPUT>(lParam);
         if (GetRawInputData(hRawInput, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == static_cast<UINT>(-1))
@@ -174,9 +177,15 @@ namespace Platform
         }
 
         const auto& [header, data] = reinterpret_cast<const RAWINPUT&>(*_rawInputBuffer.data());
+
+        if (header.dwType != RIM_TYPEMOUSE)
+        {
+            return;
+        }
+
         const auto x = data.mouse.lLastX;
         const auto y = data.mouse.lLastY;
-        if (header.dwType == RIM_TYPEMOUSE && (x != 0 || y != 0))
+        if (x != 0 || y != 0)
         {
             _mouse.OnMoveRaw(x, y);
         }
@@ -304,8 +313,6 @@ namespace Platform
             _height = height;
             _fullscreen = true;
         }
-
-        CaptureMouse();
     }
 
     RECT Window::GetAdjustedWindowRect(const int width, const int height)

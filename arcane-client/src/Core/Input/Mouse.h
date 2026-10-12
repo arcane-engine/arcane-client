@@ -71,9 +71,6 @@ namespace Core::Input
         int _width;
         int _height;
         bool _captured = false;
-        float _capturedX = 0.0f;
-        float _capturedY = 0.0f;
-        bool _skipFrame = false;
         Math::Ray _ray = {};
         int _wheelDelta = 0;
         float _smoothAlpha = 0.8f;

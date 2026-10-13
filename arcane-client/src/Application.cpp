@@ -19,7 +19,7 @@ Application::Application(const int width, const int height) :
     _renderSystem(_window.GetWindowHandle(), width, height),
     _resourceManager(_renderSystem.GetDevice())
 {
-    _networkWorker.Start();
+    _networkSystem.Start();
 
     _renderSystem.BuildRenderPipeline(_resourceManager);
 
@@ -67,7 +67,7 @@ int Application::Run()
     {
         if (const auto exitCode = _window.ProcessMessages())
         {
-            _networkWorker.Stop();
+            _networkSystem.Stop();
             return static_cast<int>(*exitCode);
         }
 
@@ -96,23 +96,8 @@ void Application::Update()
         ToggleFullscreen();
     }
 
-    if (_window.GetKeyboard().IsKeyPressed('W'))
-    {
-        std::uint8_t buffer[256]{};
-        const auto size = Network::ClientPacketBuilder(buffer, Network::ClientPacket{ Network::ClientInputPacket{ true, false, false, false } }).Build();
-        std::vector data(buffer, buffer + size);
-        _networkWorker.GetSendQueue().Push(std::move(data));
-    }
-
-    std::queue<std::vector<std::uint8_t>> queue;
-    _networkWorker.GetReceiveQueue().Swap(queue);
-    while (!queue.empty())
-    {
-        const auto packet = Network::ServerPacketReader::Read(queue.front().data());
-        SetWindowTextW(_window.GetWindowHandle(), packet.Register[0].Register ? std::format(L"JOINED{}", packet.Register[0].Id).c_str() : L"LEFT");
-        queue.pop();
-    }
-
+    _networkSystem.SendInput(_inputSystem.PollInput(_window));
+    _networkSystem.Update();
     _camera.Update();
     _window.GetMouse().Update(_camera);
 

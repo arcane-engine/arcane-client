@@ -5,14 +5,18 @@
 
 namespace Network
 {
+    template<typename T>
     class PacketQueue
     {
     public:
-        void Push(std::vector<std::uint8_t>&& packet);
-        void Swap(std::queue<std::vector<std::uint8_t>>& targetQueue);
+        void Push(T&& packet);
+        void Push(const T& packet);
+        void Swap(std::queue<T>& targetQueue);
 
     private:
-        std::mutex _mutex;
-        std::queue<std::vector<std::uint8_t>> _queue;
+        mutable std::mutex _mutex;
+        std::queue<T> _queue;
     };
 }
+
+#include "Network/PacketQueue.inl"

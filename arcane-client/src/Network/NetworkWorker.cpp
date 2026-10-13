@@ -3,6 +3,7 @@
 #include "Core/Common/Exception.h"
 #include "Network/Protocol/ClientPacketBuilder.h"
 #include "Network/Protocol/Packets/ClientPacket.h"
+#include "Protocol/ServerPacketReader.h"
 
 namespace Network
 {
@@ -10,27 +11,38 @@ namespace Network
     {
         _running = true;
 
-        if (!_client.Connect("127.0.0.1", 5000))
+        if (!_networkClient.Connect("127.0.0.1", 5000))
         {
             throw Core::Exception("Failed to connect to server.");
         }
 
-        _send = std::thread(&NetworkWorker::Send, this);
-        _receive = std::thread(&NetworkWorker::Receive, this);
+        _sendThread = std::thread(&NetworkWorker::Send, this);
+        _receiveThread = std::thread(&NetworkWorker::Receive, this);
     }
 
     void NetworkWorker::Stop()
     {
         _running = false;
-        _client.Disconnect();
-        if (_send.joinable())
+
+        _networkClient.Disconnect();
+        if (_sendThread.joinable())
         {
-            _send.join();
+            _sendThread.join();
         }
-        if (_receive.joinable())
+        if (_receiveThread.joinable())
         {
-            _receive.join();
+            _receiveThread.join();
         }
+    }
+
+    void NetworkWorker::SendQueuePush(const ClientPacket& packet)
+    {
+        return _sendQueue.Push(packet);
+    }
+
+    PacketQueue<ServerPacket>& NetworkWorker::GetReceiveQueue()
+    {
+        return _receiveQueue;
     }
 
     void NetworkWorker::Send()
@@ -41,15 +53,14 @@ namespace Network
         {
             auto startTime = std::chrono::steady_clock::now();
 
-            std::queue<std::vector<std::uint8_t>> queue;
+            std::queue<ClientPacket> queue;
             _sendQueue.Swap(queue);
 
             while (!queue.empty())
             {
-                const auto& data = queue.front();
-
-                auto _ = _client.SendPacket(data.data(), data.size());
-
+                std::uint8_t buffer[8192]{};
+                const auto size = ClientPacketBuilder(buffer, queue.front()).Build();
+                auto _ = _networkClient.SendPacket(buffer, size);
                 queue.pop();
             }
 
@@ -70,12 +81,12 @@ namespace Network
         {
             auto startTime = std::chrono::steady_clock::now();
 
-            std::vector<std::uint8_t> packet;
-            while (_client.ReceivePacket(packet))
+            std::vector<std::uint8_t> buffer;
+            while (_networkClient.ReceivePacket(buffer))
             {
+                auto packet = ServerPacketReader::Read(buffer.data());
                 _receiveQueue.Push(std::move(packet));
-
-                packet = std::vector<std::uint8_t>();
+                buffer.clear();
             }
 
             auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - startTime);

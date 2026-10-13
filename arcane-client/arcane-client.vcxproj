@@ -150,6 +150,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Input\InputSystem.cpp" />
+    <ClCompile Include="src\Network\NetworkSystem.cpp" />
     <ClCompile Include="src\Graphics\RenderSystem.cpp" />
     <ClCompile Include="src\Resources\ResourceManager.cpp" />
     <ClCompile Include="src\Math\Ray.cpp" />
@@ -221,9 +223,11 @@
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
     <ClCompile Include="src\Core\Time\Timer.cpp" />
-    <ClCompile Include="src\Network\PacketQueue.cpp" />
+    <ClCompile Include="src\Network\PacketQueue.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Input\InputSystem.h" />
+    <ClInclude Include="src\Network\NetworkSystem.h" />
     <ClInclude Include="src\Graphics\RenderSystem.h" />
     <ClInclude Include="src\Resources\ResourceManager.h" />
     <ClInclude Include="src\Math\Ray.h" />

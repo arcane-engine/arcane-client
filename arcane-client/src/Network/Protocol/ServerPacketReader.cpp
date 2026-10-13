@@ -1,4 +1,4 @@
-#include "ServerPacketReader.h"
+#include "Network/Protocol/ServerPacketReader.h"
 
 #include "Core/IO/BitReader.h"
 

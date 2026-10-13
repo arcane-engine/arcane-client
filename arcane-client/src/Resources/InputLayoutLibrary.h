@@ -2,7 +2,7 @@
 
 #include <span>
 
-#include "DepthStencilStateLibrary.h"
+#include "Resources/DepthStencilStateLibrary.h"
 
 namespace Graphics
 {

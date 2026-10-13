@@ -1,8 +1,8 @@
-#include "InputLayoutLibrary.h"
+#include "Resources/InputLayoutLibrary.h"
 
-#include "ShaderLibrary.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
+#include "Resources/ShaderLibrary.h"
 
 namespace Resources
 {

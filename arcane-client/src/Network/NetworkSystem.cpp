@@ -1,5 +1,6 @@
 #include "NetworkSystem.h"
 
+#include "Core/Context/InputContext.h"
 #include "Protocol/Packets/ClientPacket.h"
 
 namespace Network
@@ -25,18 +26,25 @@ namespace Network
 
             if (!packet.Register.empty())
             {
-                const auto& reg = packet.Register[0]; // funkar... breakpoint här biter som tänkt...
+                const auto& reg = packet.Register[0];
             }
 
             queue.pop();
         }
     }
 
-    void NetworkSystem::SendInput(const std::optional<ClientInputPacket> input)
+    void NetworkSystem::SendInput(const Core::InputContext& input)
     {
-        if (input)
+        if (input.Keyboard.Changed)
         {
-            _networkWorker.SendQueuePush(ClientPacket{ .Input = input });
+            _networkWorker.SendQueuePush(ClientPacket{
+                .Input = ClientInputPacket{
+                    .Forward = input.Keyboard.Forward,
+                    .Backward = input.Keyboard.Backward,
+                    .Left = input.Keyboard.Left,
+                    .Right = input.Keyboard.Right
+                }
+            });
         }
     }
 }

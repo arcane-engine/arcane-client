@@ -2,6 +2,8 @@
 
 #include <DirectXMath.h>
 
+#include "Core/Context/CameraContext.h"
+#include "Core/Context/MouseInputContext.h"
 #include "Graphics/Camera/CameraRotation.h"
 #include "Math/Ray.h"
 #include "Math/Vector3.h"
@@ -24,7 +26,8 @@ namespace Graphics
         [[nodiscard]] Math::Ray GetRay() const noexcept;
 
         void Rotate(float pitch, float yaw, float roll) noexcept;
-        void Update() noexcept;
+
+        [[nodiscard]] Core::CameraContext Update(const Core::MouseInputContext& mouse) noexcept;
 
     private:
 

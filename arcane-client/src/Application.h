@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Core/Input/InputSystem.h"
-#include "Core/Time/Timer.h"
+#include "Core/Time/TimeSystem.h"
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderSystem.h"
 #include "Graphics/Camera/Camera.h"
 #include "Network/NetworkSystem.h"
-#include "Network/NetworkWorker.h"
 #include "Platform/Window.h"
 #include "Resources/ResourceManager.h"
 
@@ -23,7 +22,7 @@ private:
     void ToggleFullscreen();
 
     Platform::Window _window;
-    Core::Timer _timer;
+    Core::TimeSystem _timeSystem;
     Network::NetworkSystem _networkSystem;
     Graphics::Camera _camera;
     Graphics::RenderSystem _renderSystem;

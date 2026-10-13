@@ -8,10 +8,7 @@
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 #include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
-#include "Network/Protocol/ClientPacketBuilder.h"
-#include "Network/Protocol/ServerPacketReader.h"
-#include "Network/Protocol/Packets/ClientInputPacket.h"
-#include "Network/Protocol/Packets/ClientPacket.h"
+#include "Core/Context/Context.h"
 
 Application::Application(const int width, const int height) :
     _window(width, height),
@@ -78,31 +75,22 @@ int Application::Run()
 void Application::Update()
 {
     _renderSystem.ClearRenderQueue();
-    _timer.Update();
-
-    while (const auto event = _window.GetMouse().ReadRawEvent())
-    {
-        const auto x = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->X));
-        const auto y = _window.GetMouse().GetSmoothDelta(static_cast<float>(event->Y));
-
-        if (_window.GetMouse().IsRightPressed())
-        {
-            _camera.Rotate(-y, x, 0.0f);
-        }
-    }
 
     if (_window.GetKeyboard().IsKeyPressed(VK_F11))
     {
         ToggleFullscreen();
     }
 
-    _networkSystem.SendInput(_inputSystem.PollInput(_window));
+    auto context = Core::Context();
+    context.Time = _timeSystem.Update();
+    context.Input = _inputSystem.Update(_window);
+    context.Camera = _camera.Update(context.Input.Mouse);
+    _window.GetMouse().Update(context.Camera);
+    _networkSystem.SendInput(context.Input);
     _networkSystem.Update();
-    _camera.Update();
-    _window.GetMouse().Update(_camera);
 
-    auto context = Graphics::RenderContext(_camera.GetViewMatrix(), _camera.GetProjectionMatrix());
-    context.Lights = {
+    auto renderContext = Graphics::RenderContext(context.Camera.ViewMatrix, context.Camera.ProjectionMatrix);
+    renderContext.Lights = {
         { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
         { {  8.0f, 4.0f, -8.0f, 1.0f }, { 0.6f, 0.8f, 1.0f, 1.0f } },
         { { -8.0f, 4.0f,  8.0f, 1.0f }, { 1.0f, 0.6f, 0.6f, 1.0f } },
@@ -110,7 +98,6 @@ void Application::Update()
     };
 
     _renderSystem.GetRenderQueue().Add(_cameraObject);
-
 
     _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
 
@@ -125,7 +112,7 @@ void Application::Update()
 
     _renderSystem.GetRenderQueue().Add(_object2, instanceMatrices);
 
-    _renderSystem.ExecuteRenderPipeline(context);
+    _renderSystem.ExecuteRenderPipeline(renderContext);
 }
 
 void Application::ToggleFullscreen()

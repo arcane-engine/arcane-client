@@ -100,12 +100,12 @@ namespace Core::Input
         _rawEventBuffer = std::queue<MouseRawEvent>();
     }
 
-    void Mouse::Update(const Graphics::Camera& camera) noexcept
+    void Mouse::Update(const CameraContext& camera) noexcept
     {
         const auto x = GetNormalizedX();
         const auto y = GetNormalizedY();
 
-        const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, camera.GetViewProjectionMatrix());
+        const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, camera.ViewProjectionMatrix);
 
         const auto position = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 0.0f, 1.0f), inverseViewProjectionMatrix);
         const auto direction = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 1.0f, 1.0f), inverseViewProjectionMatrix);

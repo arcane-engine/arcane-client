@@ -222,10 +222,16 @@
     <ClCompile Include="src\Core\Common\StringHash.cpp" />
     <ClCompile Include="src\Resources\TextureLibrary.cpp" />
     <ClCompile Include="src\Core\IO\Stream.cpp" />
-    <ClCompile Include="src\Core\Time\Timer.cpp" />
+    <ClCompile Include="src\Core\Time\TimeSystem.cpp" />
     <ClCompile Include="src\Network\PacketQueue.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Context\CameraContext.h" />
+    <ClInclude Include="src\Core\Context\Context.h" />
+    <ClInclude Include="src\Core\Context\InputContext.h" />
+    <ClInclude Include="src\Core\Context\KeybordInputContext.h" />
+    <ClInclude Include="src\Core\Context\MouseInputContext.h" />
+    <ClInclude Include="src\Core\Context\TimeContext.h" />
     <ClInclude Include="src\Core\Input\InputSystem.h" />
     <ClInclude Include="src\Network\NetworkSystem.h" />
     <ClInclude Include="src\Graphics\RenderSystem.h" />
@@ -302,7 +308,7 @@
     <ClInclude Include="src\Math\Vector3.h" />
     <ClInclude Include="src\Resources\TextureLibrary.h" />
     <ClInclude Include="src\Core\IO\Stream.h" />
-    <ClInclude Include="src\Core\Time\Timer.h" />
+    <ClInclude Include="src\Core\Time\TimeSystem.h" />
     <ClInclude Include="src\Network\PacketQueue.h" />
   </ItemGroup>
   <ItemGroup>

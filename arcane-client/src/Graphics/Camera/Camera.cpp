@@ -55,15 +55,26 @@ namespace Graphics
         _roll.Rotate(roll);
     }
 
-    void Camera::Update() noexcept
+    Core::CameraContext Camera::Update(const Core::MouseInputContext& mouse) noexcept
     {
-        _direction = DirectX::XMVector3Normalize(
-            DirectX::XMVectorSet(
-                Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue()),
-                Math::Sin(_pitch.GetValue()),
-                Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue()),
-                0.0f
-            )
-        );
+        if (mouse.RightPressed)
+        {
+            Rotate(-mouse.DeltaY, mouse.DeltaX, 0.0f);
+
+            _direction = DirectX::XMVector3Normalize(
+                DirectX::XMVectorSet(
+                    Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue()),
+                    Math::Sin(_pitch.GetValue()),
+                    Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue()),
+                    0.0f
+                )
+            );
+        }
+
+        return {
+            .ViewMatrix = GetViewMatrix(),
+            .ProjectionMatrix = GetProjectionMatrix(),
+            .ViewProjectionMatrix = GetViewProjectionMatrix()
+        };
     }
 }

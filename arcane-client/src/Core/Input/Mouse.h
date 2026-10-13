@@ -7,6 +7,11 @@
 #include "Core/Input/MouseRawEvent.h"
 #include "Math/Ray.h"
 
+namespace Core
+{
+    struct CameraContext;
+}
+
 namespace Graphics
 {
     class Camera;
@@ -41,7 +46,7 @@ namespace Core::Input
         [[nodiscard]] bool IsEmpty() const noexcept;
 
         void Flush() noexcept;
-        void Update(const Graphics::Camera& camera) noexcept;
+        void Update(const CameraContext& camera) noexcept;
 
         void SetResolution(int width, int height) noexcept;
         void Capture() noexcept;

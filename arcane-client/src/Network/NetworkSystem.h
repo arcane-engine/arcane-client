@@ -1,8 +1,11 @@
 #pragma once
-#include <optional>
 
 #include "NetworkWorker.h"
-#include "Protocol/Packets/ClientInputPacket.h"
+
+namespace Core
+{
+    struct InputContext;
+}
 
 namespace Network
 {
@@ -14,7 +17,7 @@ namespace Network
 
         void Update();
 
-        void SendInput(std::optional<ClientInputPacket> input);
+        void SendInput(const Core::InputContext& input);
 
     private:
         NetworkWorker _networkWorker;

@@ -99,16 +99,16 @@ void Application::Update()
 
     _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
 
-    std::vector<DirectX::XMMATRIX> instanceMatrices;
+    std::vector<DirectX::XMMATRIX> worldMatrixInstances;
     for (auto x = -5; x <= 5; x++)
     {
         for (auto z = -5; z <= 5; z++)
         {
-            instanceMatrices.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4) - 20, 3.0f, static_cast<float>(z * 4) - 20));
+            worldMatrixInstances.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4) - 20, 3.0f, static_cast<float>(z * 4) - 20));
         }
     }
 
-    _renderSystem.GetRenderQueue().Add(_object2, instanceMatrices);
+    _renderSystem.GetRenderQueue().Add(_object2, worldMatrixInstances);
 
     _renderSystem.ExecuteRenderPipeline(context);
 }

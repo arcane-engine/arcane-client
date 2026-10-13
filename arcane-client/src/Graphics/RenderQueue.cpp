@@ -22,38 +22,31 @@ namespace Graphics
         _commands.push_back(RenderCommand(object, worldMatrix));
     }
 
-    void RenderQueue::Add(const RenderObject& object, const std::span<const DirectX::XMMATRIX> instanceMatrices) noexcept
+    void RenderQueue::Add(const RenderObject& object, const std::span<const DirectX::XMMATRIX> worldMatrixInstances) noexcept
     {
-        _commands.push_back(RenderCommand(object, instanceMatrices));
+        _commands.push_back(RenderCommand(object, worldMatrixInstances));
     }
 
     void RenderQueue::Execute(Device& device, Core::Context& context) const noexcept
     {
         for (auto& command : _commands)
         {
-            auto instanceCount = 0;
-
-            if (const auto instanceMatrices = command.GetInstanceMatrices())
+            if (const auto worldMatrixInstances = command.GetWorldMatrixInstances())
             {
-                context.InstanceMatrices = *instanceMatrices;
-                instanceCount = static_cast<int>(instanceMatrices->size());
+                context.Object.WorldMatrixInstances = *worldMatrixInstances;
+                command.GetRenderObject().Bind(device, context);
+                command.GetRenderObject().Draw(device, static_cast<int>(worldMatrixInstances->size()));
             }
-            if (const auto worldMatrix = command.GetWorldMatrix())
+            else if (const auto worldMatrix = command.GetWorldMatrix())
             {
-                context.Object = {
-                    .WorldMatrix = *worldMatrix,
-                    .WorldViewProjectionMatrix = *worldMatrix * context.Camera.ViewProjectionMatrix
-                };
-            }
-
-            command.GetRenderObject().Bind(device, context);
-            if (instanceCount == 0)
-            {
+                context.Object.WorldMatrix = *worldMatrix;
+                context.Object.WorldViewProjectionMatrix = *worldMatrix * context.Camera.ViewProjectionMatrix;
+                command.GetRenderObject().Bind(device, context);
                 command.GetRenderObject().Draw(device);
             }
             else
             {
-                command.GetRenderObject().Draw(device, instanceCount);
+                command.GetRenderObject().Bind(device, context);
             }
         }
     }

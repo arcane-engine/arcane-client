@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <span>
 
 #include "Core/Context/CameraContext.h"
 #include "Core/Context/InputContext.h"
@@ -23,6 +22,5 @@ namespace Core
         CameraContext Camera;
         ObjectContext Object;
         std::vector<Light> Lights;
-        std::span<const DirectX::XMMATRIX> InstanceMatrices;
     };
 }

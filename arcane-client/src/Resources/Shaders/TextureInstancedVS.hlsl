@@ -15,17 +15,17 @@ VSOutput main(VSInput_PositionNormalTexture_Instanced input)
 {
     VSOutput output;
 
-    matrix instanceWorld = matrix(
-        input.instanceMatrixRow0,
-        input.instanceMatrixRow1,
-        input.instanceMatrixRow2,
-        input.instanceMatrixRow3
+    matrix worldMatrix = matrix(
+        input.worldMatrixRow0,
+        input.worldMatrixRow1,
+        input.worldMatrixRow2,
+        input.worldMatrixRow3
     );
 
-    float4 worldPos = mul(float4(input.position, 1.0f), instanceWorld);
+    float4 worldPos = mul(float4(input.position, 1.0f), worldMatrix);
     
     output.position = mul(worldPos, mul(viewMatrix, projectionMatrix));
-    output.normal = normalize(mul(input.normal, (float3x3) instanceWorld));
+    output.normal = normalize(mul(input.normal, (float3x3) worldMatrix));
     output.uv0 = input.uv0;
     output.worldPosition = worldPos.xyz;
 

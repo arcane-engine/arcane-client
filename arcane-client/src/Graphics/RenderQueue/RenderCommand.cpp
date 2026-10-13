@@ -10,8 +10,8 @@ namespace Graphics
         : _renderObject(renderObject), _worldMatrix(worldMatrix)
     {}
 
-    RenderCommand::RenderCommand(const RenderObject& renderObject, std::span<const DirectX::XMMATRIX> instanceMatrices)
-        : _renderObject(renderObject), _instanceMatrices(instanceMatrices)
+    RenderCommand::RenderCommand(const RenderObject& renderObject, std::span<const DirectX::XMMATRIX> worldMatrixInstances)
+        : _renderObject(renderObject), _worldMatrixInstances(worldMatrixInstances)
     {}
 
     const RenderObject& RenderCommand::GetRenderObject() const noexcept
@@ -24,8 +24,8 @@ namespace Graphics
         return _worldMatrix;
     }
 
-    std::optional<std::span<const DirectX::XMMATRIX>> RenderCommand::GetInstanceMatrices() const noexcept
+    std::optional<std::span<const DirectX::XMMATRIX>> RenderCommand::GetWorldMatrixInstances() const noexcept
     {
-        return _instanceMatrices;
+        return _worldMatrixInstances;
     }
 }

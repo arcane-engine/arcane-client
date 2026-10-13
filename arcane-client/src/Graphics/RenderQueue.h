@@ -22,7 +22,7 @@ namespace Graphics
 
         void Add(const RenderObject& object) noexcept;
         void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix) noexcept;
-        void Add(const RenderObject& object, std::span<const DirectX::XMMATRIX> instanceMatrices) noexcept;
+        void Add(const RenderObject& object, std::span<const DirectX::XMMATRIX> worldMatrixInstances) noexcept;
 
         void Execute(Device& device, Core::Context& context) const noexcept;
 

@@ -18,7 +18,7 @@ namespace Graphics
 
     void InstanceVertexBuffer::Bind(Device& device, const Core::Context& context)
     {
-        const auto matrices = context.InstanceMatrices;
+        const auto matrices = context.Object.WorldMatrixInstances;
         if (matrices.empty())
             return;
 

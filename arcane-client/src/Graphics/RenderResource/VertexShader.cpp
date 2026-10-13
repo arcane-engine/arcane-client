@@ -8,7 +8,7 @@ namespace Graphics
         : _vertexShader(vertexShader)
     {}
 
-    void VertexShader::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void VertexShader::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().VertexShader;
         auto* target = _vertexShader.Get();

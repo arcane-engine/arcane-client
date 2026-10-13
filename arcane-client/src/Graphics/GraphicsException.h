@@ -1,7 +1,7 @@
 #pragma once
 
 #include <span>
-#include <windows.h>
+#include <Windows.h>
 
 #include "Platform/WindowException.h"
 

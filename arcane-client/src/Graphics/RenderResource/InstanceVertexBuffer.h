@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit InstanceVertexBuffer(int slot);
 
-        void Bind(Device& device, const RenderContext& renderContext) override;
+        void Bind(Device& device, const Core::Context& context) override;
 
     private:
         int _slot;

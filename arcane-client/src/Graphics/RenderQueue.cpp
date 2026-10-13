@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 
-#include "Graphics/RenderContext.h"
+#include "Core/Context/Context.h"
 #include "Graphics/RenderObject.h"
 
 namespace Graphics
@@ -27,7 +27,7 @@ namespace Graphics
         _commands.push_back(RenderCommand(object, instanceMatrices));
     }
 
-    void RenderQueue::Execute(Device& device, RenderContext& renderContext) const noexcept
+    void RenderQueue::Execute(Device& device, Core::Context& context) const noexcept
     {
         for (auto& command : _commands)
         {
@@ -35,16 +35,18 @@ namespace Graphics
 
             if (const auto instanceMatrices = command.GetInstanceMatrices())
             {
-                renderContext.InstanceMatrices = *instanceMatrices;
+                context.InstanceMatrices = *instanceMatrices;
                 instanceCount = static_cast<int>(instanceMatrices->size());
             }
             if (const auto worldMatrix = command.GetWorldMatrix())
             {
-                renderContext.WorldMatrix = *worldMatrix;
-                renderContext.WorldViewProjectionMatrix = *worldMatrix * renderContext.ViewProjectionMatrix;
+                context.Object = {
+                    .WorldMatrix = *worldMatrix,
+                    .WorldViewProjectionMatrix = *worldMatrix * context.Camera.ViewProjectionMatrix
+                };
             }
 
-            command.GetRenderObject().Bind(device, renderContext);
+            command.GetRenderObject().Bind(device, context);
             if (instanceCount == 0)
             {
                 command.GetRenderObject().Draw(device);

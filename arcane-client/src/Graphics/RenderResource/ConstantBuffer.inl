@@ -30,20 +30,20 @@ namespace Graphics
     }
 
     template <typename T>
-    void ConstantBuffer<T>::Bind(Device& device, const RenderContext& renderContext) noexcept
+    void ConstantBuffer<T>::Bind(Device& device, const Core::Context& context) noexcept
     {
 
         if constexpr (std::is_same_v<T, CameraTransformBuffer>)
         {
-            Update(device, CameraTransformBuffer::FromRenderContext(renderContext));
+            Update(device, CameraTransformBuffer::FromContext(context));
         }
         if constexpr (std::is_same_v<T, ObjectTransformBuffer>)
         {
-            Update(device, ObjectTransformBuffer::FromRenderContext(renderContext));
+            Update(device, ObjectTransformBuffer::FromContext(context));
         }
         if constexpr (std::is_same_v<T, LightBuffer>)
         {
-            Update(device, LightBuffer::FromRenderContext(renderContext));
+            Update(device, LightBuffer::FromContext(context));
         }
 
         auto* target = _buffer.Get();

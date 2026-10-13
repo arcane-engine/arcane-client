@@ -33,11 +33,11 @@ namespace Graphics
         _pipeline.push_back(std::move(pass));
     }
 
-    void RenderPipeline::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) const
+    void RenderPipeline::Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) const
     {
         for (const auto& pass : _pipeline)
         {
-            pass->Execute(device, renderQueue, renderContext);
+            pass->Execute(device, renderQueue, context);
         }
     }
 }

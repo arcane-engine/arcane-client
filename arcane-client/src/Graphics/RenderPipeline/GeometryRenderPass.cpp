@@ -4,8 +4,8 @@
 
 namespace Graphics
 {
-    void GeometryRenderPass::Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext)
+    void GeometryRenderPass::Execute(Device& device, RenderQueue& renderQueue, Core::Context& context)
     {
-        renderQueue.Execute(device, renderContext);
+        renderQueue.Execute(device, context);
     }
 }

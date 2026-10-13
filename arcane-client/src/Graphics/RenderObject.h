@@ -4,9 +4,13 @@
 #include <memory>
 #include <vector>
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
-    class RenderContext;
     class RenderResource;
     class Device;
 
@@ -17,7 +21,7 @@ namespace Graphics
 
         void Add(const std::shared_ptr<RenderResource>& resource);
 
-        void Bind(Device& device, const RenderContext& renderContext) const noexcept;
+        void Bind(Device& device, Core::Context& context) const noexcept;
 
         void Draw(const Device& device) const noexcept;
         void Draw(const Device& device, int instanceCount) const noexcept;

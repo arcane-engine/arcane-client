@@ -8,7 +8,7 @@ namespace Graphics
         : _inputLayout(inputLayout)
     {}
 
-    void InputLayout::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void InputLayout::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().InputLayout;
         auto* target = _inputLayout.Get();

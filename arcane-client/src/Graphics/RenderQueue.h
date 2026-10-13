@@ -5,10 +5,14 @@
 
 #include "Graphics/RenderQueue/RenderCommand.h"
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
     class Device;
-    class RenderContext;
     class RenderObject;
 
     class RenderQueue
@@ -20,7 +24,7 @@ namespace Graphics
         void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix) noexcept;
         void Add(const RenderObject& object, std::span<const DirectX::XMMATRIX> instanceMatrices) noexcept;
 
-        void Execute(Device& device, RenderContext& renderContext) const noexcept;
+        void Execute(Device& device, Core::Context& context) const noexcept;
 
     private:
         std::vector<RenderCommand> _commands;

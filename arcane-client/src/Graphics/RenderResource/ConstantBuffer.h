@@ -14,7 +14,7 @@ namespace Graphics
     public:
         ConstantBuffer(const Device& device, UINT slot, bool vertexShader = true, bool pixelShader = false);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
         void Update(const Device& device, const T& data) const noexcept;
 
     private:

@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-#include "Graphics/RenderContext.h"
+#include "Core/Context/Context.h"
 
 namespace Graphics
 {
@@ -19,14 +19,14 @@ namespace Graphics
         std::copy_n(colors.begin(), count, Colors);
     }
 
-    LightBuffer LightBuffer::FromRenderContext(const RenderContext& renderContext) noexcept
+    LightBuffer LightBuffer::FromContext(const Core::Context& context) noexcept
     {
         LightBuffer result;
         
         for (auto i = 0; i < 4 ; i++)
         {
-            result.Positions[i] = renderContext.Lights[i].Position;
-            result.Colors[i] = renderContext.Lights[i].Color;
+            result.Positions[i] = context.Lights[i].Position;
+            result.Colors[i] = context.Lights[i].Color;
         }
 
         return result;

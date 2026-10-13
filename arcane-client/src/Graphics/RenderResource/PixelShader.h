@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit PixelShader(const Microsoft::WRL::ComPtr<ID3D11PixelShader>& pixelShader) noexcept;
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;

@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit DepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthStencilState;

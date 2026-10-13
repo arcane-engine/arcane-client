@@ -13,7 +13,7 @@ namespace Graphics
     public:
         Texture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, int slot);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;

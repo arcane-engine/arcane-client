@@ -21,7 +21,7 @@ namespace Graphics
     public:
         explicit CompositionRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil);
 
-        void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) override;
+        void Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) override;
 
     private:
         RenderObject _renderObject;

@@ -1,6 +1,6 @@
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 
-#include "Graphics/RenderContext.h"
+#include "Core/Context/Context.h"
 
 namespace Graphics
 {
@@ -8,11 +8,11 @@ namespace Graphics
         : WorldMatrix(worldMatrix), WorldViewProjectionMatrix(worldViewProjectionMatrix)
     {}
 
-    ObjectTransformBuffer ObjectTransformBuffer::FromRenderContext(const RenderContext& renderContext) noexcept
+    ObjectTransformBuffer ObjectTransformBuffer::FromContext(const Core::Context& context) noexcept
     {
         return {
-            DirectX::XMMatrixTranspose(renderContext.WorldMatrix),
-            DirectX::XMMatrixTranspose(renderContext.WorldViewProjectionMatrix)
+            DirectX::XMMatrixTranspose(context.Object.WorldMatrix),
+            DirectX::XMMatrixTranspose(context.Object.WorldViewProjectionMatrix)
         };
     }
 }

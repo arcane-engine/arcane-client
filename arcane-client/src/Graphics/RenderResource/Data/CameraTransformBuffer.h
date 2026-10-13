@@ -2,10 +2,13 @@
 
 #include <DirectXMath.h>
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
-    class RenderContext;
-
     struct CameraTransformBuffer
     {
         DirectX::XMMATRIX ViewMatrix;
@@ -14,6 +17,6 @@ namespace Graphics
         CameraTransformBuffer() = default;
         CameraTransformBuffer(const DirectX::XMMATRIX& viewMatrix, const DirectX::XMMATRIX& projectionMatrix) noexcept;
 
-        static CameraTransformBuffer FromRenderContext(const RenderContext& renderContext) noexcept;
+        static CameraTransformBuffer FromContext(const Core::Context& context) noexcept;
     };
 }

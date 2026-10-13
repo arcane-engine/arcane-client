@@ -13,7 +13,7 @@ namespace Graphics
     public:
         explicit Sampler(Device& device, const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         int _slot;

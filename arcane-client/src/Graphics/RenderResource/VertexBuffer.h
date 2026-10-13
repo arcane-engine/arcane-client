@@ -16,7 +16,7 @@ namespace Graphics
         VertexBuffer(Device& device, const std::vector<T>& vertexBuffer);
         VertexBuffer(const Device& device, const std::vector<std::byte>& vertexBuffer, std::size_t stride);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11Buffer> _vertexBuffer;

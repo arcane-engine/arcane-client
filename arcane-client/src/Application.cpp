@@ -2,7 +2,6 @@
 
 #include <format>
 
-#include "Graphics/RenderContext.h"
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
@@ -89,8 +88,7 @@ void Application::Update()
     _networkSystem.SendInput(context.Input);
     _networkSystem.Update();
 
-    auto renderContext = Graphics::RenderContext(context.Camera.ViewMatrix, context.Camera.ProjectionMatrix);
-    renderContext.Lights = {
+    context.Lights = {
         { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
         { {  8.0f, 4.0f, -8.0f, 1.0f }, { 0.6f, 0.8f, 1.0f, 1.0f } },
         { { -8.0f, 4.0f,  8.0f, 1.0f }, { 1.0f, 0.6f, 0.6f, 1.0f } },
@@ -112,7 +110,7 @@ void Application::Update()
 
     _renderSystem.GetRenderQueue().Add(_object2, instanceMatrices);
 
-    _renderSystem.ExecuteRenderPipeline(renderContext);
+    _renderSystem.ExecuteRenderPipeline(context);
 }
 
 void Application::ToggleFullscreen()

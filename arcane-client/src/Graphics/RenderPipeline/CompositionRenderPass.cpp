@@ -45,9 +45,9 @@ namespace Graphics
             .Build();
     }
 
-    void CompositionRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, RenderContext& renderContext)
+    void CompositionRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, Core::Context& context)
     {
-        _renderObject.Bind(device, renderContext);
+        _renderObject.Bind(device, context);
         _renderObject.Draw(device);
     }
 }

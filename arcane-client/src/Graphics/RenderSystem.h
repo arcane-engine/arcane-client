@@ -1,9 +1,13 @@
 #pragma once
 
-#include "Graphics/RenderContext.h"
 #include "Graphics/Device.h"
 #include "Graphics/RenderPipeline.h"
 #include "Graphics/RenderQueue.h"
+
+namespace Core
+{
+    struct Context;
+}
 
 namespace Resources
 {
@@ -22,7 +26,7 @@ namespace Graphics
 
         void BuildRenderPipeline(Resources::ResourceManager& resourceManager);
         void ClearRenderQueue() noexcept;
-        void ExecuteRenderPipeline(RenderContext& renderContext);
+        void ExecuteRenderPipeline(Core::Context& context);
 
     private:
         Device _device;

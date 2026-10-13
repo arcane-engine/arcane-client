@@ -2,10 +2,13 @@
 
 #include <DirectXMath.h>
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
-    class RenderContext;
-
     struct ObjectTransformBuffer
     {
         DirectX::XMMATRIX WorldMatrix;
@@ -14,6 +17,6 @@ namespace Graphics
         ObjectTransformBuffer() = default;
         ObjectTransformBuffer(const DirectX::XMMATRIX& worldMatrix, const DirectX::XMMATRIX& worldViewProjectionMatrix) noexcept;
 
-        static ObjectTransformBuffer FromRenderContext(const RenderContext& renderContext) noexcept;
+        static ObjectTransformBuffer FromContext(const Core::Context& context) noexcept;
     };
 }

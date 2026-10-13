@@ -8,7 +8,7 @@ namespace Graphics
         : _depthStencilState(depthStencilState)
     {}
 
-    void DepthStencilState::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void DepthStencilState::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().DepthStencilState;
         auto* target = _depthStencilState.Get();

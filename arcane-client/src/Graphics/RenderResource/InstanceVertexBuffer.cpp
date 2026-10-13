@@ -4,9 +4,9 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+#include "Core/Context/Context.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
-#include "Graphics/RenderContext.h"
 #include "Math/Math.h"
 
 namespace Graphics
@@ -16,9 +16,9 @@ namespace Graphics
     {
     }
 
-    void InstanceVertexBuffer::Bind(Device& device, const RenderContext& renderContext)
+    void InstanceVertexBuffer::Bind(Device& device, const Core::Context& context)
     {
-        const auto matrices = renderContext.InstanceMatrices;
+        const auto matrices = context.InstanceMatrices;
         if (matrices.empty())
             return;
 

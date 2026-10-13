@@ -1,6 +1,6 @@
 #include "Graphics/RenderResource/Data/CameraTransformBuffer.h"
 
-#include "Graphics/RenderContext.h"
+#include "Core/Context/Context.h"
 
 namespace Graphics
 {
@@ -8,11 +8,11 @@ namespace Graphics
         : ViewMatrix(viewMatrix), ProjectionMatrix(projectionMatrix)
     {}
 
-    CameraTransformBuffer CameraTransformBuffer::FromRenderContext(const RenderContext& renderContext) noexcept
+    CameraTransformBuffer CameraTransformBuffer::FromContext(const Core::Context& context) noexcept
     {
         return {
-            DirectX::XMMatrixTranspose(renderContext.ViewMatrix),
-            DirectX::XMMatrixTranspose(renderContext.ProjectionMatrix)
+            DirectX::XMMatrixTranspose(context.Camera.ViewMatrix),
+            DirectX::XMMatrixTranspose(context.Camera.ProjectionMatrix)
         };
     }
 }

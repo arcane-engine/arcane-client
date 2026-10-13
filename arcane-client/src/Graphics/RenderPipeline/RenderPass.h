@@ -1,8 +1,12 @@
 #pragma once
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
-    class RenderContext;
     class RenderQueue;
     class Device;
 
@@ -18,6 +22,6 @@ namespace Graphics
         RenderPass(RenderPass&&) noexcept = default;
         RenderPass& operator=(RenderPass&&) noexcept = default;
 
-        virtual void Execute(Device& device, RenderQueue& renderQueue, RenderContext& renderContext) = 0;
+        virtual void Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) = 0;
     };
 }

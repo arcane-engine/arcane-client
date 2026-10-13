@@ -1,6 +1,6 @@
 #include "Core/Input/Mouse.h"
 
-#include <windows.h>
+#include <Windows.h>
 
 #include "Graphics/Camera/Camera.h"
 

@@ -1,4 +1,4 @@
-#include <windows.h>
+#include <Windows.h>
 
 #include "Application.h"
 #include "Core/Common/Exception.h"

@@ -8,7 +8,7 @@ namespace Graphics
         : _pixelShader(pixelShader)
     {}
 
-    void PixelShader::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void PixelShader::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().PixelShader;
         auto* target = _pixelShader.Get();

@@ -8,7 +8,7 @@ namespace Graphics
         : _shaderResourceView(shaderResourceView), _slot(slot)
     {}
 
-    void Texture::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void Texture::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().Textures[_slot];
         auto* target = _shaderResourceView.Get();

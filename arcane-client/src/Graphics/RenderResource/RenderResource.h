@@ -1,15 +1,19 @@
 #pragma once
 
+namespace Core
+{
+    struct Context;
+}
+
 namespace Graphics
 {
     class Device;
-    class RenderContext;
 
     class RenderResource
     {
     public:
         virtual ~RenderResource() = default;
 
-        virtual void Bind(Device& device, const RenderContext& renderContext) = 0;
+        virtual void Bind(Device& device, const Core::Context& context) = 0;
     };
 }

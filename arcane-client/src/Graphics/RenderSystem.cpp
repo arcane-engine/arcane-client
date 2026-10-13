@@ -28,8 +28,8 @@ namespace Graphics
         _renderQueue.Clear();
     }
 
-    void RenderSystem::ExecuteRenderPipeline(RenderContext& renderContext)
+    void RenderSystem::ExecuteRenderPipeline(Core::Context& context)
     {
-        _renderPipeline.Execute(_device, _renderQueue, renderContext);
+        _renderPipeline.Execute(_device, _renderQueue, context);
     }
 }

@@ -10,7 +10,7 @@ namespace Graphics
         : _renderTarget(renderTarget), _depthStencil(depthStencil)
     {}
 
-    void BindRenderTarget::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, [[maybe_unused]] RenderContext& renderContext)
+    void BindRenderTarget::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, [[maybe_unused]] Core::Context& context)
     {
         ID3D11ShaderResourceView* srv[8] = { nullptr };
         device.GetDeviceContext()->PSSetShaderResources(0, 8, srv);

@@ -173,7 +173,6 @@
     <ClCompile Include="src\Resources\SamplerLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderObjectBuilder.inl" />
     <ClCompile Include="src\Graphics\DeviceContextCache.cpp" />
-    <ClCompile Include="src\Graphics\RenderContext.cpp" />
     <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="src\Graphics\Camera\CameraRotation.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
@@ -231,6 +230,7 @@
     <ClInclude Include="src\Core\Context\InputContext.h" />
     <ClInclude Include="src\Core\Context\KeybordInputContext.h" />
     <ClInclude Include="src\Core\Context\MouseInputContext.h" />
+    <ClInclude Include="src\Core\Context\ObjectContext.h" />
     <ClInclude Include="src\Core\Context\TimeContext.h" />
     <ClInclude Include="src\Core\Input\InputSystem.h" />
     <ClInclude Include="src\Network\NetworkSystem.h" />
@@ -260,7 +260,6 @@
     <ClInclude Include="src\Resources\SamplerLibrary.h" />
     <ClInclude Include="src\Graphics\RenderObjectBuilder.h" />
     <ClInclude Include="src\Graphics\DeviceContextCache.h" />
-    <ClInclude Include="src\Graphics\RenderContext.h" />
     <ClInclude Include="src\Graphics\Camera\Camera.h" />
     <ClInclude Include="src\Graphics\Camera\CameraRotation.h" />
     <ClInclude Include="src\Math\Math.h" />

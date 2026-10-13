@@ -8,7 +8,7 @@ namespace Graphics
         : _slot(slot), _samplerState(samplerState)
     {}
 
-    void Sampler::Bind(Device& device, [[maybe_unused]] const RenderContext& renderContext) noexcept
+    void Sampler::Bind(Device& device, [[maybe_unused]] const Core::Context& context) noexcept
     {
         auto& active = device.GetContextCache().Samplers[_slot];
         auto* target = _samplerState.Get();

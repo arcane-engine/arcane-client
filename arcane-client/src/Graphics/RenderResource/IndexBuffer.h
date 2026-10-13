@@ -14,7 +14,7 @@ namespace Graphics
     public:
         IndexBuffer(const Device& device, const std::span<const unsigned int>& indexBuffer);
 
-        void Bind(Device& device, const RenderContext& renderContext) noexcept override;
+        void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         UINT _count;

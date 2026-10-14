@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include <format>
+#include <ranges>
 
 #include "Graphics/RenderObject.h"
 #include "Graphics/RenderObjectBuilder.h"
@@ -26,6 +27,20 @@ Application::Application(const int width, const int height) :
     const auto grid = _resourceManager.GetMesh("Grid");
     const auto cube = _resourceManager.GetMesh("Cube");
     const auto material = _resourceManager.GetMaterial("Default");
+
+    _actor = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+        .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
+        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.VertexShader))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Terrain))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
+        .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
+        .WithIndexBuffer(cube.GetIndexBuffer())
+        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+        .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
+        .Build();
 
     _object1 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Terrain"))
@@ -86,7 +101,7 @@ void Application::Update()
     context.Camera = _camera.Update(context.Input.Mouse);
     _window.GetMouse().Update(context.Camera);
     _networkSystem.SendInput(context.Input);
-    _networkSystem.Update();
+    _networkSystem.Update(_actorSystem);
 
     context.Lights = {
         { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
@@ -106,6 +121,11 @@ void Application::Update()
         {
             worldMatrixInstances.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4) - 20, 3.0f, static_cast<float>(z * 4) - 20));
         }
+    }
+
+    for (const auto& actor : _actorSystem.GetActors() | std::views::values)
+    {
+        _renderSystem.GetRenderQueue().Add(_actor, actor.GetWorldMatrix());
     }
 
     _renderSystem.GetRenderQueue().Add(_object2, worldMatrixInstances);

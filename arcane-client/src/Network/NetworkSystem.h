@@ -2,6 +2,11 @@
 
 #include "NetworkWorker.h"
 
+namespace Simulation
+{
+    class ActorSystem;
+}
+
 namespace Core
 {
     struct InputContext;
@@ -15,7 +20,7 @@ namespace Network
         void Start();
         void Stop();
 
-        void Update();
+        void Update(Simulation::ActorSystem& actorSystem);
 
         void SendInput(const Core::InputContext& input);
 

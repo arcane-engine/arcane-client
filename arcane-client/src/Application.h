@@ -8,6 +8,7 @@
 #include "Network/NetworkSystem.h"
 #include "Platform/Window.h"
 #include "Resources/ResourceManager.h"
+#include "Simulation/ActorSystem.h"
 
 class Application
 {
@@ -24,11 +25,13 @@ private:
     Platform::Window _window;
     Core::TimeSystem _timeSystem;
     Network::NetworkSystem _networkSystem;
+    Simulation::ActorSystem _actorSystem;
     Graphics::Camera _camera;
     Graphics::RenderSystem _renderSystem;
     Core::Input::InputSystem _inputSystem;
     Resources::ResourceManager _resourceManager;
     Graphics::RenderObject _cameraObject;
+    Graphics::RenderObject _actor;
     Graphics::RenderObject _object1;
     Graphics::RenderObject _object2;
 };

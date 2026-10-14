@@ -150,6 +150,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Math\Quaternion.cpp" />
+    <ClCompile Include="src\Simulation\Actor.cpp" />
+    <ClCompile Include="src\Simulation\ActorSystem.cpp" />
     <ClCompile Include="src\Core\Input\InputSystem.cpp" />
     <ClCompile Include="src\Network\NetworkSystem.cpp" />
     <ClCompile Include="src\Graphics\RenderSystem.cpp" />
@@ -225,6 +228,9 @@
     <ClCompile Include="src\Network\PacketQueue.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Math\Quaternion.h" />
+    <ClInclude Include="src\Simulation\Actor.h" />
+    <ClInclude Include="src\Simulation\ActorSystem.h" />
     <ClInclude Include="src\Core\Context\CameraContext.h" />
     <ClInclude Include="src\Core\Context\Context.h" />
     <ClInclude Include="src\Core\Context\InputContext.h" />

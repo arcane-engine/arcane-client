@@ -2,6 +2,7 @@
 
 #include "Core/Context/InputContext.h"
 #include "Protocol/Packets/ClientPacket.h"
+#include "Simulation/ActorSystem.h"
 
 namespace Network
 {
@@ -15,7 +16,7 @@ namespace Network
         _networkWorker.Stop();
     }
 
-    void NetworkSystem::Update()
+    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem)
     {
         std::queue<ServerPacket> queue;
         _networkWorker.GetReceiveQueue().Swap(queue);
@@ -27,6 +28,14 @@ namespace Network
             if (!packet.Register.empty())
             {
                 const auto& reg = packet.Register[0];
+                if (reg.Register)
+                {
+                    actorSystem.CreateActor(reg.Id, Math::Vector3(5, 1, 5), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1));
+                }
+                else
+                {
+                    actorSystem.RemoveActor(reg.Id);
+                }
             }
 
             queue.pop();

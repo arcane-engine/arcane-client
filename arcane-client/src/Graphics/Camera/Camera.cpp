@@ -7,9 +7,14 @@ namespace Graphics
     {
     }
 
-    void Camera::SetPosition(const Math::Vector3& position) noexcept
+    void Camera::SetTarget(const Math::Vector3& target) noexcept
     {
-        _position = position;
+        _target = target;
+    }
+
+    void Camera::SetDistance(const float distance) noexcept
+    {
+        _distance = distance;
     }
 
     void Camera::SetResolution(const int width, const int height) noexcept
@@ -18,19 +23,29 @@ namespace Graphics
         _height = static_cast<float>(height);
     }
 
-    Math::Vector3 Camera::GetPosition() const noexcept
+    const Math::Vector3& Camera::GetPosition() const noexcept
     {
         return _position;
     }
 
-    Math::Vector3 Camera::GetDirection() const noexcept
+    const Math::Vector3& Camera::GetDirection() const noexcept
     {
         return _direction;
     }
 
+    const Math::Vector3& Camera::GetTarget() const noexcept
+    {
+        return _target;
+    }
+
+    float Camera::GetDistance() const noexcept
+    {
+        return _distance;
+    }
+
     DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
     {
-        return DirectX::XMMatrixLookToLH(static_cast<DirectX::XMVECTOR>(_position), static_cast<DirectX::XMVECTOR>(_direction), static_cast<DirectX::XMVECTOR>(_up));
+        return DirectX::XMMatrixLookAtLH(static_cast<DirectX::XMVECTOR>(_position), static_cast<DirectX::XMVECTOR>(_target), static_cast<DirectX::XMVECTOR>(_up));
     }
 
     DirectX::XMMATRIX Camera::GetProjectionMatrix() const noexcept
@@ -60,16 +75,14 @@ namespace Graphics
         if (mouse.RightPressed)
         {
             Rotate(-mouse.DeltaY, mouse.DeltaX, 0.0f);
-
-            _direction = DirectX::XMVector3Normalize(
-                DirectX::XMVectorSet(
-                    Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue()),
-                    Math::Sin(_pitch.GetValue()),
-                    Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue()),
-                    0.0f
-                )
-            );
         }
+
+        _direction.X = Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue());
+        _direction.Y = Math::Sin(_pitch.GetValue());
+        _direction.Z = Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue());
+        _direction.Normalize();
+
+        _position = _target - _direction * _distance;
 
         return {
             .ViewMatrix = GetViewMatrix(),

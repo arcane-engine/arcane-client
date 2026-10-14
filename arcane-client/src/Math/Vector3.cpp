@@ -23,6 +23,11 @@ namespace Math
         return { X + value.X, Y + value.Y, Z + value.Z };
     }
 
+    Vector3 Vector3::operator-(const Vector3& value) const noexcept
+    {
+        return { X - value.X, Y - value.Y, Z - value.Z };
+    }
+
     Vector3::operator DirectX::XMVECTOR() const
     {
         return DirectX::XMVectorSet(X, Y, Z, 0.0f);
@@ -30,7 +35,7 @@ namespace Math
 
     float Vector3::GetLength() const noexcept
     {
-        return Sqrt(X * X + Y * Y + Z + Z);
+        return Sqrt(X * X + Y * Y + Z * Z);
     }
 
     Vector3 Vector3::GetNormalized() const noexcept
@@ -43,5 +48,17 @@ namespace Math
         }
 
         return { 0.0f, 0.0f, 0.0f };
+    }
+
+    void Vector3::Normalize() noexcept
+    {
+        const auto length = GetLength();
+
+        if (length > 0.0f)
+        {
+            X = X / length;
+            Y = Y / length;
+            Z = Z / length;
+        }
     }
 }

@@ -95,6 +95,18 @@ void Application::Update()
         ToggleFullscreen();
     }
 
+    while (const auto event = _window.GetMouse().ReadEvent())
+    {
+        if (event->Type == Core::Input::MouseEventType::WheelUp)
+        {
+            _camera.SetDistance(_camera.GetDistance() - 1.0f);
+        }
+        if (event->Type == Core::Input::MouseEventType::WheelDown)
+        {
+            _camera.SetDistance(_camera.GetDistance() + 1.0f);
+        }
+    }
+
     auto context = Core::Context();
     context.Time = _timeSystem.Update();
     context.Input = _inputSystem.Update(_window);

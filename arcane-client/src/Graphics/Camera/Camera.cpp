@@ -77,6 +77,8 @@ namespace Graphics
             Rotate(-mouse.DeltaY, mouse.DeltaX, 0.0f);
         }
 
+        _distance = _distance - mouse.WheelDelta;
+
         _direction.X = Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue());
         _direction.Y = Math::Sin(_pitch.GetValue());
         _direction.Z = Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue());

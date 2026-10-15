@@ -5,18 +5,13 @@
 
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
+#include "Resources/DDSTextureLoader11.h"
 
 namespace Resources
 {
     TextureLibrary::TextureLibrary(Graphics::Device& device)
         : _device(device)
-    {
-        const HRESULT hResult = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&_wicFactory));
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException("Failed to create WIC imaging factory.", hResult, _device.GetDebugMessages());
-        }
-    }
+    {}
 
     const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& TextureLibrary::GetTexture(const std::string_view name)
     {
@@ -32,80 +27,15 @@ namespace Resources
 
     void TextureLibrary::LoadTexture(std::string_view name)
     {
-        auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.png)", name);
-
-        Microsoft::WRL::ComPtr<IWICBitmapDecoder> decoder;
-        auto hResult = _wicFactory->CreateDecoderFromFilename(std::filesystem::path(path).c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to open texture file for '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> frame;
-        hResult = decoder->GetFrame(0, &frame);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to get frame for texture '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        Microsoft::WRL::ComPtr<IWICFormatConverter> converter;
-        hResult = _wicFactory->CreateFormatConverter(&converter);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to create format converter for texture '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        hResult = converter->Initialize(frame.Get(), GUID_WICPixelFormat32bppRGBA, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeMedianCut);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to convert pixel format for texture '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        UINT width = 0;
-        UINT height = 0;
-        hResult = converter->GetSize(&width, &height);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to get size for texture '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        const auto stride = width * 4;
-        const auto size = stride * height;
-        std::vector<BYTE> pixelData(size);
-
-        hResult = converter->CopyPixels(nullptr, stride, size, pixelData.data());
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to copy pixels for texture '{}'.", path), hResult, _device.GetDebugMessages());
-        }
-
-        D3D11_TEXTURE2D_DESC desc = {};
-        desc.Width = width;
-        desc.Height = height;
-        desc.MipLevels = 1;
-        desc.ArraySize = 1;
-        desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-        desc.SampleDesc.Count = 1;
-        desc.Usage = D3D11_USAGE_DEFAULT;
-        desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-
-        D3D11_SUBRESOURCE_DATA initData = {};
-        initData.pSysMem = pixelData.data();
-        initData.SysMemPitch = stride;
-
-        Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
-        hResult = _device.GetDevice()->CreateTexture2D(&desc, &initData, &texture);
-        if (FAILED(hResult))
-        {
-            throw Graphics::GraphicsException(std::format("Failed to create texture 2D for '{}'.", name), hResult, _device.GetDebugMessages());
-        }
+        auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.dds)", name);
 
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> view;
-        hResult = _device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, &view);
+
+        const auto hResult = DirectX::CreateDDSTextureFromFile(_device.GetDevice(), std::filesystem::path(path).c_str(), nullptr, view.GetAddressOf() );
 
         if (FAILED(hResult))
         {
-            throw Graphics::GraphicsException(std::format("Failed to create shader resource view for '{}'.", name), hResult, _device.GetDebugMessages());
+            throw Graphics::GraphicsException(std::format("Failed to load DDS texture for '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         _textures.emplace(name, view);

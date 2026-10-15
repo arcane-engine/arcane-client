@@ -9,11 +9,24 @@ namespace Core::Input
 
         auto deltaX = 0.0f;
         auto deltaY = 0.0f;
+        auto wheelDelta = 0.0f;
 
         while (const auto event = mouse.ReadRawEvent())
         {
             deltaX = deltaX + mouse.GetSmoothDelta(static_cast<float>(event->X));
             deltaY = deltaY + mouse.GetSmoothDelta(static_cast<float>(event->Y));
+        }
+
+        while (const auto event = mouse.ReadEvent())
+        {
+            if (event->Type == MouseEventType::WheelUp)
+            {
+                wheelDelta = wheelDelta + 1.0f;
+            }
+            if (event->Type == MouseEventType::WheelDown)
+            {
+                wheelDelta = wheelDelta - 1.0f;
+            }
         }
 
         auto input = InputContext
@@ -28,7 +41,8 @@ namespace Core::Input
                 .LeftPressed = mouse.IsLeftPressed(),
                 .RightPressed = mouse.IsRightPressed(),
                 .DeltaX = deltaX,
-                .DeltaY = deltaY
+                .DeltaY = deltaY,
+                .WheelDelta = wheelDelta
             }
         };
 

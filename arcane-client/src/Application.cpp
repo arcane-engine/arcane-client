@@ -28,7 +28,7 @@ Application::Application(const int width, const int height) :
     const auto cube = _resourceManager.GetMesh("Cube");
     const auto material = _resourceManager.GetMaterial("Default");
 
-    _actor = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+    _actorObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
         .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.VertexShader))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Terrain))
@@ -95,18 +95,6 @@ void Application::Update()
         ToggleFullscreen();
     }
 
-    while (const auto event = _window.GetMouse().ReadEvent())
-    {
-        if (event->Type == Core::Input::MouseEventType::WheelUp)
-        {
-            _camera.SetDistance(_camera.GetDistance() - 1.0f);
-        }
-        if (event->Type == Core::Input::MouseEventType::WheelDown)
-        {
-            _camera.SetDistance(_camera.GetDistance() + 1.0f);
-        }
-    }
-
     auto context = Core::Context();
     context.Time = _timeSystem.Update();
     context.Input = _inputSystem.Update(_window);
@@ -124,20 +112,23 @@ void Application::Update()
 
     _renderSystem.GetRenderQueue().Add(_cameraObject);
 
-    _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(-20.0f, -3.0f, -20.0f));
+    _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
 
     std::vector<DirectX::XMMATRIX> worldMatrixInstances;
     for (auto x = -5; x <= 5; x++)
     {
         for (auto z = -5; z <= 5; z++)
         {
-            worldMatrixInstances.push_back(DirectX::XMMatrixScaling(0.5, 0.5, 0.5) * DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z)) * DirectX::XMMatrixTranslation(static_cast<float>(x * 4) - 20, 3.0f, static_cast<float>(z * 4) - 20));
+            const auto scale = DirectX::XMMatrixScaling(0.5, 0.5, 0.5);
+            const auto rotation = DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z));
+            const auto position = DirectX::XMMatrixTranslation(static_cast<float>(x * 4), 3.0f, static_cast<float>(z * 4));
+            worldMatrixInstances.push_back(scale * rotation * position);
         }
     }
 
     for (const auto& actor : _actorSystem.GetActors() | std::views::values)
     {
-        _renderSystem.GetRenderQueue().Add(_actor, actor.GetWorldMatrix());
+        _renderSystem.GetRenderQueue().Add(_actorObject, actor.GetWorldMatrix());
     }
 
     _renderSystem.GetRenderQueue().Add(_object2, worldMatrixInstances);

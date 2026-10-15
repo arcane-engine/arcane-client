@@ -7,8 +7,8 @@ namespace Resources
 {
     SamplerLibrary::SamplerLibrary(const Graphics::Device& device)
     {
-        CreateSampler(device, SamplerType::LinearWrap, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_WRAP);
-        CreateSampler(device, SamplerType::LinearClamp, D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP);
+        CreateSampler(device, SamplerType::LinearWrap, D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_WRAP);
+        CreateSampler(device, SamplerType::LinearClamp, D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_CLAMP);
     }
 
     const Microsoft::WRL::ComPtr<ID3D11SamplerState>& SamplerLibrary::GetSampler(const SamplerType type) const
@@ -24,7 +24,7 @@ namespace Resources
         desc.AddressV = address;
         desc.AddressW = address;
         desc.MipLODBias = 0.0f;
-        desc.MaxAnisotropy = 1;
+        desc.MaxAnisotropy = 16;
         desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
         desc.MinLOD = 0;
         desc.MaxLOD = D3D11_FLOAT32_MAX;

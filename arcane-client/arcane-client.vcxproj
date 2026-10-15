@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Resources\DDSTextureLoader11.cpp" />
     <ClCompile Include="src\Math\Quaternion.cpp" />
     <ClCompile Include="src\Simulation\Actor.cpp" />
     <ClCompile Include="src\Simulation\ActorSystem.cpp" />
@@ -228,6 +229,7 @@
     <ClCompile Include="src\Network\PacketQueue.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Resources\DDSTextureLoader11.h" />
     <ClInclude Include="src\Math\Quaternion.h" />
     <ClInclude Include="src\Simulation\Actor.h" />
     <ClInclude Include="src\Simulation\ActorSystem.h" />

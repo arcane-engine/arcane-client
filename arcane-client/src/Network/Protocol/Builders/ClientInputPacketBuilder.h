@@ -15,7 +15,7 @@ namespace Network
         [[nodiscard]] int Build() const;
 
     private:
-        void SetFlag(std::uint8_t* buffer, int flag, bool value) const noexcept;
+        void WriteBit(std::uint8_t* buffer, bool value) noexcept;
 
         std::optional<ClientInputPacket> _packet;
         int _offset;

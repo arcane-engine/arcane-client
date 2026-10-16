@@ -5,7 +5,7 @@
 
 namespace Network
 {
-    struct ServerRegisterPacket
+    struct ServerActorPacket
     {
         bool Register;
         std::uint16_t Id;
@@ -13,6 +13,6 @@ namespace Network
 
     struct ServerPacket
     {
-        std::vector<ServerRegisterPacket> Register;
+        std::vector<ServerActorPacket> Actor;
     };
 }

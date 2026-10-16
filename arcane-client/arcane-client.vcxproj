@@ -150,6 +150,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Network\Protocol\Builders\ClientMotionPacketBuilder.cpp" />
     <ClCompile Include="src\Resources\DDSTextureLoader11.cpp" />
     <ClCompile Include="src\Math\Quaternion.cpp" />
     <ClCompile Include="src\Simulation\Actor.cpp" />
@@ -162,8 +163,8 @@
     <ClCompile Include="src\Core\IO\BitReader.cpp" />
     <ClCompile Include="src\Network\Protocol\ServerPacketReader.cpp" />
     <ClCompile Include="src\Network\NetworkWorker.cpp" />
-    <ClCompile Include="src\Network\Protocol\ClientInputPacketBuilder.cpp" />
-    <ClCompile Include="src\Network\Protocol\ClientPacketBuilder.cpp" />
+    <ClCompile Include="src\Network\Protocol\Builders\ClientInputPacketBuilder.cpp" />
+    <ClCompile Include="src\Network\Protocol\Builders\ClientPacketBuilder.cpp" />
     <ClCompile Include="src\Network\NetworkClient.cpp" />
     <ClCompile Include="src\Resources\InputLayoutLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderResource\InstanceVertexBuffer.cpp" />
@@ -230,6 +231,8 @@
     <ClCompile Include="src\Resources\TerrainManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Network\Protocol\Builders\ClientMotionPacketBuilder.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ClientMotionPacket.h" />
     <ClInclude Include="src\Resources\DDSTextureLoader11.h" />
     <ClInclude Include="src\Math\Quaternion.h" />
     <ClInclude Include="src\Simulation\Actor.h" />
@@ -249,13 +252,13 @@
     <ClInclude Include="src\Core\IO\BitReader.h" />
     <ClInclude Include="src\Network\Protocol\ServerPacketReader.h" />
     <ClInclude Include="src\Network\NetworkWorker.h" />
-    <ClInclude Include="src\Network\Protocol\ClientInputPacketBuilder.h" />
-    <ClInclude Include="src\Network\Protocol\ClientPacketBuilder.h" />
+    <ClInclude Include="src\Network\Protocol\Builders\ClientInputPacketBuilder.h" />
+    <ClInclude Include="src\Network\Protocol\Builders\ClientPacketBuilder.h" />
     <ClInclude Include="src\Network\NetworkClient.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ClientInputPacket.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ClientPacket.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ServerPacket.h" />
-    <ClInclude Include="src\Network\Protocol\Packets\ServerRegisterPacket.h" />
+    <ClInclude Include="src\Network\Protocol\Packets\ServerActorPacket.h" />
     <ClInclude Include="src\Resources\InputLayoutLibrary.h" />
     <ClInclude Include="src\Graphics\RenderResource\InstanceVertexBuffer.h" />
     <ClInclude Include="src\Graphics\RenderResource\Data\LightBuffer.h" />

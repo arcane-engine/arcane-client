@@ -15,7 +15,7 @@ namespace Network
             const auto count = reader.ReadUnsignedShort();
             for (std::uint16_t i = 0; i < count; i++)
             {
-                packet.Register.push_back(ServerRegisterPacket
+                packet.Actor.push_back(ServerActorPacket
                 {
                     .Register = reader.ReadBit(),
                     .Id = reader.ReadUnsignedShort()

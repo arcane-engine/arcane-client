@@ -1,6 +1,7 @@
-#include "Network/Protocol/ClientPacketBuilder.h"
+#include "Network/Protocol/Builders/ClientPacketBuilder.h"
 
-#include "Network/Protocol/ClientInputPacketBuilder.h"
+#include "Network/Protocol/Builders/ClientInputPacketBuilder.h"
+#include "Network/Protocol/Builders/ClientMotionPacketBuilder.h"
 #include "Network/Protocol/Packets/ClientPacket.h"
 
 namespace Network
@@ -9,6 +10,7 @@ namespace Network
         : _offset(offset)
     {
         _offset = ClientInputPacketBuilder(buffer, packet.Input, _offset).Build();
+        _offset = ClientMotionPacketBuilder(buffer, packet.Motion, _offset).Build();
     }
 
     int ClientPacketBuilder::Build() const

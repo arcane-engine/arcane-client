@@ -21,6 +21,8 @@ namespace Resources
         RenderTarget = 0,
         DepthStencil = 1,
 
+        Heightmap = 7,
+
         TerrainWeight = 0,
         TerrainBase = 1,
         TerrainR = 2,
@@ -35,9 +37,11 @@ namespace Resources
         explicit TextureLibrary(Graphics::Device& device);
 
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetTexture(std::string_view name);
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetHeightmapTexture(std::string_view name);
 
     private:
         void LoadTexture(std::string_view name);
+        void LoadHeightmapTexture(std::string_view name);
 
         Graphics::Device& _device;
         std::unordered_map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>, Core::StringHash, std::equal_to<>> _textures;

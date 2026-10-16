@@ -76,16 +76,16 @@ namespace Graphics
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot, bool vertexShader, bool pixelShader)
     {
-        _renderObject.Add(std::make_unique<Sampler>(_device, samplerState, slot));
+        _renderObject.Add(std::make_unique<Sampler>(_device, samplerState, slot, vertexShader, pixelShader));
 
         return *this;
     }
 
-    inline RenderObjectBuilder& RenderObjectBuilder::WithTexture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, Resources::TextureBindingSlot slot)
+    inline RenderObjectBuilder& RenderObjectBuilder::WithTexture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, Resources::TextureBindingSlot slot, bool vertexShader, bool pixelShader)
     {
-        _renderObject.Add(std::make_unique<Texture>(shaderResourceView, slot));
+        _renderObject.Add(std::make_unique<Texture>(shaderResourceView, slot, vertexShader, pixelShader));
 
         return *this;
     }

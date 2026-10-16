@@ -18,7 +18,8 @@ namespace Resources
         PositionTexture,
         PositionNormalTexture,
         PositionNormalTextureInstanced,
-        Terrain
+        Terrain,
+        Heightmap
     };
 
     class InputLayoutLibrary

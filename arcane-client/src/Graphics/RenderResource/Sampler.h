@@ -11,12 +11,14 @@ namespace Graphics
     class Sampler : public RenderResource
     {
     public:
-        explicit Sampler(Device& device, const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot);
+        Sampler(Device& device, const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot, bool vertexShader, bool pixelShader);
 
         void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
-        int _slot;
         Microsoft::WRL::ComPtr<ID3D11SamplerState> _samplerState;
+        int _slot;
+        bool _vertexShader;
+        bool _pixelShader;
     };
 }

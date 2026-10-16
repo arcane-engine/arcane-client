@@ -31,3 +31,8 @@ struct VSInput_Terrain
     float2 uv0 : TEXCOORD0;
     float2 uv1 : TEXCOORD1;
 };
+
+struct VSInput_Heightmap
+{
+    float3 position : POSITION;
+};

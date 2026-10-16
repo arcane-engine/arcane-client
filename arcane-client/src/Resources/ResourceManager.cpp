@@ -65,6 +65,11 @@ namespace Resources
         return _textureLibrary.GetTexture(name);
     }
 
+    const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& ResourceManager::GetHeightmapTexture(const std::string_view name)
+    {
+        return _textureLibrary.GetHeightmapTexture(name);
+    }
+
     const Material& ResourceManager::GetMaterial(const std::string_view name)
     {
         return _materialLibrary.GetMaterial(name);

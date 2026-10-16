@@ -39,9 +39,9 @@ namespace Graphics
             .WithVertexBuffer(vertexBuffer)
             .WithIndexBuffer(indexBuffer)
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-            .WithSampler(samplerLibrary.GetSampler(Resources::SamplerType::LinearClamp), 1)
-            .WithTexture(geometryRenderTarget->GetShaderResourceView(), Resources::TextureBindingSlot::RenderTarget)
-            .WithTexture(depthStencil->GetShaderResourceView(), Resources::TextureBindingSlot::DepthStencil)
+            .WithSampler(samplerLibrary.GetSampler(Resources::SamplerType::LinearClamp), 1, false, true)
+            .WithTexture(geometryRenderTarget->GetShaderResourceView(), Resources::TextureBindingSlot::RenderTarget, false, true)
+            .WithTexture(depthStencil->GetShaderResourceView(), Resources::TextureBindingSlot::DepthStencil, false, true)
             .Build();
     }
 

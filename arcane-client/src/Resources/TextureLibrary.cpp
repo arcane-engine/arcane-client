@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <format>
+#include <fstream>
 
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
@@ -25,6 +26,18 @@ namespace Resources
         return it->second;
     }
 
+    const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& TextureLibrary::GetHeightmapTexture(const std::string_view name)
+    {
+        auto it = _textures.find(name);
+        if (it == _textures.end())
+        {
+            LoadHeightmapTexture(name);
+            it = _textures.find(name);
+        }
+
+        return it->second;
+    }
+
     void TextureLibrary::LoadTexture(std::string_view name)
     {
         auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.dds)", name);
@@ -36,6 +49,53 @@ namespace Resources
         if (FAILED(hResult))
         {
             throw Graphics::GraphicsException(std::format("Failed to load DDS texture for '{}'.", path), hResult, _device.GetDebugMessages());
+        }
+
+        _textures.emplace(name, view);
+    }
+
+    void TextureLibrary::LoadHeightmapTexture(std::string_view name)
+    {
+        auto path = std::format(R"(C:\arcane\arcane-data\textures\{}.raw)", name);
+
+        constexpr auto width = 512;
+        constexpr auto height = 512;
+
+        std::vector<float> heightData(static_cast<size_t>(width * height));
+        std::ifstream file(path, std::ios::binary);
+        if (!file.is_open())
+        {
+            throw std::runtime_error(std::format("Failed to open raw heightmap file for '{}'.", path));
+        }
+
+        file.read(reinterpret_cast<char*>(heightData.data()), static_cast<std::streamsize>(heightData.size() * sizeof(float)));
+
+        D3D11_TEXTURE2D_DESC desc = {};
+        desc.Width = width;
+        desc.Height = height;
+        desc.MipLevels = 1;
+        desc.ArraySize = 1;
+        desc.Format = DXGI_FORMAT_R32_FLOAT;
+        desc.SampleDesc.Count = 1;
+        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+        D3D11_SUBRESOURCE_DATA data = {};
+        data.pSysMem = heightData.data();
+        data.SysMemPitch = width * sizeof(float);
+
+        Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
+        auto hResult = _device.GetDevice()->CreateTexture2D(&desc, &data, &texture);
+        if (FAILED(hResult))
+        {
+            throw Graphics::GraphicsException(std::format("Failed to create texture 2D for heightmap '{}'.", path), hResult, _device.GetDebugMessages());
+        }
+
+        Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> view;
+        hResult = _device.GetDevice()->CreateShaderResourceView(texture.Get(), nullptr, view.GetAddressOf());
+        if (FAILED(hResult))
+        {
+            throw Graphics::GraphicsException(std::format("Failed to create SRV for heightmap '{}'.", path), hResult, _device.GetDebugMessages());
         }
 
         _textures.emplace(name, view);

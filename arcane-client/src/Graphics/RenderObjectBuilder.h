@@ -31,12 +31,12 @@ namespace Graphics
         [[nodiscard]] RenderObjectBuilder& WithInstanceVertexBuffer(int slot);
 
         // Textures & Samplers
-        [[nodiscard]] RenderObjectBuilder& WithTexture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, Resources::TextureBindingSlot slot);
-        [[nodiscard]] RenderObjectBuilder& WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot);
+        [[nodiscard]] RenderObjectBuilder& WithTexture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, Resources::TextureBindingSlot slot, bool vertexShader, bool pixelShader);
+        [[nodiscard]] RenderObjectBuilder& WithSampler(const Microsoft::WRL::ComPtr<ID3D11SamplerState>& samplerState, int slot, bool vertexShader, bool pixelShader);
 
         // Constant Buffers
         template<typename T>
-        [[nodiscard]] RenderObjectBuilder& WithConstantBuffer(UINT slot = 1, bool vertexShader = true, bool pixelShader = false);
+        [[nodiscard]] RenderObjectBuilder& WithConstantBuffer(UINT slot, bool vertexShader, bool pixelShader);
 
         // Pipeline States
         [[nodiscard]] RenderObjectBuilder& WithDepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState);

@@ -31,6 +31,7 @@ private:
     Core::Input::InputSystem _inputSystem;
     Resources::ResourceManager _resourceManager;
     Graphics::RenderObject _cameraObject;
+    Graphics::RenderObject _heightmap;
     Graphics::RenderObject _actorObject;
     Graphics::RenderObject _object1;
     Graphics::RenderObject _object2;

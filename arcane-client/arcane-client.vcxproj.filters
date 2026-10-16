@@ -246,6 +246,9 @@
     <ClCompile Include="src\Resources\DDSTextureLoader11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\TerrainManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Input\Keyboard.h">
@@ -512,6 +515,9 @@
     <ClInclude Include="src\Resources\DDSTextureLoader11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Resources\TerrainManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorVS.hlsl" />
@@ -526,6 +532,8 @@
     <FxCompile Include="src\Resources\Shaders\TextureVS.hlsl" />
     <FxCompile Include="src\Resources\Shaders\TerrainPS.hlsl" />
     <FxCompile Include="src\Resources\Shaders\TerrainVS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\HeightmapVS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\HeightmapPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Resources\Shaders\Registers.hlsli" />

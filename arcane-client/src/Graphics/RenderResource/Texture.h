@@ -11,12 +11,14 @@ namespace Graphics
     class Texture final : public RenderResource
     {
     public:
-        Texture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, int slot);
+        Texture(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& shaderResourceView, int slot, bool vertexShader, bool pixelShader);
 
         void Bind(Device& device, const Core::Context& context) noexcept override;
 
     private:
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceView;
         int _slot;
+        bool _vertexShader;
+        bool _pixelShader;
     };
 }

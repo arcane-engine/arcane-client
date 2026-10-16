@@ -12,13 +12,16 @@ namespace Graphics
         VertexBuffer = nullptr;
         VertexShaderConstantBuffers.fill(nullptr);
         PixelShaderConstantBuffers.fill(nullptr);
-        Samplers.fill(nullptr);
-        Textures.fill(nullptr);
+        VertexShaderSamplers.fill(nullptr);
+        PixelShaderSamplers.fill(nullptr);
+        VertexShaderTextures.fill(nullptr);
+        PixelShaderTextures.fill(nullptr);
         Topology = D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED;
     }
 
     void DeviceContextCache::ResetTextures() noexcept
     {
-        Textures.fill(nullptr);
+        VertexShaderTextures.fill(nullptr);
+        PixelShaderTextures.fill(nullptr);
     }
 }

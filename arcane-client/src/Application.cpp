@@ -21,12 +21,27 @@ Application::Application(const int width, const int height) :
     _renderSystem.BuildRenderPipeline(_resourceManager);
 
     _cameraObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
-        .WithConstantBuffer<Graphics::CameraTransformBuffer>(0)
+        .WithConstantBuffer<Graphics::CameraTransformBuffer>(0, true, false)
         .Build();
 
+    const auto heightMap = _resourceManager.GetMesh("terrain_mesh");
     const auto grid = _resourceManager.GetMesh("Grid");
     const auto cube = _resourceManager.GetMesh("Cube");
     const auto material = _resourceManager.GetMaterial("Default");
+
+    _heightmap = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+        .WithVertexShader(_resourceManager.GetVertexShader("Heightmap"))
+        .WithPixelShader(_resourceManager.GetPixelShader("Heightmap"))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Heightmap))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
+        .WithVertexBuffer(heightMap.GetVertexBuffer(), heightMap.GetStride())
+        .WithIndexBuffer(heightMap.GetIndexBuffer())
+        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, true, true)
+        .WithTexture(_resourceManager.GetHeightmapTexture("Heightmap"), Resources::TextureBindingSlot::Heightmap, true, true)
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
+        .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
+        .Build();
 
     _actorObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader))
@@ -36,9 +51,9 @@ Application::Application(const int width, const int height) :
         .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
         .WithIndexBuffer(cube.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
-        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo, false, true)
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
@@ -50,10 +65,10 @@ Application::Application(const int width, const int height) :
         .WithVertexBuffer(grid.GetVertexBuffer(), grid.GetStride())
         .WithIndexBuffer(grid.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight)
-        .WithTexture(_resourceManager.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase)
-        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight, false, true)
+        .WithTexture(_resourceManager.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase, false, true)
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
@@ -65,8 +80,8 @@ Application::Application(const int width, const int height) :
         .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
         .WithIndexBuffer(cube.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
+        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo, false, true)
         .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
@@ -112,6 +127,7 @@ void Application::Update()
 
     _renderSystem.GetRenderQueue().Add(_cameraObject);
 
+    _renderSystem.GetRenderQueue().Add(_heightmap, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
     _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
 
     std::vector<DirectX::XMMATRIX> worldMatrixInstances;

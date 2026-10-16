@@ -18,10 +18,10 @@ namespace Graphics
         void Update(const Device& device, const T& data) const noexcept;
 
     private:
+        Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
+        UINT _slot;
         bool _vertexShader;
         bool _pixelShader;
-        UINT _slot;
-        Microsoft::WRL::ComPtr<ID3D11Buffer> _buffer;
     };
 }
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "Packets/ServerActorPacket.h"
+
+#include "Packets/ServerPacket.h"
 
 namespace Network
 {

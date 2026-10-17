@@ -1,18 +1,19 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
+#include "Math/Vector3.h"
 
 namespace Network
 {
     struct ServerActorPacket
     {
-        bool Register;
         std::uint16_t Id;
+        bool Register;
     };
 
-    struct ServerPacket
+    struct ServerActorMotionPacket
     {
-        std::vector<ServerActorPacket> Actor;
+        std::uint16_t Id;
+        Math::Vector3 Position;
+        Math::Vector3 Velocity;
     };
 }

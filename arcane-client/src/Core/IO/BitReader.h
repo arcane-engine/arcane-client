@@ -13,6 +13,7 @@ namespace Core::IO
         [[nodiscard]] bool ReadBit();
         [[nodiscard]] std::uint8_t ReadByte();
         [[nodiscard]] std::uint16_t ReadUnsignedShort();
+        [[nodiscard]] float ReadFloat();
 
         void Skip(int bits);
 

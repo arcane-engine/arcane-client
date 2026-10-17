@@ -5,7 +5,7 @@
 #include "Network/NetworkClient.h"
 #include "Network/PacketQueue.h"
 #include "Protocol/Packets/ClientPacket.h"
-#include "Protocol/Packets/ServerActorPacket.h"
+#include "Protocol/Packets/ServerPacket.h"
 
 namespace Network
 {

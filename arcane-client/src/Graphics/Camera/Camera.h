@@ -3,10 +3,14 @@
 #include <DirectXMath.h>
 
 #include "Core/Context/CameraContext.h"
-#include "Core/Context/MouseInputContext.h"
 #include "Graphics/Camera/CameraRotation.h"
 #include "Math/Ray.h"
 #include "Math/Vector3.h"
+
+namespace Core
+{
+    struct InputContext;
+}
 
 namespace Graphics
 {
@@ -30,7 +34,7 @@ namespace Graphics
 
         void Rotate(float pitch, float yaw, float roll) noexcept;
 
-        [[nodiscard]] Core::CameraContext Update(const Core::MouseInputContext& mouse) noexcept;
+        [[nodiscard]] Core::CameraContext Update(const Core::InputContext& input) noexcept;
 
     private:
         float _width;

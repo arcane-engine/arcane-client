@@ -1,7 +1,9 @@
 #include "NetworkSystem.h"
 
+#include "Core/Context/Context.h"
 #include "Core/Context/InputContext.h"
 #include "Protocol/Packets/ClientPacket.h"
+#include "Protocol/Packets/ServerPacket.h"
 #include "Simulation/ActorSystem.h"
 
 namespace Network
@@ -21,20 +23,30 @@ namespace Network
         std::queue<ServerPacket> queue;
         _networkWorker.GetReceiveQueue().Swap(queue);
 
-        while (!queue.empty())
+        while (queue.empty() == false)
         {
             const auto& packet = queue.front();
 
-            if (!packet.Actor.empty())
+            if (packet.Actor.empty() == false)
             {
-                const auto& reg = packet.Actor[0];
-                if (reg.Register)
+                for (const auto& actor : packet.Actor)
                 {
-                    actorSystem.CreateActor(reg.Id, Math::Vector3(5, 1, 5), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1));
+                    if (actor.Register)
+                    {
+                        actorSystem.CreateActor(actor.Id, Math::Vector3(0, 0, 0), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1));
+                    }
+                    else
+                    {
+                        actorSystem.RemoveActor(actor.Id);
+                    }
                 }
-                else
+            }
+            if (packet.ActorMotion.empty() == false)
+            {
+                for (const auto& actorMotion : packet.ActorMotion)
                 {
-                    actorSystem.RemoveActor(reg.Id);
+                    actorSystem.GetActor(actorMotion.Id)->SetPosition(actorMotion.Position);
+
                 }
             }
 
@@ -42,19 +54,19 @@ namespace Network
         }
     }
 
-    void NetworkSystem::SendInput(const Core::InputContext& input)
+    void NetworkSystem::Send(const Core::Context& context)
     {
-        if (input.Keyboard.Changed)
+        if (context.Input.Keyboard.Changed)
         {
             _networkWorker.SendQueuePush(ClientPacket{
                 .Input = ClientInputPacket{
-                    .Forward = input.Keyboard.Forward,
-                    .Backward = input.Keyboard.Backward,
-                    .Left = input.Keyboard.Left,
-                    .Right = input.Keyboard.Right
+                    .Forward = context.Input.Keyboard.Forward,
+                    .Backward = context.Input.Keyboard.Backward,
+                    .Left = context.Input.Keyboard.Left,
+                    .Right = context.Input.Keyboard.Right
                 },
                 .Motion = ClientMotionPacket{
-                    .Position = { 1, 2, 3 },
+                    .Position = { context.Camera.Target.X, context.Camera.Target.Y, context.Camera.Target.Z },
                     .Velocity = { 4, 5, 6 }
                 }
             });

@@ -1,5 +1,7 @@
 #include "Graphics/Camera/Camera.h"
 
+#include "Core/Context/InputContext.h"
+
 namespace Graphics
 {
     Camera::Camera(const int width, const int height) noexcept
@@ -70,23 +72,29 @@ namespace Graphics
         _roll.Rotate(roll);
     }
 
-    Core::CameraContext Camera::Update(const Core::MouseInputContext& mouse) noexcept
+    Core::CameraContext Camera::Update(const Core::InputContext& input) noexcept
     {
-        if (mouse.RightPressed)
+        if (input.Mouse.RightPressed)
         {
-            Rotate(-mouse.DeltaY, mouse.DeltaX, 0.0f);
+            Rotate(-input.Mouse.DeltaY, input.Mouse.DeltaX, 0.0f);
         }
 
-        _distance = _distance - mouse.WheelDelta;
+        _distance = _distance - input.Mouse.WheelDelta;
 
         _direction.X = Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue());
         _direction.Y = Math::Sin(_pitch.GetValue());
         _direction.Z = Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue());
         _direction.Normalize();
 
+        if (input.Keyboard.Forward)
+        {
+            _target.X += 0.05f;
+        }
+
         _position = _target - _direction * _distance;
 
         return {
+            .Target = _target,
             .ViewMatrix = GetViewMatrix(),
             .ProjectionMatrix = GetProjectionMatrix(),
             .ViewProjectionMatrix = GetViewProjectionMatrix()

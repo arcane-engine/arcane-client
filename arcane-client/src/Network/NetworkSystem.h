@@ -9,7 +9,7 @@ namespace Simulation
 
 namespace Core
 {
-    struct InputContext;
+    struct Context;
 }
 
 namespace Network
@@ -22,7 +22,7 @@ namespace Network
 
         void Update(Simulation::ActorSystem& actorSystem);
 
-        void SendInput(const Core::InputContext& input);
+        void Send(const Core::Context& context);
 
     private:
         NetworkWorker _networkWorker;

@@ -7,6 +7,6 @@ namespace Graphics
     class GeometryRenderPass : public RenderPass
     {
     public:
-        void Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) override;
+        void Execute(Device& device, Core::Context& context) override;
     };
 }

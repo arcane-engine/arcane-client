@@ -7,6 +7,7 @@ namespace Resources
         _textureLibrary(device),
         _samplerLibrary(device),
         _depthStencilStateLibrary(device),
+        _blendStateLibrary(device),
         _inputLayoutLibrary(device, _shaderLibrary)
     {}
 
@@ -88,6 +89,11 @@ namespace Resources
     const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& ResourceManager::GetDepthStencilState(const DepthStencilStateType type) const
     {
         return _depthStencilStateLibrary.GetDepthStencilState(type);
+    }
+
+    const Microsoft::WRL::ComPtr<ID3D11BlendState>& ResourceManager::GetBlendState(BlendStateType type) const
+    {
+        return _blendStateLibrary.GetBlendState(type);
     }
 
     const Microsoft::WRL::ComPtr<ID3D11InputLayout>& ResourceManager::GetInputLayout(const InputLayoutType type) const

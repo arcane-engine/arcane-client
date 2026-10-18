@@ -46,7 +46,6 @@ namespace Network
                 for (const auto& actorMotion : packet.ActorMotion)
                 {
                     actorSystem.GetActor(actorMotion.Id)->SetPosition(actorMotion.Position);
-
                 }
             }
 

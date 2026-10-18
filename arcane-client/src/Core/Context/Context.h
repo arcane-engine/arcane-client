@@ -6,6 +6,7 @@
 #include "Core/Context/InputContext.h"
 #include "Core/Context/ObjectContext.h"
 #include "Core/Context/TimeContext.h"
+#include "Graphics/RenderQueue.h"
 
 namespace Core
 {
@@ -22,5 +23,7 @@ namespace Core
         CameraContext Camera;
         ObjectContext Object;
         std::vector<Light> Lights;
+        Graphics::RenderQueue GeometryRenderQueue;
+        Graphics::RenderQueue UserInterfaceRenderQueue;
     };
 }

@@ -9,6 +9,8 @@
 #include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 #include "Core/Context/Context.h"
+#include "Graphics/Vertex.h"
+#include "Graphics/RenderResource/Data/UserInterfaceTransformBuffer.h"
 
 Application::Application(const int width, const int height) :
     _window(width, height),
@@ -85,6 +87,34 @@ Application::Application(const int width, const int height) :
         .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
+
+    const std::vector<Graphics::UserInterfaceVertex> vertexBuffer =
+    {
+        { -1.0f,  1.0f, 0.0f,  0.0f,  0.0f },
+        {  1.0f,  1.0f, 0.0f,  1.0f,  0.0f },
+        { -1.0f, -1.0f, 0.0f,  0.0f,  1.0f },
+        {  1.0f, -1.0f, 0.0f,  1.0f,  1.0f }
+    };
+
+    const unsigned int indexBuffer[] =
+    {
+        0, 1, 2,
+        2, 1, 3
+    };
+
+    _userInterface = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+        .WithVertexShader(_resourceManager.GetVertexShader("UserInterface"))
+        .WithPixelShader(_resourceManager.GetPixelShader("UserInterface"))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionTexture))
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
+        .WithVertexBuffer(vertexBuffer)
+        .WithIndexBuffer(indexBuffer)
+        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearClamp), 1, false, true)
+        .WithTexture(_resourceManager.GetTexture("UserInterface"), Resources::TextureBindingSlot::Albedo, false, true)
+        .WithConstantBuffer<Graphics::UserInterfaceTransformBuffer>(1, true, false)
+        .WithBlendState(_resourceManager.GetBlendState(Resources::BlendStateType::Alpha))
+        .Build();
 }
 
 int Application::Run()
@@ -103,8 +133,6 @@ int Application::Run()
 
 void Application::Update()
 {
-    _renderSystem.ClearRenderQueue();
-
     if (_window.GetKeyboard().IsKeyPressed(VK_F11))
     {
         ToggleFullscreen();
@@ -125,10 +153,10 @@ void Application::Update()
         { {  8.0f, 4.0f,  8.0f, 1.0f }, { 0.6f, 1.0f, 0.6f, 1.0f } }
     };
 
-    _renderSystem.GetRenderQueue().Add(_cameraObject);
+    context.GeometryRenderQueue.Add(_cameraObject);
 
-    _renderSystem.GetRenderQueue().Add(_heightmap, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-    _renderSystem.GetRenderQueue().Add(_object1, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
+    context.GeometryRenderQueue.Add(_heightmap, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+    context.GeometryRenderQueue.Add(_object1, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
 
     std::vector<DirectX::XMMATRIX> worldMatrixInstances;
     for (auto x = -5; x <= 5; x++)
@@ -144,10 +172,17 @@ void Application::Update()
 
     for (const auto& actor : _actorSystem.GetActors() | std::views::values)
     {
-        _renderSystem.GetRenderQueue().Add(_actorObject, actor.GetWorldMatrix());
+        context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
     }
 
-    _renderSystem.GetRenderQueue().Add(_object2, worldMatrixInstances);
+    context.GeometryRenderQueue.Add(_object2, worldMatrixInstances);
+
+    const auto aspectRatio = static_cast<float>(_window.GetWidth()) / static_cast<float>(_window.GetHeight());
+    constexpr auto radius = 0.2f;
+    const auto scale = DirectX::XMMatrixScaling(radius / aspectRatio, radius, 1.0f);
+    const auto translation = DirectX::XMMatrixTranslation(-0.75f, 0.75f, 0.0f);
+
+    context.UserInterfaceRenderQueue.Add(_userInterface, scale * translation);
 
     _renderSystem.ExecuteRenderPipeline(context);
 }

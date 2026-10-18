@@ -9,6 +9,7 @@
 #include "Graphics/RenderPipeline/GeometryRenderPass.h"
 #include "Graphics/RenderPipeline/Present.h"
 #include "Graphics/RenderPipeline/RenderPass.h"
+#include "RenderPipeline/UserInterfaceRenderPass.h"
 #include "Resources/SamplerLibrary.h"
 #include "Resources/ShaderLibrary.h"
 
@@ -25,6 +26,7 @@ namespace Graphics
         Add(std::make_unique<GeometryRenderPass>());
         Add(std::make_unique<BindRenderTarget>(device.GetCompositionRenderTarget()));
         Add(std::make_unique<CompositionRenderPass>(device, shaderLibrary, samplerLibrary, depthStencilStateLibrary, inputLayoutLibrary, device.GetGeometryRenderTarget(), device.GetDepthStencil()));
+        Add(std::make_unique<UserInterfaceRenderPass>());
         Add(std::make_unique<Present>());
     }
 
@@ -33,11 +35,11 @@ namespace Graphics
         _pipeline.push_back(std::move(pass));
     }
 
-    void RenderPipeline::Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) const
+    void RenderPipeline::Execute(Device& device, Core::Context& context) const
     {
         for (const auto& pass : _pipeline)
         {
-            pass->Execute(device, renderQueue, context);
+            pass->Execute(device, context);
         }
     }
 }

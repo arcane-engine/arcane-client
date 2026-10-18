@@ -3,6 +3,7 @@
 #include <d3d11.h>
 
 #include "Data/CameraTransformBuffer.h"
+#include "Data/UserInterfaceTransformBuffer.h"
 #include "Data/LightBuffer.h"
 #include "Data/ObjectTransformBuffer.h"
 #include "Graphics/Device.h"
@@ -40,6 +41,10 @@ namespace Graphics
         if constexpr (std::is_same_v<T, ObjectTransformBuffer>)
         {
             Update(device, ObjectTransformBuffer::FromContext(context));
+        }
+        if constexpr (std::is_same_v<T, UserInterfaceTransformBuffer>)
+        {
+            Update(device, UserInterfaceTransformBuffer::FromContext(context));
         }
         if constexpr (std::is_same_v<T, LightBuffer>)
         {

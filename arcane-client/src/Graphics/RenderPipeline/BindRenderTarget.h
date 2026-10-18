@@ -14,7 +14,7 @@ namespace Graphics
     public:
         explicit BindRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget, const std::shared_ptr<DepthStencil>& depthStencil = nullptr);
 
-        void Execute(Device& device, RenderQueue& renderQueue, Core::Context& context) override;
+        void Execute(Device& device, Core::Context& context) override;
 
     private:
         std::shared_ptr<RenderTarget> _renderTarget;

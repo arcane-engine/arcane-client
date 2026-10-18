@@ -40,6 +40,7 @@ namespace Graphics
 
         // Pipeline States
         [[nodiscard]] RenderObjectBuilder& WithDepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState);
+        [[nodiscard]] RenderObjectBuilder& WithBlendState(const Microsoft::WRL::ComPtr<ID3D11BlendState>& blendState);
 
         [[nodiscard]] RenderObject Build();
 

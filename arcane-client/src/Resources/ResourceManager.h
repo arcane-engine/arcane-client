@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BlendStateLibrary.h"
 #include "Resources/DepthStencilStateLibrary.h"
 #include "Resources/InputLayoutLibrary.h"
 #include "Resources/MaterialLibrary.h"
@@ -32,6 +33,7 @@ namespace Resources
         [[nodiscard]] const Mesh& GetMesh(std::string_view name);
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11SamplerState>& GetSampler(SamplerType type) const;
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& GetDepthStencilState(DepthStencilStateType type) const;
+        [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11BlendState>& GetBlendState(BlendStateType type) const;
         [[nodiscard]] const Microsoft::WRL::ComPtr<ID3D11InputLayout>& GetInputLayout(InputLayoutType type) const;
 
     private:
@@ -41,6 +43,7 @@ namespace Resources
         MeshLibrary _meshLibrary;
         SamplerLibrary _samplerLibrary;
         DepthStencilStateLibrary _depthStencilStateLibrary;
+        BlendStateLibrary _blendStateLibrary;
         InputLayoutLibrary _inputLayoutLibrary;
     };
 }

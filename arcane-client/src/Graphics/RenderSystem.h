@@ -22,10 +22,8 @@ namespace Graphics
         RenderSystem(HWND hWnd, int width, int height);
 
         [[nodiscard]] Device& GetDevice();
-        [[nodiscard]] RenderQueue& GetRenderQueue();
 
         void BuildRenderPipeline(Resources::ResourceManager& resourceManager);
-        void ClearRenderQueue() noexcept;
         void ExecuteRenderPipeline(Core::Context& context);
 
     private:

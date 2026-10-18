@@ -15,7 +15,7 @@
 
 namespace Graphics
 {
-    CompositionRenderPass::CompositionRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
+    CompositionRenderPass::CompositionRenderPass(Device& device, Resources::ShaderLibrary& shaderLibrary, const Resources::SamplerLibrary& samplerLibrary, const Resources::DepthStencilStateLibrary& depthStencilStateLibrary, Resources::InputLayoutLibrary& inputLayoutLibrary, const std::shared_ptr<RenderTarget>& geometryRenderTarget, const std::shared_ptr<DepthStencil>& depthStencil)
     {
         const std::vector<CompositionVertex> vertexBuffer =
         {
@@ -45,7 +45,7 @@ namespace Graphics
             .Build();
     }
 
-    void CompositionRenderPass::Execute(Device& device, [[maybe_unused]] RenderQueue& renderQueue, Core::Context& context)
+    void CompositionRenderPass::Execute(Device& device, Core::Context& context)
     {
         _renderObject.Bind(device, context);
         _renderObject.Draw(device);

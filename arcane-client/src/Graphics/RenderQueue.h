@@ -20,11 +20,11 @@ namespace Graphics
     public:
         void Clear() noexcept;
 
+        [[nodiscard]] const std::vector<RenderCommand>& GetCommands() noexcept;
+
         void Add(const RenderObject& object) noexcept;
         void Add(const RenderObject& object, const DirectX::XMMATRIX& worldMatrix) noexcept;
         void Add(const RenderObject& object, std::span<const DirectX::XMMATRIX> worldMatrixInstances) noexcept;
-
-        void Execute(Device& device, Core::Context& context) const noexcept;
 
     private:
         std::vector<RenderCommand> _commands;

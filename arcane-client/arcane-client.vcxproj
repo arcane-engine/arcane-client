@@ -150,6 +150,10 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Resources\BlendStateLibrary.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\BlendState.cpp" />
+    <ClCompile Include="src\Graphics\RenderResource\Data\UserInterfaceTransformBuffer.cpp" />
+    <ClCompile Include="src\Graphics\RenderPipeline\UserInterfaceRenderPass.cpp" />
     <ClCompile Include="src\Network\Protocol\Builders\ClientMotionPacketBuilder.cpp" />
     <ClCompile Include="src\Resources\DDSTextureLoader11.cpp" />
     <ClCompile Include="src\Math\Quaternion.cpp" />
@@ -231,6 +235,10 @@
     <ClCompile Include="src\Resources\TerrainManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Resources\BlendStateLibrary.h" />
+    <ClInclude Include="src\Graphics\RenderResource\BlendState.h" />
+    <ClInclude Include="src\Graphics\RenderResource\Data\UserInterfaceTransformBuffer.h" />
+    <ClInclude Include="src\Graphics\RenderPipeline\UserInterfaceRenderPass.h" />
     <ClInclude Include="src\Network\Protocol\Builders\ClientMotionPacketBuilder.h" />
     <ClInclude Include="src\Network\Protocol\Packets\ClientMotionPacket.h" />
     <ClInclude Include="src\Resources\DDSTextureLoader11.h" />
@@ -343,6 +351,18 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\Resources\Shaders\HeightmapVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\UserInterfacePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\Resources\Shaders\UserInterfaceVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

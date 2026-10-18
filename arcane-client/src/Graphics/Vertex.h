@@ -2,9 +2,8 @@
 
 namespace Graphics
 {
-    class Vertex
+    struct Vertex
     {
-    public:
         float X;
         float Y;
         float Z;
@@ -15,9 +14,17 @@ namespace Graphics
         float V;
     };
 
-    class CompositionVertex
+    struct CompositionVertex
     {
-    public:
+        float X;
+        float Y;
+        float Z;
+        float U;
+        float V;
+    };
+
+    struct UserInterfaceVertex
+    {
         float X;
         float Y;
         float Z;

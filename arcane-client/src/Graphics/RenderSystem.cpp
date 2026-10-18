@@ -13,23 +13,13 @@ namespace Graphics
         return _device;
     }
 
-    RenderQueue& RenderSystem::GetRenderQueue()
-    {
-        return _renderQueue;
-    }
-
     void RenderSystem::BuildRenderPipeline(Resources::ResourceManager& resourceManager)
     {
         _renderPipeline.Build(_device, resourceManager.GetShaderLibrary(), resourceManager.GetSamplerLibrary(), resourceManager.GetDepthStencilStateLibrary(), resourceManager.GetInputLayoutLibrary());
     }
 
-    void RenderSystem::ClearRenderQueue() noexcept
-    {
-        _renderQueue.Clear();
-    }
-
     void RenderSystem::ExecuteRenderPipeline(Core::Context& context)
     {
-        _renderPipeline.Execute(_device, _renderQueue, context);
+        _renderPipeline.Execute(_device, context);
     }
 }

@@ -10,6 +10,7 @@
 #include "Graphics/RenderResource/Texture.h"
 #include "Graphics/RenderResource/Topology.h"
 #include "Graphics/RenderResource/VertexShader.h"
+#include "RenderResource/BlendState.h"
 #include "RenderResource/ConstantBuffer.h"
 #include "RenderResource/InstanceVertexBuffer.h"
 #include "Resources/TextureLibrary.h"
@@ -101,6 +102,13 @@ namespace Graphics
     inline RenderObjectBuilder& RenderObjectBuilder::WithDepthStencilState(const Microsoft::WRL::ComPtr<ID3D11DepthStencilState>& depthStencilState)
     {
         _renderObject.Add(std::make_unique<DepthStencilState>(depthStencilState));
+
+        return *this;
+    }
+
+    inline RenderObjectBuilder& RenderObjectBuilder::WithBlendState(const Microsoft::WRL::ComPtr<ID3D11BlendState>& blendState)
+    {
+        _renderObject.Add(std::make_unique<BlendState>(blendState));
 
         return *this;
     }

@@ -35,4 +35,5 @@ private:
     Graphics::RenderObject _actorObject;
     Graphics::RenderObject _object1;
     Graphics::RenderObject _object2;
+    Graphics::RenderObject _userInterface;
 };

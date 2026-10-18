@@ -264,6 +264,9 @@
     <ClCompile Include="src\Resources\BlendStateLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\UserInterface\UserInterfaceSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Input\Keyboard.h">
@@ -549,6 +552,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Resources\BlendStateLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserInterface\UserInterfaceSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -233,6 +233,7 @@
     <ClCompile Include="src\Core\Time\TimeSystem.cpp" />
     <ClCompile Include="src\Network\PacketQueue.inl" />
     <ClCompile Include="src\Resources\TerrainManager.cpp" />
+    <ClCompile Include="src\UserInterface\UserInterfaceSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Resources\BlendStateLibrary.h" />
@@ -330,6 +331,7 @@
     <ClInclude Include="src\Core\Time\TimeSystem.h" />
     <ClInclude Include="src\Network\PacketQueue.h" />
     <ClInclude Include="src\Resources\TerrainManager.h" />
+    <ClInclude Include="src\UserInterface\UserInterfaceSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Resources\Shaders\ColorPS.hlsl">

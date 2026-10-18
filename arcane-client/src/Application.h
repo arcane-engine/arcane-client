@@ -9,6 +9,7 @@
 #include "Platform/Window.h"
 #include "Resources/ResourceManager.h"
 #include "Simulation/ActorSystem.h"
+#include "UserInterface/UserInterfaceSystem.h"
 
 class Application
 {
@@ -30,10 +31,10 @@ private:
     Graphics::RenderSystem _renderSystem;
     Core::Input::InputSystem _inputSystem;
     Resources::ResourceManager _resourceManager;
+    UserInterface::UserInterfaceSystem _userInterfaceSystem;
     Graphics::RenderObject _cameraObject;
     Graphics::RenderObject _heightmap;
     Graphics::RenderObject _actorObject;
     Graphics::RenderObject _object1;
     Graphics::RenderObject _object2;
-    Graphics::RenderObject _userInterface;
 };

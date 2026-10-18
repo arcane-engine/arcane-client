@@ -19,7 +19,7 @@ namespace Simulation
 
         void RemoveActor(std::uint32_t id);
 
-        [[nodiscard]] const std::unordered_map<std::uint32_t, Actor>& GetActors();
+        [[nodiscard]] std::unordered_map<std::uint32_t, Actor>& GetActors();
         [[nodiscard]] Actor* GetActor(std::uint32_t id);
 
     private:

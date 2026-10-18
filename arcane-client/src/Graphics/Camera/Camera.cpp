@@ -1,5 +1,6 @@
 #include "Graphics/Camera/Camera.h"
 
+#include "Core/Context/Context.h"
 #include "Core/Context/InputContext.h"
 
 namespace Graphics
@@ -72,29 +73,36 @@ namespace Graphics
         _roll.Rotate(roll);
     }
 
-    Core::CameraContext Camera::Update(const Core::InputContext& input) noexcept
+    Core::CameraContext Camera::Update(const Core::Context& context) noexcept
     {
-        if (input.Mouse.RightPressed)
+        if (context.Input.Mouse.RightPressed)
         {
-            Rotate(-input.Mouse.DeltaY, input.Mouse.DeltaX, 0.0f);
+            Rotate(-context.Input.Mouse.DeltaY, context.Input.Mouse.DeltaX, 0.0f);
         }
 
-        _distance = _distance - input.Mouse.WheelDelta;
+        _distance = _distance - context.Input.Mouse.WheelDelta;
 
         _direction.X = Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue());
         _direction.Y = Math::Sin(_pitch.GetValue());
         _direction.Z = Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue());
         _direction.Normalize();
 
-        if (input.Keyboard.Forward)
+        auto velocityX = 0.0f;
+        auto velocityZ = 0.0f;
+
+        if (context.Input.Keyboard.Forward)
         {
-            _target.X += 0.05f;
+            velocityX = _direction.X * 3.0f;
+            velocityZ = _direction.Z * 3.0f;
+            _target.X = _target.X + velocityX * context.Time.Delta;
+            _target.Z = _target.Z + velocityZ * context.Time.Delta;
         }
 
         _position = _target - _direction * _distance;
 
         return {
-            .Target = _target,
+            .Position = _target,
+            .Velocity = Math::Vector3(velocityX, 0.0f, velocityZ),
             .ViewMatrix = GetViewMatrix(),
             .ProjectionMatrix = GetProjectionMatrix(),
             .ViewProjectionMatrix = GetViewProjectionMatrix()

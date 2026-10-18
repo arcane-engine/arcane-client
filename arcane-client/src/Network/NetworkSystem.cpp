@@ -46,6 +46,7 @@ namespace Network
                 for (const auto& actorMotion : packet.ActorMotion)
                 {
                     actorSystem.GetActor(actorMotion.Id)->SetPosition(actorMotion.Position);
+                    actorSystem.GetActor(actorMotion.Id)->SetVelocity(actorMotion.Velocity);
                 }
             }
 
@@ -65,8 +66,8 @@ namespace Network
                     .Right = context.Input.Keyboard.Right
                 },
                 .Motion = ClientMotionPacket{
-                    .Position = { context.Camera.Target.X, context.Camera.Target.Y, context.Camera.Target.Z },
-                    .Velocity = { 4, 5, 6 }
+                    .Position = context.Camera.Position,
+                    .Velocity = context.Camera.Velocity
                 }
             });
         }

@@ -112,7 +112,7 @@ void Application::Update()
     auto context = Core::Context();
     context.Time = _timeSystem.Update();
     context.Input = _inputSystem.Update(_window);
-    context.Camera = _camera.Update(context.Input);
+    context.Camera = _camera.Update(context);
     _window.GetMouse().Update(context.Camera);
     _networkSystem.Send(context);
     _networkSystem.Update(_actorSystem);
@@ -141,8 +141,9 @@ void Application::Update()
         }
     }
 
-    for (const auto& actor : _actorSystem.GetActors() | std::views::values)
+    for (auto& actor : _actorSystem.GetActors() | std::views::values)
     {
+        actor.Update(context.Time);
         context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
     }
 

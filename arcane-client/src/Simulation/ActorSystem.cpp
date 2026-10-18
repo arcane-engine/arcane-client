@@ -20,7 +20,7 @@ namespace Simulation
         return it != _actors.end() ? &it->second : nullptr;
     }
 
-    const std::unordered_map<std::uint32_t, Actor>& ActorSystem::GetActors()
+    std::unordered_map<std::uint32_t, Actor>& ActorSystem::GetActors()
     {
         return _actors;
     }

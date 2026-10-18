@@ -9,7 +9,7 @@
 
 namespace Core
 {
-    struct InputContext;
+    struct Context;
 }
 
 namespace Graphics
@@ -34,7 +34,7 @@ namespace Graphics
 
         void Rotate(float pitch, float yaw, float roll) noexcept;
 
-        [[nodiscard]] Core::CameraContext Update(const Core::InputContext& input) noexcept;
+        [[nodiscard]] Core::CameraContext Update(const Core::Context& context) noexcept;
 
     private:
         float _width;

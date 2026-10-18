@@ -16,6 +16,11 @@ namespace Simulation
         return _position;
     }
 
+    const Math::Vector3& Actor::GetVelocity() const
+    {
+        return _velocity;
+    }
+
     const Math::Quaternion& Actor::GetRotation() const
     {
         return _rotation;
@@ -36,6 +41,11 @@ namespace Simulation
         _position = position;
     }
 
+    void Actor::SetVelocity(const Math::Vector3& velocity)
+    {
+        _velocity = velocity;
+    }
+
     void Actor::SetRotation(const Math::Quaternion& rotation)
     {
         _rotation = rotation;
@@ -44,5 +54,10 @@ namespace Simulation
     void Actor::SetScale(const Math::Vector3& scale)
     {
         _scale = scale;
+    }
+
+    void Actor::Update(const Core::TimeContext& time)
+    {
+        _position = _position + _velocity * time.Delta;
     }
 }

@@ -1,8 +1,10 @@
 #include "Core/Input/InputSystem.h"
 
+#include "Core/Context/Context.h"
+
 namespace Core::Input
 {
-    InputContext InputSystem::Update(Platform::Window& window)
+    void InputSystem::Update(Platform::Window& window, Context& context)
     {
         const auto& keyboard = window.GetKeyboard();
         auto& mouse = window.GetMouse();
@@ -29,7 +31,7 @@ namespace Core::Input
             }
         }
 
-        auto input = InputContext
+        context.Input = InputContext
         {
             .Keyboard = {
                 .Forward = keyboard.IsKeyDown('W'),
@@ -46,13 +48,11 @@ namespace Core::Input
             }
         };
 
-        if (input.Keyboard != _input.Keyboard)
+        if (context.Input.Keyboard != _input.Keyboard)
         {
-            input.Keyboard.Changed = true;
+            context.Input.Keyboard.Changed = true;
         }
 
-        _input = input;
-
-        return _input;
+        _input = context.Input;
     }
 }

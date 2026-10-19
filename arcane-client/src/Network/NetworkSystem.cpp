@@ -18,7 +18,32 @@ namespace Network
         _networkWorker.Stop();
     }
 
-    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem)
+    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem, const Core::Context& context)
+    {
+        Send(context);
+        Receive(actorSystem);
+    }
+
+    void NetworkSystem::Send(const Core::Context& context)
+    {
+        if (context.Input.Keyboard.Changed)
+        {
+            _networkWorker.SendQueuePush(ClientPacket{
+                .Input = ClientInputPacket{
+                    .Forward = context.Input.Keyboard.Forward,
+                    .Backward = context.Input.Keyboard.Backward,
+                    .Left = context.Input.Keyboard.Left,
+                    .Right = context.Input.Keyboard.Right
+                },
+                .Motion = ClientMotionPacket{
+                    .Position = context.Camera.Position,
+                    .Velocity = context.Camera.Velocity
+                }
+            });
+        }
+    }
+
+    void NetworkSystem::Receive(Simulation::ActorSystem& actorSystem)
     {
         std::queue<ServerPacket> queue;
         _networkWorker.GetReceiveQueue().Swap(queue);
@@ -51,25 +76,6 @@ namespace Network
             }
 
             queue.pop();
-        }
-    }
-
-    void NetworkSystem::Send(const Core::Context& context)
-    {
-        if (context.Input.Keyboard.Changed)
-        {
-            _networkWorker.SendQueuePush(ClientPacket{
-                .Input = ClientInputPacket{
-                    .Forward = context.Input.Keyboard.Forward,
-                    .Backward = context.Input.Keyboard.Backward,
-                    .Left = context.Input.Keyboard.Left,
-                    .Right = context.Input.Keyboard.Right
-                },
-                .Motion = ClientMotionPacket{
-                    .Position = context.Camera.Position,
-                    .Velocity = context.Camera.Velocity
-                }
-            });
         }
     }
 }

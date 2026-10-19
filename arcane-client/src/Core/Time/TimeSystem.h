@@ -2,10 +2,10 @@
 
 #include <chrono>
 
-#include "Core/Context/TimeContext.h"
-
 namespace Core
 {
+    struct Context;
+
     class TimeSystem final
     {
     public:
@@ -17,7 +17,7 @@ namespace Core
         TimeSystem(TimeSystem&&) = delete;
         TimeSystem& operator=(TimeSystem&& timer) = delete;
 
-        [[nodiscard]] TimeContext Update() noexcept;
+        void Update(Context& context) noexcept;
 
     private:
         std::chrono::steady_clock::time_point _start;

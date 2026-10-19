@@ -265,6 +265,11 @@ namespace Platform
         return _height;
     }
 
+    void Window::Update(const Core::Context& context)
+    {
+        _mouse.Update(context);
+    }
+
     void Window::ToggleFullscreen()
     {
         if (_fullscreen)

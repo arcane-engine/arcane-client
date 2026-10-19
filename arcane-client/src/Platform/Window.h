@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 
+#include "Core/Context/Context.h"
 #include "Core/Input/Keyboard.h"
 #include "Core/Input/Mouse.h"
 #include "Graphics/Device.h"
@@ -28,6 +29,8 @@ namespace Platform
         [[nodiscard]] HWND GetWindowHandle() const noexcept;
         [[nodiscard]] int GetWidth() const noexcept;
         [[nodiscard]] int GetHeight() const noexcept;
+
+        void Update(const Core::Context& context);
 
         void ToggleFullscreen();
 

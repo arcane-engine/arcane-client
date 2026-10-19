@@ -2,24 +2,21 @@
 
 #include <chrono>
 
+#include "Core/Context/Context.h"
+
 namespace Core
 {
     TimeSystem::TimeSystem() noexcept
         : _start(std::chrono::steady_clock::now())
     {}
 
-    TimeContext TimeSystem::Update() noexcept
+    void TimeSystem::Update(Context& context) noexcept
     {
-        const auto now = std::chrono::duration<float>(std::chrono::steady_clock::now() - _start).count();
-        const auto delta = now - _now;
+        context.Time.Now = std::chrono::duration<float>(std::chrono::steady_clock::now() - _start).count();;
+        context.Time.Delta = context.Time.Now - _now;
+        context.Time.SmoothDelta = _smoothDelta * 0.98f + context.Time.Delta * 0.02f;
 
-        _smoothDelta = _smoothDelta * 0.98f + delta * 0.02f;
-        _now = now;
-
-        return {
-            .Now = _now,
-            .Delta = delta,
-            .SmoothDelta = _smoothDelta
-        };
+        _now = context.Time.Now;
+        _smoothDelta = context.Time.SmoothDelta;
     }
 }

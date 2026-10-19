@@ -110,12 +110,12 @@ void Application::Update()
     }
 
     auto context = Core::Context();
-    context.Time = _timeSystem.Update();
-    context.Input = _inputSystem.Update(_window);
-    context.Camera = _camera.Update(context);
-    _window.GetMouse().Update(context.Camera);
-    _networkSystem.Send(context);
-    _networkSystem.Update(_actorSystem);
+
+    _timeSystem.Update(context);
+    _inputSystem.Update(_window, context);
+    _camera.Update(context);
+    _window.Update(context);
+    _networkSystem.Update(_actorSystem, context);
 
     context.Lights = {
         { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },

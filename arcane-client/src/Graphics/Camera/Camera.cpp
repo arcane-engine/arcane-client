@@ -73,7 +73,7 @@ namespace Graphics
         _roll.Rotate(roll);
     }
 
-    Core::CameraContext Camera::Update(const Core::Context& context) noexcept
+    void Camera::Update(Core::Context& context) noexcept
     {
         if (context.Input.Mouse.RightPressed)
         {
@@ -100,7 +100,7 @@ namespace Graphics
 
         _position = _target - _direction * _distance;
 
-        return {
+        context.Camera = {
             .Position = _target,
             .Velocity = Math::Vector3(velocityX, 0.0f, velocityZ),
             .ViewMatrix = GetViewMatrix(),

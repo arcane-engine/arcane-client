@@ -9,7 +9,7 @@
 
 namespace Core
 {
-    struct CameraContext;
+    struct Context;
 }
 
 namespace Graphics
@@ -46,7 +46,8 @@ namespace Core::Input
         [[nodiscard]] bool IsEmpty() const noexcept;
 
         void Flush() noexcept;
-        void Update(const CameraContext& camera) noexcept;
+
+        void Update(const Context& context) noexcept;
 
         void SetResolution(int width, int height) noexcept;
         void Capture() noexcept;

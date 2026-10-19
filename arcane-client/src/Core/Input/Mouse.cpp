@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 
+#include "Core/Context/Context.h"
 #include "Graphics/Camera/Camera.h"
 
 namespace Core::Input
@@ -100,12 +101,12 @@ namespace Core::Input
         _rawEventBuffer = std::queue<MouseRawEvent>();
     }
 
-    void Mouse::Update(const CameraContext& camera) noexcept
+    void Mouse::Update(const Context& context) noexcept
     {
         const auto x = GetNormalizedX();
         const auto y = GetNormalizedY();
 
-        const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, camera.ViewProjectionMatrix);
+        const auto inverseViewProjectionMatrix = DirectX::XMMatrixInverse(nullptr, context.Camera.ViewProjectionMatrix);
 
         const auto position = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 0.0f, 1.0f), inverseViewProjectionMatrix);
         const auto direction = DirectX::XMVector3TransformCoord(DirectX::XMVectorSet(x, y, 1.0f, 1.0f), inverseViewProjectionMatrix);

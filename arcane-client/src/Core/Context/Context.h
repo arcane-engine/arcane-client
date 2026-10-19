@@ -18,10 +18,10 @@ namespace Core
 
     struct Context
     {
-        TimeContext Time;
-        InputContext Input;
-        CameraContext Camera;
-        ObjectContext Object;
+        TimeContext Time{};
+        InputContext Input{};
+        CameraContext Camera{};
+        ObjectContext Object{};
         std::vector<Light> Lights;
         Graphics::RenderQueue GeometryRenderQueue;
         Graphics::RenderQueue UserInterfaceRenderQueue;

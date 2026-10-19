@@ -21,7 +21,7 @@ namespace Network
         
         [[nodiscard]] bool IsConnected() const;
 
-        [[nodiscard]] bool SendPacket(const void* data, std::size_t size);
+        void SendPacket(const void* data, std::size_t size);
         [[nodiscard]] bool ReceivePacket(std::vector<std::uint8_t>& outPayload);
 
     private:

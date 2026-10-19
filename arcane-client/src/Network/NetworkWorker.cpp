@@ -60,7 +60,7 @@ namespace Network
             {
                 std::uint8_t buffer[8192]{};
                 const auto size = ClientPacketBuilder(buffer, queue.front()).Build();
-                auto _ = _networkClient.SendPacket(buffer, size);
+                _networkClient.SendPacket(buffer, size);
                 queue.pop();
             }
 

@@ -40,7 +40,7 @@ namespace Network
         }
 
         _socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        if (_socket == INVALID_SOCKET)
+        if (_socket == INVALID_SOCKET) // NOLINT(modernize-use-integer-sign-comparison)
         {
             throw std::runtime_error(std::format("Failed to create socket: {}", WSAGetLastError()));
         }
@@ -67,7 +67,7 @@ namespace Network
 
     void NetworkClient::Disconnect()
     {
-        if (_socket != INVALID_SOCKET)
+        if (_socket != INVALID_SOCKET) // NOLINT(modernize-use-integer-sign-comparison)
         {
             closesocket(_socket);
             _socket = INVALID_SOCKET;
@@ -80,16 +80,16 @@ namespace Network
         return _connected;
     }
 
-    bool NetworkClient::SendPacket(const void* data, const std::size_t size)
+    void NetworkClient::SendPacket(const void* data, const std::size_t size)
     {
         if (!_connected)
         {
-            return false;
+            return;
         }
 
         std::uint32_t netSize = static_cast<std::uint32_t>(size);
 
-        WSABUF buffers[2];
+        WSABUF buffers[2]{};
         buffers[0].buf = reinterpret_cast<char*>(&netSize);
         buffers[0].len = sizeof(netSize);
 
@@ -105,8 +105,6 @@ namespace Network
             Disconnect();
             throw std::runtime_error(std::format("Send failed: {}", error));
         }
-
-        return true;
     }
 
     bool NetworkClient::ReceivePacket(std::vector<std::uint8_t>& outPayload)

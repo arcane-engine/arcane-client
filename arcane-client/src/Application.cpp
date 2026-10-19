@@ -25,10 +25,10 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0, true, false)
         .Build();
 
-    const auto heightMap = _resourceManager.GetMesh("terrain_mesh");
-    const auto grid = _resourceManager.GetMesh("Grid");
-    const auto cube = _resourceManager.GetMesh("Cube");
-    const auto material = _resourceManager.GetMaterial("Default");
+    const auto& heightMap = _resourceManager.GetMesh("terrain_mesh");
+    const auto& grid = _resourceManager.GetMesh("Grid");
+    const auto& cube = _resourceManager.GetMesh("Cube");
+    const auto& material = _resourceManager.GetMaterial("Default");
 
     _heightmap = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Heightmap"))

@@ -45,11 +45,13 @@ namespace Platform
 
     void Window::RegisterRawMouseInputDevice()
     {
-        RAWINPUTDEVICE device;
-        device.usUsagePage = 0x01;
-        device.usUsage = 0x02;
-        device.dwFlags = 0;
-        device.hwndTarget = nullptr;
+        constexpr RAWINPUTDEVICE device
+        {
+            .usUsagePage = 0x01,
+            .usUsage = 0x02,
+            .dwFlags = 0,
+            .hwndTarget = nullptr
+        };
 
         if (RegisterRawInputDevices(&device, 1, sizeof(device)) == false)
         {

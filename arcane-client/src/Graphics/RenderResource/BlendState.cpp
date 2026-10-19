@@ -16,7 +16,7 @@ namespace Graphics
         if (target != active)
         {
             constexpr float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-            device.GetDeviceContext()->OMSetBlendState(target, blendFactor, 0xFFFFFFFFF);
+            device.GetDeviceContext()->OMSetBlendState(target, blendFactor, 0xFFFFFFFF);
             active = target;
         }
     }

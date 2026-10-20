@@ -4,6 +4,8 @@
 #include <format>
 #include <fstream>
 
+#include "Core/IO/BinaryReader.h"
+#include "Core/IO/FileStream.h"
 #include "Graphics/Device.h"
 #include "Graphics/GraphicsException.h"
 #include "Resources/DDSTextureLoader11.h"
@@ -61,14 +63,9 @@ namespace Resources
         constexpr auto width = 512;
         constexpr auto height = 512;
 
-        std::vector<float> heightData(static_cast<size_t>(width * height));
-        std::ifstream file(path, std::ios::binary);
-        if (!file.is_open())
-        {
-            throw std::runtime_error(std::format("Failed to open raw heightmap file for '{}'.", path));
-        }
+        auto reader = Core::IO::BinaryReader::FromFile(path);
 
-        file.read(reinterpret_cast<char*>(heightData.data()), static_cast<std::streamsize>(heightData.size() * sizeof(float)));
+        const auto heightData = reader.Read<float>(static_cast<std::size_t>(width) * height);
 
         D3D11_TEXTURE2D_DESC desc = {};
         desc.Width = width;

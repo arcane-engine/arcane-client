@@ -177,7 +177,7 @@
     <ClCompile Include="src\Graphics\RenderResource\DepthStencilState.cpp" />
     <ClCompile Include="src\Resources\MaterialLibrary.cpp" />
     <ClCompile Include="src\Resources\MeshLibrary.cpp" />
-    <ClCompile Include="src\Core\IO\BinaryReader.cpp" />
+    <ClCompile Include="src\Core\IO\BinaryReader.inl" />
     <ClCompile Include="src\Core\IO\FileStream.cpp" />
     <ClCompile Include="src\Resources\SamplerLibrary.cpp" />
     <ClCompile Include="src\Graphics\RenderObjectBuilder.inl" />

@@ -3,12 +3,13 @@
 #include <format>
 
 #include "TerrainManager.h"
+#include "Core/IO/BinaryReader.h"
 #include "Core/IO/FileStream.h"
 
 namespace Resources
 {
-    Mesh::Mesh(std::vector<std::byte> vertexBuffer, const int stride, std::vector<std::uint32_t> indexBuffer)
-        : _vertexBuffer(std::move(vertexBuffer)), _stride(stride), _indexBuffer(std::move(indexBuffer))
+    Mesh::Mesh(std::vector<std::byte> vertexBuffer, std::vector<std::uint32_t> indexBuffer, const int stride)
+        : _vertexBuffer(std::move(vertexBuffer)), _indexBuffer(std::move(indexBuffer)), _stride(stride)
     {}
 
     const std::vector<std::byte>& Mesh::GetVertexBuffer() const
@@ -16,14 +17,14 @@ namespace Resources
         return _vertexBuffer;
     }
 
-    int Mesh::GetStride() const
-    {
-        return _stride;
-    }
-
     const std::vector<std::uint32_t>& Mesh::GetIndexBuffer() const
     {
         return _indexBuffer;
+    }
+
+    int Mesh::GetStride() const
+    {
+        return _stride;
     }
 
     MeshLibrary::MeshLibrary()
@@ -50,25 +51,15 @@ namespace Resources
 
     void MeshLibrary::LoadMesh(std::string_view name)
     {
-        const auto path = std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name);
-        std::ifstream file(path, std::ios::binary);
+        auto reader = Core::IO::BinaryReader::FromFile(std::format(R"(C:\arcane\arcane-data\meshes\{}.bin)", name));
 
-        auto vertexCount = 0;
-        auto vertexStride = 0;
-        auto indexCount = 0;
+        const auto vertexCount = static_cast<std::size_t>(reader.Read<int>());
+        const auto indexCount = static_cast<std::size_t>(reader.Read<int>());
+        const auto stride = reader.Read<int>();
 
-        file.read(reinterpret_cast<char*>(&vertexCount), sizeof(vertexCount));
-        file.read(reinterpret_cast<char*>(&vertexStride), sizeof(vertexStride));
-        file.read(reinterpret_cast<char*>(&indexCount), sizeof(indexCount));
+        const auto vertexBuffer = reader.Read<std::byte>(vertexCount * stride);
+        const auto indexBuffer = reader.Read<std::uint32_t>(indexCount);
 
-        auto size = vertexCount * vertexStride;
-        std::vector<std::byte> vertexData(static_cast<std::size_t>(vertexCount * vertexStride));
-        file.read(reinterpret_cast<char*>(vertexData.data()), size);
-
-        size = static_cast<int>(indexCount * sizeof(std::uint32_t));
-        std::vector<std::uint32_t> indices(indexCount);
-        file.read(reinterpret_cast<char*>(indices.data()), size);
-
-        _meshes.emplace(name, Mesh(std::move(vertexData), vertexStride, std::move(indices)));
+        _meshes.emplace(name, Mesh(vertexBuffer, indexBuffer, stride));
     }
 }

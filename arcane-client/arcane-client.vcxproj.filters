@@ -138,7 +138,7 @@
     <ClCompile Include="src\Resources\MeshLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\IO\BinaryReader.cpp">
+    <ClCompile Include="src\Core\IO\BinaryReader.inl">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\IO\FileStream.cpp">

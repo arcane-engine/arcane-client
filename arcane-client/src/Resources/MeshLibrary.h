@@ -10,16 +10,16 @@ namespace Resources
     class Mesh
     {
     public:
-        Mesh(std::vector<std::byte> vertexBuffer, int stride, std::vector<std::uint32_t> indexBuffer);
+        Mesh(std::vector<std::byte> vertexBuffer, std::vector<std::uint32_t> indexBuffer, int stride);
 
         [[nodiscard]] const std::vector<std::byte>& GetVertexBuffer() const;
-        [[nodiscard]] int GetStride() const;
         [[nodiscard]] const std::vector<std::uint32_t>& GetIndexBuffer() const;
+        [[nodiscard]] int GetStride() const;
 
     private:
         std::vector<std::byte> _vertexBuffer;
-        int _stride;
         std::vector<std::uint32_t> _indexBuffer;
+        int _stride;
     };
 
     class MeshLibrary

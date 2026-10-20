@@ -23,7 +23,7 @@ namespace Resources
 
         const auto quads = gridSize - 1;
         std::vector<uint32_t> indexBuffer;
-        indexBuffer.reserve(quads * quads * 6);
+        indexBuffer.reserve(static_cast<std::size_t>(quads) * quads * 6);
 
         for (int z = 0; z < quads; z++)
         {
@@ -44,6 +44,6 @@ namespace Resources
             }
         }
 
-        return Mesh(vertexBuffer, stride, indexBuffer);
+        return Mesh(vertexBuffer, indexBuffer, stride);
     }
 }

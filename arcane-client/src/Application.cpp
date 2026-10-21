@@ -9,17 +9,24 @@
 #include "Graphics/RenderResource/Data/LightBuffer.h"
 #include "Graphics/RenderResource/Data/ObjectTransformBuffer.h"
 #include "Core/Context/Context.h"
+#include "Scene/SceneObject.h"
 
 Application::Application(const int width, const int height) :
     _window(width, height),
     _camera(width, height),
     _renderSystem(_window.GetWindowHandle(), width, height),
     _resourceManager(_renderSystem.GetDevice()),
+    _sceneSystem(_resourceManager, _renderSystem),
     _userInterfaceSystem(_renderSystem, _resourceManager, width, height)
 {
     _networkSystem.Start();
 
     _renderSystem.BuildRenderPipeline(_resourceManager);
+
+    auto node = Scene::SceneNode();
+    node.SetSceneObject(_sceneSystem.GetObject("cube"));
+
+    _sceneSystem.AddNode(std::move(node));
 
     _cameraObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0, true, false)
@@ -73,6 +80,8 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
+    _sceneSystem.AddObject("empty", Scene::SceneObject(Graphics::RenderObjectBuilder(_renderSystem.GetDevice()).Build()));
+
     _object2 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader, true))
         .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
@@ -116,6 +125,7 @@ void Application::Update()
     _camera.Update(context);
     _window.Update(context);
     _networkSystem.Update(_actorSystem, context);
+    _sceneSystem.Build();
 
     context.Lights = {
         { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
@@ -145,6 +155,11 @@ void Application::Update()
     {
         actor.Update(context.Time);
         context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
+    }
+
+    for (const auto& object : _sceneSystem.GetObjectsView())
+    {
+        context.GeometryRenderQueue.Add(object->GetRenderObject(), object->GetWorldMatrixInstances());
     }
 
     context.GeometryRenderQueue.Add(_object2, worldMatrixInstances);

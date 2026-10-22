@@ -4,7 +4,6 @@
 
 #include "TerrainManager.h"
 #include "Core/IO/BinaryReader.h"
-#include "Core/IO/FileStream.h"
 
 namespace Resources
 {

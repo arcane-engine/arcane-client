@@ -2,15 +2,9 @@
 
 #include "NetworkWorker.h"
 
-namespace Simulation
-{
-    class ActorSystem;
-}
-
-namespace Core
-{
-    struct Context;
-}
+namespace Core { struct Context; }
+namespace Scene { class SceneSystem; }
+namespace Simulation { class ActorSystem; }
 
 namespace Network
 {
@@ -20,10 +14,10 @@ namespace Network
         void Start();
         void Stop();
 
-        void Update(Simulation::ActorSystem& actorSystem, const Core::Context& context);
+        void Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, const Core::Context& context);
 
         void Send(const Core::Context& context);
-        void Receive(Simulation::ActorSystem& actorSystem);
+        void Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem);
 
     private:
         NetworkWorker _networkWorker;

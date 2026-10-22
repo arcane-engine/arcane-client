@@ -10,5 +10,6 @@ namespace Network
     {
         std::vector<ServerActorPacket> Actor;
         std::vector<ServerActorMotionPacket> ActorMotion;
+        std::vector<ServerSceneNodePacket> SceneNodes;
     };
 }

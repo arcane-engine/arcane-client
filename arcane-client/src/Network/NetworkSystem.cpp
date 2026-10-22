@@ -4,6 +4,7 @@
 #include "Core/Context/InputContext.h"
 #include "Protocol/Packets/ClientPacket.h"
 #include "Protocol/Packets/ServerPacket.h"
+#include "Scene/SceneSystem.h"
 #include "Simulation/ActorSystem.h"
 
 namespace Network
@@ -18,10 +19,10 @@ namespace Network
         _networkWorker.Stop();
     }
 
-    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem, const Core::Context& context)
+    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, const Core::Context& context)
     {
         Send(context);
-        Receive(actorSystem);
+        Receive(actorSystem, sceneSystem);
     }
 
     void NetworkSystem::Send(const Core::Context& context)
@@ -43,7 +44,7 @@ namespace Network
         }
     }
 
-    void NetworkSystem::Receive(Simulation::ActorSystem& actorSystem)
+    void NetworkSystem::Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem)
     {
         std::queue<ServerPacket> queue;
         _networkWorker.GetReceiveQueue().Swap(queue);
@@ -72,6 +73,18 @@ namespace Network
                 {
                     actorSystem.GetActor(actorMotion.Id)->SetPosition(actorMotion.Position);
                     actorSystem.GetActor(actorMotion.Id)->SetVelocity(actorMotion.Velocity);
+                }
+            }
+            if (packet.SceneNodes.empty() == false)
+            {
+                for (auto sceneNode : packet.SceneNodes)
+                {
+                    auto node = Scene::SceneNode();
+                    node.SetSceneObject(sceneSystem.GetSceneObject("cube"));
+                    node.SetPosition(sceneNode.Position);
+                    node.SetRotation(sceneNode.Rotation);
+                    node.SetScale(sceneNode.Scale);
+                    sceneSystem.AddSceneNode(std::move(node));
                 }
             }
 

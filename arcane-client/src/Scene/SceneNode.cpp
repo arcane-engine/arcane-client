@@ -1,16 +1,50 @@
 #include "SceneNode.h"
 
-void Scene::SceneNode::SetSceneObject(SceneObject* sceneObject)
-{
-    _sceneObject = sceneObject;
-}
+#include <optional>
 
-Scene::SceneObject* Scene::SceneNode::GetSceneObject()
+namespace Scene
 {
-    return _sceneObject;
-}
+    SceneNode::SceneNode(SceneObject* sceneObject, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale) :
+        _sceneObject(sceneObject), _position(position), _rotation(rotation), _scale(scale)
+    {}
 
-DirectX::XMMATRIX Scene::SceneNode::GetWorldMatrix()
-{
-    return DirectX::XMMatrixIdentity();
+    void SceneNode::SetSceneObject(SceneObject* sceneObject)
+    {
+        _sceneObject = sceneObject;
+    }
+
+    void SceneNode::SetPosition(const Math::Vector3& position)
+    {
+        _position = position;
+        _worldMatrix = std::nullopt;
+    }
+
+    void SceneNode::SetRotation(const Math::Quaternion& rotation)
+    {
+        _rotation = rotation;
+        _worldMatrix = std::nullopt;
+    }
+
+    void SceneNode::SetScale(const Math::Vector3& scale)
+    {
+        _scale = scale;
+        _worldMatrix = std::nullopt;
+    }
+
+    SceneObject* SceneNode::GetSceneObject() const
+    {
+        return _sceneObject;
+    }
+
+    DirectX::XMMATRIX& SceneNode::GetWorldMatrix()
+    {
+        if (_worldMatrix == std::nullopt)
+        {
+            _worldMatrix =
+                DirectX::XMMatrixScalingFromVector(static_cast<DirectX::XMVECTOR>(_scale)) *
+                DirectX::XMMatrixRotationQuaternion(static_cast<DirectX::XMVECTOR>(_rotation)) *
+                DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(_position));
+        }
+        return _worldMatrix.value();
+    }
 }

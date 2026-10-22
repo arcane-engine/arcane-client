@@ -8,7 +8,6 @@
 #include "Network/NetworkSystem.h"
 #include "Platform/Window.h"
 #include "Resources/ResourceManager.h"
-#include "Scene/SceneNode.h"
 #include "Scene/SceneSystem.h"
 #include "Simulation/ActorSystem.h"
 #include "UserInterface/UserInterfaceSystem.h"
@@ -36,8 +35,7 @@ private:
     Scene::SceneSystem _sceneSystem;
     UserInterface::UserInterfaceSystem _userInterfaceSystem;
     Graphics::RenderObject _cameraObject;
-    Graphics::RenderObject _heightmap;
+    Graphics::RenderObject _heightmapObject;
     Graphics::RenderObject _actorObject;
-    Graphics::RenderObject _object1;
-    Graphics::RenderObject _object2;
+    Graphics::RenderObject _terrainObject;
 };

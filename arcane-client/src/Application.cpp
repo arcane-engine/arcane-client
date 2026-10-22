@@ -23,11 +23,6 @@ Application::Application(const int width, const int height) :
 
     _renderSystem.BuildRenderPipeline(_resourceManager);
 
-    auto node = Scene::SceneNode();
-    node.SetSceneObject(_sceneSystem.GetObject("cube"));
-
-    _sceneSystem.AddNode(std::move(node));
-
     _cameraObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithConstantBuffer<Graphics::CameraTransformBuffer>(0, true, false)
         .Build();
@@ -37,7 +32,7 @@ Application::Application(const int width, const int height) :
     const auto& cube = _resourceManager.GetMesh("Cube");
     const auto& material = _resourceManager.GetMaterial("Default");
 
-    _heightmap = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+    _heightmapObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Heightmap"))
         .WithPixelShader(_resourceManager.GetPixelShader("Heightmap"))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Heightmap))
@@ -65,7 +60,7 @@ Application::Application(const int width, const int height) :
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 
-    _object1 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+    _terrainObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Terrain"))
         .WithPixelShader(_resourceManager.GetPixelShader("Terrain"))
         .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Terrain))
@@ -77,22 +72,6 @@ Application::Application(const int width, const int height) :
         .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight, false, true)
         .WithTexture(_resourceManager.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase, false, true)
         .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
-        .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
-        .Build();
-
-    _sceneSystem.AddObject("empty", Scene::SceneObject(Graphics::RenderObjectBuilder(_renderSystem.GetDevice()).Build()));
-
-    _object2 = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
-        .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader, true))
-        .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
-        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
-        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
-        .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
-        .WithIndexBuffer(cube.GetIndexBuffer())
-        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-        .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo, false, true)
-        .WithInstanceVertexBuffer(1)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
 }
@@ -124,7 +103,7 @@ void Application::Update()
     _inputSystem.Update(_window, context);
     _camera.Update(context);
     _window.Update(context);
-    _networkSystem.Update(_actorSystem, context);
+    _networkSystem.Update(_actorSystem, _sceneSystem, context);
     _sceneSystem.Build();
 
     context.Lights = {
@@ -136,20 +115,8 @@ void Application::Update()
 
     context.GeometryRenderQueue.Add(_cameraObject);
 
-    context.GeometryRenderQueue.Add(_heightmap, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-    context.GeometryRenderQueue.Add(_object1, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
-
-    std::vector<DirectX::XMMATRIX> worldMatrixInstances;
-    for (auto x = -5; x <= 5; x++)
-    {
-        for (auto z = -5; z <= 5; z++)
-        {
-            const auto scale = DirectX::XMMatrixScaling(0.5, 0.5, 0.5);
-            const auto rotation = DirectX::XMMatrixRotationRollPitchYaw(static_cast<float>(x), 2, static_cast<float>(z));
-            const auto position = DirectX::XMMatrixTranslation(static_cast<float>(x * 4), 3.0f, static_cast<float>(z * 4));
-            worldMatrixInstances.push_back(scale * rotation * position);
-        }
-    }
+    context.GeometryRenderQueue.Add(_heightmapObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+    context.GeometryRenderQueue.Add(_terrainObject, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
 
     for (auto& actor : _actorSystem.GetActors() | std::views::values)
     {
@@ -157,12 +124,10 @@ void Application::Update()
         context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
     }
 
-    for (const auto& object : _sceneSystem.GetObjectsView())
+    for (const auto& object : _sceneSystem.GetSceneObjectsView())
     {
         context.GeometryRenderQueue.Add(object->GetRenderObject(), object->GetWorldMatrixInstances());
     }
-
-    context.GeometryRenderQueue.Add(_object2, worldMatrixInstances);
 
     context.UserInterfaceRenderQueue = _userInterfaceSystem.BuildRenderQueue();
 

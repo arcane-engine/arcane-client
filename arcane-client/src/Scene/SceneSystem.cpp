@@ -14,23 +14,23 @@ namespace Scene
         : _resourceManager(resourceManager), _renderSystem(renderSystem)
     {}
 
-    void SceneSystem::AddObject(const std::string_view key, SceneObject object)
+    void SceneSystem::AddSceneObject(const std::string_view name, SceneObject sceneNode)
     {
-        _objects.emplace(std::string(key), std::make_unique<SceneObject>(std::move(object)));
+        _sceneObjects.emplace(std::string(name), std::make_unique<SceneObject>(std::move(sceneNode)));
     }
 
-    void SceneSystem::AddNode(SceneNode node)
+    void SceneSystem::AddSceneNode(SceneNode sceneNode)
     {
-        _nodes.push_back(std::make_unique<SceneNode>(std::move(node)));
+        _sceneNodes.push_back(std::make_unique<SceneNode>(std::move(sceneNode)));
     }
 
-    SceneObject* SceneSystem::GetObject(const std::string_view key)
+    SceneObject* SceneSystem::GetSceneObject(const std::string_view name)
     {
-        auto it = _objects.find(key);
-        if (it == _objects.end())
+        auto it = _sceneObjects.find(name);
+        if (it == _sceneObjects.end())
         {
-            LoadObject(key);
-            it = _objects.find(key);
+            LoadObject(name);
+            it = _sceneObjects.find(name);
         }
 
         return it->second.get();
@@ -38,17 +38,17 @@ namespace Scene
 
     void SceneSystem::Build()
     {
-        for (const auto& object : _objects | std::views::values)
+        for (const auto& object : _sceneObjects | std::views::values)
         {
             object->ClearInstances();
         }
-        for (const auto& node : _nodes)
+        for (const auto& node : _sceneNodes)
         {
             node->GetSceneObject()->AddInstance(node->GetWorldMatrix());
         }
     }
 
-    void SceneSystem::LoadObject(const std::string_view key)
+    void SceneSystem::LoadObject(const std::string_view name)
     {
         const auto& material = _resourceManager.GetMaterial("Default");
         const auto& cube = _resourceManager.GetMesh("Cube");
@@ -67,6 +67,6 @@ namespace Scene
             .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
             .Build();
 
-        _objects.emplace(std::string(key), std::make_unique<SceneObject>(std::move(object)));
+        _sceneObjects.emplace(std::string(name), std::make_unique<SceneObject>(std::move(object)));
     }
 }

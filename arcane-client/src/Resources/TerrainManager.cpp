@@ -17,7 +17,7 @@ namespace Resources
                 const float u = static_cast<float>(x) / static_cast<float>(gridSize - 1);
                 const float v = static_cast<float>(z) / static_cast<float>(gridSize - 1);
 
-                vertices[vertexIndex++] = { (u - 0.5f) * static_cast<float>(terrainSize), 0.0f, (v - 0.5f) * static_cast<float>(terrainSize) };
+                vertices[vertexIndex++] = Math::Vector3((u - 0.5f) * static_cast<float>(terrainSize), 0.0f, (v - 0.5f) * static_cast<float>(terrainSize));
             }
         }
 

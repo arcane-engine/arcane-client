@@ -31,16 +31,22 @@ namespace Network
                 packet.ActorMotion.push_back(ServerActorMotionPacket
                 {
                     .Id = reader.ReadUnsignedShort(),
-                    .Position = {
-                        .X = reader.ReadFloat(),
-                        .Y = reader.ReadFloat(),
-                        .Z = reader.ReadFloat()
-                    },
-                    .Velocity = {
-                        .X = reader.ReadFloat(),
-                        .Y = reader.ReadFloat(),
-                        .Z = reader.ReadFloat()
-                    }
+                    .Position = reader.ReadFloat3(),
+                    .Velocity = reader.ReadFloat3(),
+                });
+            }
+        }
+        if (reader.ReadBit())
+        {
+            const auto count = reader.ReadUnsignedShort();
+            for (std::uint16_t i = 0; i < count; i++)
+            {
+                packet.SceneNodes.push_back(ServerSceneNodePacket
+                {
+                    .Id = reader.ReadUnsignedShort(),
+                    .Position = reader.ReadFloat3(),
+                    .Rotation = reader.ReadFloat4(),
+                    .Scale = reader.ReadFloat3()
                 });
             }
         }

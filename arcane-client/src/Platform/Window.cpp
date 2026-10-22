@@ -195,7 +195,8 @@ namespace Platform
 
     void Window::HandleMouseMessage(const UINT msg, const WPARAM wParam, LPARAM lParam)
     {
-        const auto [x, y] = MAKEPOINTS(lParam);
+        const auto x = static_cast<short>(LOWORD(lParam));
+        const auto y = static_cast<short>(HIWORD(lParam));
 
         switch (msg)
         {

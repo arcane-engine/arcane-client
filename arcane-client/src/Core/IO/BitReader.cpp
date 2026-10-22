@@ -2,6 +2,8 @@
 
 #include <bit>
 
+#include "Math/Quaternion.h"
+
 namespace Core::IO
 {
     BitReader::BitReader(const std::uint8_t* buffer)
@@ -45,6 +47,16 @@ namespace Core::IO
             value = (value << 1) | (ReadBit() ? 1u : 0u);
         }
         return std::bit_cast<float>(value);
+    }
+
+    std::array<float, 3> BitReader::ReadFloat3()
+    {
+        return { ReadFloat(), ReadFloat(), ReadFloat() };
+    }
+
+    std::array<float, 4> BitReader::ReadFloat4()
+    {
+        return { ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat() };
     }
 
     void BitReader::Skip(const int bits)

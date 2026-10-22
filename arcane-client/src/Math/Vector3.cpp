@@ -4,11 +4,28 @@
 
 namespace Math
 {
+    Vector3::Vector3(const float x, const float y, const float z) noexcept
+    : X(x), Y(y), Z(z)
+    {}
+
+    Vector3::Vector3(const std::array<float, 3>& array) noexcept
+        : X(array[0]), Y(array[1]), Z(array[2])
+    {}
+
     Vector3& Vector3::operator=(const DirectX::XMVECTOR& vector) noexcept
     {
         X = DirectX::XMVectorGetX(vector);
         Y = DirectX::XMVectorGetY(vector);
         Z = DirectX::XMVectorGetZ(vector);
+
+        return *this;
+    }
+
+    Vector3& Vector3::operator=(const std::array<float, 3>& array) noexcept
+    {
+        X = array[0];
+        Y = array[1];
+        Z = array[2];
 
         return *this;
     }

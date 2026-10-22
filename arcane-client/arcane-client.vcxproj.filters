@@ -598,5 +598,8 @@
     <None Include="src\Resources\Shaders\Registers.hlsli" />
     <None Include="src\Resources\Shaders\ConstantBuffers.hlsli" />
     <None Include="src\Resources\Shaders\VertexTypes.hlsli" />
+    <None Include="src\Scene\SceneSystem.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

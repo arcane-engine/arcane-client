@@ -1,8 +1,7 @@
 #pragma once
 
-#include <span>
+#include <string>
 
-#include "Math/Quaternion.h"
 #include "Math/Vector3.h"
 
 namespace Core::IO
@@ -18,6 +17,7 @@ namespace Core::IO
         [[nodiscard]] float ReadFloat();
         [[nodiscard]] std::array<float, 3> ReadFloat3();
         [[nodiscard]] std::array<float, 4> ReadFloat4();
+        [[nodiscard]] std::string ReadString();
 
         void Skip(int bits);
 

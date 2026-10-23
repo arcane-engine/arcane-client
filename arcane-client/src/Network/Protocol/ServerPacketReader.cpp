@@ -44,6 +44,8 @@ namespace Network
                 packet.SceneNodes.push_back(ServerSceneNodePacket
                 {
                     .Id = reader.ReadUnsignedShort(),
+                    .Mesh = reader.ReadString(),
+                    .Material = reader.ReadString(),
                     .Position = reader.ReadFloat3(),
                     .Rotation = reader.ReadFloat4(),
                     .Scale = reader.ReadFloat3()

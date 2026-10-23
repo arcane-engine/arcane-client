@@ -23,12 +23,12 @@ namespace Scene
         void AddSceneNode(SceneNode sceneNode);
 
         [[nodiscard]] auto GetSceneObjectsView();
-        [[nodiscard]] SceneObject* GetSceneObject(std::string_view name);
+        [[nodiscard]] SceneObject* GetSceneObject(std::string_view mesh, std::string_view material);
 
         void Build();
 
     private:
-        void LoadObject(std::string_view name);
+        void LoadObject(std::string_view mesh, std::string_view material);
 
         Resources::ResourceManager& _resourceManager;
         Graphics::RenderSystem& _renderSystem;

@@ -12,8 +12,8 @@ namespace Core::IO
 
     bool BitReader::ReadBit()
     {
-        const int byteIndex = _offset / 8;
-        const int bitIndex = 7 - (_offset % 8);
+        const auto byteIndex = _offset / 8;
+        const auto bitIndex = 7 - (_offset % 8);
         _offset++;
 
         return (_buffer[byteIndex] & (1 << bitIndex)) != 0;
@@ -22,7 +22,7 @@ namespace Core::IO
     std::uint8_t BitReader::ReadByte()
     {
         std::uint8_t value = 0;
-        for (int i = 0; i < 8; ++i)
+        for (auto i = 0; i < 8; ++i)
         {
             value = static_cast<std::uint8_t>((value << 1) | (ReadBit() ? 1 : 0));
         }
@@ -32,7 +32,7 @@ namespace Core::IO
     std::uint16_t BitReader::ReadUnsignedShort()
     {
         std::uint16_t value = 0;
-        for (int i = 0; i < 16; ++i)
+        for (auto i = 0; i < 16; ++i)
         {
             value = static_cast<std::uint16_t>((value << 1) | (ReadBit() ? 1 : 0));
         }
@@ -42,7 +42,7 @@ namespace Core::IO
     float BitReader::ReadFloat()
     {
         std::uint32_t value = 0;
-        for (int i = 0; i < 32; ++i)
+        for (auto i = 0; i < 32; ++i)
         {
             value = (value << 1) | (ReadBit() ? 1u : 0u);
         }
@@ -57,6 +57,21 @@ namespace Core::IO
     std::array<float, 4> BitReader::ReadFloat4()
     {
         return { ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat() };
+    }
+
+    std::string BitReader::ReadString()
+    {
+        const auto length = ReadUnsignedShort();
+
+        std::string result;
+        result.resize(length);
+
+        for (std::uint16_t i = 0; i < length; i++)
+        {
+            result[i] = static_cast<char>(ReadByte());
+        }
+
+        return result;
     }
 
     void BitReader::Skip(const int bits)

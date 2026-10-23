@@ -80,7 +80,7 @@ namespace Network
                 for (auto sceneNode : packet.SceneNodes)
                 {
                     auto node = Scene::SceneNode();
-                    node.SetSceneObject(sceneSystem.GetSceneObject("cube"));
+                    node.SetSceneObject(sceneSystem.GetSceneObject(sceneNode.Mesh, sceneNode.Material));
                     node.SetPosition(sceneNode.Position);
                     node.SetRotation(sceneNode.Rotation);
                     node.SetScale(sceneNode.Scale);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Math/Quaternion.h"
 #include "Math/Vector3.h"
 
@@ -21,6 +23,8 @@ namespace Network
     struct ServerSceneNodePacket
     {
         std::uint16_t Id;
+        std::string Mesh;
+        std::string Material;
         Math::Vector3 Position;
         Math::Quaternion Rotation;
         Math::Vector3 Scale;

@@ -1,5 +1,6 @@
 #include "Scene/SceneSystem.h"
 
+#include <format>
 #include <ranges>
 
 #include "Graphics/RenderObjectBuilder.h"
@@ -24,12 +25,13 @@ namespace Scene
         _sceneNodes.push_back(std::make_unique<SceneNode>(std::move(sceneNode)));
     }
 
-    SceneObject* SceneSystem::GetSceneObject(const std::string_view name)
+    SceneObject* SceneSystem::GetSceneObject(std::string_view mesh, std::string_view material)
     {
+        const auto name = std::format("{}{}", mesh, material);
         auto it = _sceneObjects.find(name);
         if (it == _sceneObjects.end())
         {
-            LoadObject(name);
+            LoadObject(mesh, material);
             it = _sceneObjects.find(name);
         }
 
@@ -48,21 +50,22 @@ namespace Scene
         }
     }
 
-    void SceneSystem::LoadObject(const std::string_view name)
+    void SceneSystem::LoadObject(std::string_view mesh, std::string_view material)
     {
-        const auto& material = _resourceManager.GetMaterial("Default");
-        const auto& cube = _resourceManager.GetMesh("Cube");
+        const auto name = std::format("{}{}", mesh, material);
+        const auto& xmaterial = _resourceManager.GetMaterial(material);
+        const auto& xmesh = _resourceManager.GetMesh(mesh);
 
         auto object = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
-            .WithVertexShader(_resourceManager.GetVertexShader(material.Shaders.VertexShader, true))
-            .WithPixelShader(_resourceManager.GetPixelShader(material.Shaders.PixelShader))
+            .WithVertexShader(_resourceManager.GetVertexShader(xmaterial.Shaders.VertexShader, true))
+            .WithPixelShader(_resourceManager.GetPixelShader(xmaterial.Shaders.PixelShader))
             .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::PositionNormalTextureInstanced))
             .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Write))
-            .WithVertexBuffer(cube.GetVertexBuffer(), cube.GetStride())
-            .WithIndexBuffer(cube.GetIndexBuffer())
+            .WithVertexBuffer(xmesh.GetVertexBuffer(), xmesh.GetStride())
+            .WithIndexBuffer(xmesh.GetIndexBuffer())
             .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
             .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
-            .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::Albedo, false, true)
+            .WithTexture(_resourceManager.GetTexture(xmaterial.Textures.Albedo), Resources::TextureBindingSlot::Albedo, false, true)
             .WithInstanceVertexBuffer(1)
             .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
             .Build();

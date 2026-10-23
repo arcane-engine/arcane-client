@@ -8,7 +8,7 @@ namespace Core
 {
     struct CameraContext
     {
-        Math::Vector3 Position;
+        Math::Vector3 Target;
         Math::Vector3 Velocity;
         DirectX::XMMATRIX ViewMatrix;
         DirectX::XMMATRIX ProjectionMatrix;

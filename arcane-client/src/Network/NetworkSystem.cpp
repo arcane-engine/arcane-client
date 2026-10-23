@@ -37,7 +37,7 @@ namespace Network
                     .Right = context.Input.Keyboard.Right
                 },
                 .Motion = ClientMotionPacket{
-                    .Position = context.Camera.Position,
+                    .Position = context.Camera.Target,
                     .Velocity = context.Camera.Velocity
                 }
             });

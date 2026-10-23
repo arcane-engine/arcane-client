@@ -19,7 +19,8 @@ namespace Resources
         PositionNormalTexture,
         PositionNormalTextureInstanced,
         Terrain,
-        Heightmap
+        Heightmap,
+        Skysphere
     };
 
     class InputLayoutLibrary

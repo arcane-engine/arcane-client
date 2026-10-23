@@ -38,4 +38,5 @@ private:
     Graphics::RenderObject _heightmapObject;
     Graphics::RenderObject _actorObject;
     Graphics::RenderObject _terrainObject;
+    Graphics::RenderObject _skysphereObject;
 };

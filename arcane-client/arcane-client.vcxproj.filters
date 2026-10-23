@@ -593,6 +593,8 @@
     <FxCompile Include="src\Resources\Shaders\HeightmapPS.hlsl" />
     <FxCompile Include="src\Resources\Shaders\UserInterfaceVS.hlsl" />
     <FxCompile Include="src\Resources\Shaders\UserInterfacePS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\SkyspherePS.hlsl" />
+    <FxCompile Include="src\Resources\Shaders\SkysphereVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Resources\Shaders\Registers.hlsli" />

@@ -30,7 +30,19 @@ Application::Application(const int width, const int height) :
     const auto& heightMap = _resourceManager.GetMesh("terrain_mesh");
     const auto& grid = _resourceManager.GetMesh("Grid");
     const auto& cube = _resourceManager.GetMesh("Cube");
+    const auto& skysphere = _resourceManager.GetMesh("skysphere");
     const auto& material = _resourceManager.GetMaterial("Default");
+
+    _skysphereObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
+        .WithVertexShader(_resourceManager.GetVertexShader("Skysphere"))
+        .WithPixelShader(_resourceManager.GetPixelShader("Skysphere"))
+        .WithInputLayout(_resourceManager.GetInputLayout(Resources::InputLayoutType::Skysphere))
+        .WithVertexBuffer(skysphere.GetVertexBuffer(), skysphere.GetStride())
+        .WithIndexBuffer(skysphere.GetIndexBuffer())
+        .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        .WithDepthStencilState(_resourceManager.GetDepthStencilState(Resources::DepthStencilStateType::Disabled))
+        .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
+        .Build();
 
     _heightmapObject = Graphics::RenderObjectBuilder(_renderSystem.GetDevice())
         .WithVertexShader(_resourceManager.GetVertexShader("Heightmap"))
@@ -114,6 +126,7 @@ void Application::Update()
     };
 
     context.GeometryRenderQueue.Add(_cameraObject);
+    context.GeometryRenderQueue.Add(_skysphereObject, DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(context.Camera.Target)));
 
     context.GeometryRenderQueue.Add(_heightmapObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
     context.GeometryRenderQueue.Add(_terrainObject, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));

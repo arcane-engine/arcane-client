@@ -101,7 +101,7 @@ namespace Graphics
         _position = _target - _direction * _distance;
 
         context.Camera = {
-            .Position = _target,
+            .Target = _target,
             .Velocity = Math::Vector3(velocityX, 0.0f, velocityZ),
             .ViewMatrix = GetViewMatrix(),
             .ProjectionMatrix = GetProjectionMatrix(),

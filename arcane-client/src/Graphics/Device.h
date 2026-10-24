@@ -47,6 +47,8 @@ namespace Graphics
         void CreateRenderTargets(int width, int height);
         void SetViewport(int width, int height) const;
 
+        static Microsoft::WRL::ComPtr<IDXGIAdapter1> GetAdapter();
+
     private:
         Microsoft::WRL::ComPtr<ID3D11Device> _device;
         Microsoft::WRL::ComPtr<IDXGISwapChain1> _swapChain;

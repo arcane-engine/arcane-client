@@ -9,6 +9,7 @@
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "dxgi.lib")
 
 namespace Graphics
 {
@@ -103,9 +104,10 @@ namespace Graphics
 
         SetMarker();
         D3D_FEATURE_LEVEL featureLevel;
+        const auto adapter = GetAdapter();
         const auto hResult = D3D11CreateDevice(
-            nullptr,
-            D3D_DRIVER_TYPE_HARDWARE,
+            adapter ? adapter.Get() : nullptr,
+            adapter ? D3D_DRIVER_TYPE_UNKNOWN : D3D_DRIVER_TYPE_HARDWARE,
             nullptr,
             deviceFlags,
             nullptr, 0,
@@ -205,6 +207,40 @@ namespace Graphics
         viewport.TopLeftY = 0;
 
         _deviceContext->RSSetViewports(1, &viewport);
+    }
+
+    Microsoft::WRL::ComPtr<IDXGIAdapter1> Device::GetAdapter()
+    {
+        Microsoft::WRL::ComPtr<IDXGIFactory1> factory;
+        if (FAILED(CreateDXGIFactory1(IID_PPV_ARGS(&factory))))
+        {
+            return nullptr;
+        }
+
+        Microsoft::WRL::ComPtr<IDXGIAdapter1> result = nullptr;
+        SIZE_T dedicatedVideoMemory = 0;
+
+        UINT i = 0;
+        Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter;
+        while (factory->EnumAdapters1(i++, &adapter) != DXGI_ERROR_NOT_FOUND)
+        {
+            DXGI_ADAPTER_DESC1 desc;
+            if (FAILED(adapter->GetDesc1(&desc)))
+            {
+                continue;
+            }
+            if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+            {
+                continue;
+            }
+            if (desc.DedicatedVideoMemory > dedicatedVideoMemory)
+            {
+                dedicatedVideoMemory = desc.DedicatedVideoMemory;
+                result = adapter;
+            }
+        }
+
+        return result;
     }
 
     void Device::SetMarker() const

@@ -35,6 +35,7 @@ namespace Graphics
         void Rotate(float pitch, float yaw, float roll) noexcept;
 
         void Update(Core::Context& context) noexcept;
+        void UpdateTarget(Core::Context& context) noexcept;
 
     private:
         float _width;

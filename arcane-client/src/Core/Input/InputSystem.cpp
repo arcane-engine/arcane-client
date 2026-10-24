@@ -52,6 +52,10 @@ namespace Core::Input
         {
             context.Input.Keyboard.Changed = true;
         }
+        if (context.Input.Mouse != _input.Mouse)
+        {
+            context.Input.Mouse.Changed = true;
+        }
 
         _input = context.Input;
     }

@@ -11,12 +11,13 @@ namespace Network
         if (_packet)
         {
             const auto value = packet.value();
-            WriteFloat(buffer, value.Position.X);
-            WriteFloat(buffer, value.Position.Y);
-            WriteFloat(buffer, value.Position.Z);
-            WriteFloat(buffer, value.Velocity.X);
-            WriteFloat(buffer, value.Velocity.Y);
-            WriteFloat(buffer, value.Velocity.Z);
+            WriteBit(buffer, value.Direction.has_value());
+            if (value.Direction)
+            {
+                WriteFloat(buffer, value.Direction->X);
+                WriteFloat(buffer, value.Direction->Y);
+                WriteFloat(buffer, value.Direction->Z);
+            }
         }
     }
 

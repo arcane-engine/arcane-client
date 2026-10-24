@@ -19,32 +19,36 @@ namespace Network
         _networkWorker.Stop();
     }
 
-    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, const Core::Context& context)
+    void NetworkSystem::Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, Core::Context& context)
     {
         Send(context);
-        Receive(actorSystem, sceneSystem);
+        Receive(actorSystem, sceneSystem, context);
     }
 
     void NetworkSystem::Send(const Core::Context& context)
     {
-        if (context.Input.Keyboard.Changed)
+        if (context.Input.Keyboard.Changed || context.Camera.Changed)
         {
-            _networkWorker.SendQueuePush(ClientPacket{
-                .Input = ClientInputPacket{
+            auto packet = ClientPacket
+            {
+                .Input = ClientInputPacket
+                {
                     .Forward = context.Input.Keyboard.Forward,
                     .Backward = context.Input.Keyboard.Backward,
                     .Left = context.Input.Keyboard.Left,
                     .Right = context.Input.Keyboard.Right
                 },
-                .Motion = ClientMotionPacket{
-                    .Position = context.Camera.Target,
-                    .Velocity = context.Camera.Velocity
+                .Motion = ClientMotionPacket
+                {
+                    .Direction = context.Camera.Direction,
                 }
-            });
+            };
+
+            _networkWorker.SendQueuePush(std::move(packet));
         }
     }
 
-    void NetworkSystem::Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem)
+    void NetworkSystem::Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, Core::Context& context)
     {
         std::queue<ServerPacket> queue;
         _networkWorker.GetReceiveQueue().Swap(queue);
@@ -53,13 +57,18 @@ namespace Network
         {
             const auto& packet = queue.front();
 
-            if (packet.Actor.empty() == false)
+            if (packet.ActorSetup)
             {
-                for (const auto& actor : packet.Actor)
+                actorSystem.CreateActor(packet.ActorSetup->Id, Math::Vector3(0, 0, 0), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1), true);
+            }
+
+            if (packet.ActorRegister.empty() == false)
+            {
+                for (const auto& actor : packet.ActorRegister)
                 {
                     if (actor.Register)
                     {
-                        actorSystem.CreateActor(actor.Id, Math::Vector3(0, 0, 0), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1));
+                        actorSystem.CreateActor(actor.Id, Math::Vector3(0, 0, 0), Math::Quaternion(0, 0, 0, 0), Math::Vector3(1, 1, 1), false);
                     }
                     else
                     {

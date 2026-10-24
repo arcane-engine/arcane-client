@@ -2,8 +2,8 @@
 
 namespace Simulation
 {
-    Actor::Actor(const std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale)
-        : _id(id), _position(position), _rotation(rotation), _scale(scale)
+    Actor::Actor(const std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale, const Math::Vector3& velocity)
+        : _id(id), _position(position), _rotation(rotation), _scale(scale), _velocity(velocity)
     {}
 
     std::uint32_t Actor::GetId() const

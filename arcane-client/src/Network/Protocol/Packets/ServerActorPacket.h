@@ -7,7 +7,12 @@
 
 namespace Network
 {
-    struct ServerActorPacket
+    struct ServerActorSetupPacket
+    {
+        std::uint16_t Id;
+    };
+
+    struct ServerActorRegisterPacket
     {
         std::uint16_t Id;
         bool Register;

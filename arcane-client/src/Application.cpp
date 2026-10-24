@@ -126,7 +126,7 @@ void Application::Update()
     };
 
     context.GeometryRenderQueue.Add(_cameraObject);
-    context.GeometryRenderQueue.Add(_skysphereObject, DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(context.Camera.Target)));
+    context.GeometryRenderQueue.Add(_skysphereObject, DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(context.Camera.Direction)));
 
     context.GeometryRenderQueue.Add(_heightmapObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
     context.GeometryRenderQueue.Add(_terrainObject, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
@@ -135,6 +135,13 @@ void Application::Update()
     {
         actor.Update(context.Time);
         context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
+
+        if (actor.GetId() == _actorSystem.GetPrimaryActorId())
+        {
+            context.Camera.Target = actor.GetPosition();
+        }
+
+        _camera.UpdateTarget(context);
     }
 
     for (const auto& object : _sceneSystem.GetSceneObjectsView())

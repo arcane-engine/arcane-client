@@ -11,7 +11,7 @@ namespace Simulation
     class Actor
     {
     public:
-        Actor(std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale);
+        Actor(std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale, const Math::Vector3& velocity);
 
         [[nodiscard]] std::uint32_t GetId() const;
         [[nodiscard]] const Math::Vector3& GetPosition() const;
@@ -30,8 +30,8 @@ namespace Simulation
     private:
         std::uint32_t _id;
         Math::Vector3 _position;
-        Math::Vector3 _velocity;
         Math::Quaternion _rotation;
         Math::Vector3 _scale;
+        Math::Vector3 _velocity;
     };
 }

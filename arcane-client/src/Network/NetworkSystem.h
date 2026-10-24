@@ -14,10 +14,10 @@ namespace Network
         void Start();
         void Stop();
 
-        void Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, const Core::Context& context);
+        void Update(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, Core::Context& context);
 
         void Send(const Core::Context& context);
-        void Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem);
+        void Receive(Simulation::ActorSystem& actorSystem, Scene::SceneSystem& sceneSystem, Core::Context& context);
 
     private:
         NetworkWorker _networkWorker;

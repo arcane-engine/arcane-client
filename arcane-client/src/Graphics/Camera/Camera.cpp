@@ -82,30 +82,27 @@ namespace Graphics
 
         _distance = _distance - context.Input.Mouse.WheelDelta;
 
+        const auto direction = _direction;
+
         _direction.X = Math::Cos(_pitch.GetValue()) * Math::Sin(_yaw.GetValue());
         _direction.Y = Math::Sin(_pitch.GetValue());
         _direction.Z = Math::Cos(_pitch.GetValue()) * Math::Cos(_yaw.GetValue());
         _direction.Normalize();
 
-        auto velocityX = 0.0f;
-        auto velocityZ = 0.0f;
-
-        if (context.Input.Keyboard.Forward)
+        context.Camera.Direction = _direction;
+        if (direction != _direction)
         {
-            velocityX = _direction.X * 3.0f;
-            velocityZ = _direction.Z * 3.0f;
-            _target.X = _target.X + velocityX * context.Time.Delta;
-            _target.Z = _target.Z + velocityZ * context.Time.Delta;
+            context.Camera.Changed = true;
         }
+    }
 
+    void Camera::UpdateTarget(Core::Context& context) noexcept
+    {
+        _target = context.Camera.Target;
         _position = _target - _direction * _distance;
 
-        context.Camera = {
-            .Target = _target,
-            .Velocity = Math::Vector3(velocityX, 0.0f, velocityZ),
-            .ViewMatrix = GetViewMatrix(),
-            .ProjectionMatrix = GetProjectionMatrix(),
-            .ViewProjectionMatrix = GetViewProjectionMatrix()
-        };
+        context.Camera.ViewMatrix = GetViewMatrix();
+        context.Camera.ProjectionMatrix = GetProjectionMatrix();
+        context.Camera.ViewProjectionMatrix = GetViewProjectionMatrix();
     }
 }

@@ -6,7 +6,6 @@ namespace Network
 {
     struct ClientMotionPacket
     {
-        Math::Vector3 Position;
-        Math::Vector3 Velocity;
+        std::optional<Math::Vector3> Direction;
     };
 }

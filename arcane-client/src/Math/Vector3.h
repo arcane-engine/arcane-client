@@ -20,6 +20,8 @@ namespace Math
         Vector3& operator=(const DirectX::XMVECTOR& vector) noexcept;
         Vector3& operator=(const std::array<float, 3>& array) noexcept;
 
+        bool operator==(const Vector3&) const = default;
+
         Vector3 operator*(float value) const noexcept;
 
         Vector3 operator+(const Vector3& value) const noexcept;

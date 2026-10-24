@@ -2,9 +2,13 @@
 
 namespace Simulation
 {
-    Actor& ActorSystem::CreateActor(std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale)
+    Actor& ActorSystem::CreateActor(std::uint32_t id, const Math::Vector3& position, const Math::Quaternion& rotation, const Math::Vector3& scale, const bool primary)
     {
-        auto [it, inserted] = _actors.try_emplace(id, id, position, rotation, scale);
+        if (primary)
+        {
+            _primaryActorId = id;
+        }
+        auto [it, inserted] = _actors.try_emplace(id, id, position, rotation, scale, Math::Vector3());
         return it->second;
     }
 
@@ -23,5 +27,10 @@ namespace Simulation
     std::unordered_map<std::uint32_t, Actor>& ActorSystem::GetActors()
     {
         return _actors;
+    }
+
+    std::uint32_t ActorSystem::GetPrimaryActorId() const
+    {
+        return _primaryActorId;
     }
 }

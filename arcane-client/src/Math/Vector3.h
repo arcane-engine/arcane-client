@@ -32,6 +32,9 @@ namespace Math
         [[nodiscard]] float GetLength() const noexcept;
         [[nodiscard]] Vector3 GetNormalized() const noexcept;
 
+        [[nodiscard]] DirectX::XMMATRIX GetTranslationMatrix() const noexcept;
+        [[nodiscard]] DirectX::XMMATRIX GetScalingMatrix() const noexcept;
+
         void Normalize() noexcept;
     };
 }

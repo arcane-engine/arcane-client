@@ -81,8 +81,9 @@ Application::Application(const int width, const int height) :
         .WithIndexBuffer(grid.GetIndexBuffer())
         .WithTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
         .WithSampler(_resourceManager.GetSampler(Resources::SamplerType::LinearWrap), 0, false, true)
-        .WithTexture(_resourceManager.GetTexture(material.Textures.Albedo), Resources::TextureBindingSlot::TerrainWeight, false, true)
-        .WithTexture(_resourceManager.GetTexture("Grass"), Resources::TextureBindingSlot::TerrainBase, false, true)
+        .WithTexture(_resourceManager.GetTexture("weight-terrain-001"), Resources::TextureBindingSlot::TerrainWeight, false, true)
+        .WithTexture(_resourceManager.GetTexture("mud-terrain-001"), Resources::TextureBindingSlot::TerrainBase, false, true)
+        .WithTexture(_resourceManager.GetTexture("grass-terrain-001"), Resources::TextureBindingSlot::TerrainR, false, true)
         .WithConstantBuffer<Graphics::ObjectTransformBuffer>(1, true, false)
         .WithConstantBuffer<Graphics::LightBuffer>(2, false, true)
         .Build();
@@ -119,29 +120,31 @@ void Application::Update()
     _sceneSystem.Build();
 
     context.Lights = {
-        { { -8.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 0.8f, 0.6f, 1.0f } },
-        { {  8.0f, 4.0f, -8.0f, 1.0f }, { 0.6f, 0.8f, 1.0f, 1.0f } },
-        { { -8.0f, 4.0f,  8.0f, 1.0f }, { 1.0f, 0.6f, 0.6f, 1.0f } },
-        { {  8.0f, 4.0f,  8.0f, 1.0f }, { 0.6f, 1.0f, 0.6f, 1.0f } }
+        { { -15.0f, 4.0f, -4.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } },
+        { {  15.0f, 4.0f, -8.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } },
+        { { -8.0f, 4.0f,  12.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } },
+        { {  8.0f, 4.0f,  3.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f } }
     };
-
-    context.GeometryRenderQueue.Add(_cameraObject);
-    context.GeometryRenderQueue.Add(_skysphereObject, DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(context.Camera.Direction)));
-
-    context.GeometryRenderQueue.Add(_heightmapObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-    context.GeometryRenderQueue.Add(_terrainObject, DirectX::XMMatrixTranslation(0.0f, -3.0f, 0.0f));
 
     for (auto& actor : _actorSystem.GetActors() | std::views::values)
     {
         actor.Update(context.Time);
-        context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
-
         if (actor.GetId() == _actorSystem.GetPrimaryActorId())
         {
             context.Camera.Target = actor.GetPosition();
+            _camera.UpdateTarget(context);
         }
+    }
 
-        _camera.UpdateTarget(context);
+    context.GeometryRenderQueue.Add(_skysphereObject, context.Camera.Target.GetTranslationMatrix());
+    context.GeometryRenderQueue.Add(_cameraObject);
+
+    //context.GeometryRenderQueue.Add(_heightmapObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+    context.GeometryRenderQueue.Add(_terrainObject, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+
+    for (auto& actor : _actorSystem.GetActors() | std::views::values)
+    {
+        context.GeometryRenderQueue.Add(_actorObject, actor.GetWorldMatrix());
     }
 
     for (const auto& object : _sceneSystem.GetSceneObjectsView())

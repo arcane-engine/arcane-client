@@ -34,4 +34,9 @@ namespace Math
     {
         return DirectX::XMVectorSet(X, Y, Z, W);
     }
+
+    DirectX::XMMATRIX Quaternion::GetRotationMatrix() const noexcept
+    {
+        return DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(X, Y, Z, W));
+    }
 }

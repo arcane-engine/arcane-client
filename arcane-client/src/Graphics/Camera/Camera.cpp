@@ -53,7 +53,7 @@ namespace Graphics
 
     DirectX::XMMATRIX Camera::GetProjectionMatrix() const noexcept
     {
-        return DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), _width / _height, 0.5f, 500.0f);
+        return DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), _width / _height, 0.5f, 4000.0f);
     }
 
     DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const noexcept

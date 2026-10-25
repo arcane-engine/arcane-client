@@ -40,10 +40,7 @@ namespace Scene
     {
         if (_worldMatrix == std::nullopt)
         {
-            _worldMatrix =
-                DirectX::XMMatrixScalingFromVector(static_cast<DirectX::XMVECTOR>(_scale)) *
-                DirectX::XMMatrixRotationQuaternion(static_cast<DirectX::XMVECTOR>(_rotation)) *
-                DirectX::XMMatrixTranslationFromVector(static_cast<DirectX::XMVECTOR>(_position));
+            _worldMatrix = _scale.GetScalingMatrix() * _rotation.GetRotationMatrix() * _position.GetTranslationMatrix();
         }
         return _worldMatrix.value();
     }

@@ -67,6 +67,16 @@ namespace Math
         return { 0.0f, 0.0f, 0.0f };
     }
 
+    DirectX::XMMATRIX Vector3::GetTranslationMatrix() const noexcept
+    {
+        return DirectX::XMMatrixTranslation(X, Y, Z);
+    }
+
+    DirectX::XMMATRIX Vector3::GetScalingMatrix() const noexcept
+    {
+        return DirectX::XMMatrixScaling(X, Y, Z);
+    }
+
     void Vector3::Normalize() noexcept
     {
         const auto length = GetLength();

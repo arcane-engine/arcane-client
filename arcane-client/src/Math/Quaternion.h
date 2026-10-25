@@ -22,5 +22,7 @@ namespace Math
         Quaternion& operator=(const std::array<float, 4>& array) noexcept;
 
         explicit operator DirectX::XMVECTOR() const;
+
+        [[nodiscard]] DirectX::XMMATRIX GetRotationMatrix() const noexcept;
     };
 }

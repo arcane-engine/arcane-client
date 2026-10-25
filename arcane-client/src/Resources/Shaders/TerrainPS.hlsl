@@ -5,6 +5,7 @@
 
 Texture2D terrainWeightTexture : register(TEX_REGISTER_TERRAIN_WEIGHT);
 Texture2D terrainBaseTexture : register(TEX_REGISTER_TERRAIN_BASE);
+Texture2D terrainRTexture : register(TEX_REGISTER_TERRAIN_R);
 
 SamplerState Sampler : register(SMP_REGISTER_MAIN);
 
@@ -19,12 +20,13 @@ struct PSInput
 
 float4 main(PSInput input) : SV_TARGET
 {
-    float4 t1 = terrainWeightTexture.Sample(Sampler, input.uv0);
-    float4 t2 = terrainBaseTexture.Sample(Sampler, input.uv1);
+    float4 weightColor = terrainWeightTexture.Sample(Sampler, input.uv0);
+    float4 baseColor = terrainBaseTexture.Sample(Sampler, input.uv1);
+    float4 textureColor = terrainRTexture.Sample(Sampler, input.uv1);
 
-    float4 blendedColor = (t1 + t2) / 2;
+    float4 blendedColor = lerp(baseColor, textureColor, weightColor.r);
 
-    float3 totalLight = float3(0.15f, 0.15f, 0.15f);
+    float3 totalLight = float3(0.4f, 0.4f, 0.6f);
 
     [unroll]
     for (int i = 0; i < 4; ++i)
@@ -40,5 +42,5 @@ float4 main(PSInput input) : SV_TARGET
         totalLight += colors[i].rgb * diff * attenuation;
     }
 
-    return float4(blendedColor.rgb * totalLight, 1.0f);
+    return float4(blendedColor.rgb * totalLight * 2.0f, 1.0f);
 }
